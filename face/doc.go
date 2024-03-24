@@ -52,6 +52,7 @@ func (f *Doc) Quit() {
 }
 
 //query batch doc one index
+//sync opt
 //return total, []docObj, facetMap, error
 func (f *Doc) QueryIndexDocs(
 		para *define.QueryPara,
@@ -117,6 +118,7 @@ func (f *Doc) QueryIndexDocs(
 }
 
 //get one doc by field condition
+//sync opt
 func (f *Doc) GetOneDocByFieldCond(
 	docId, matchField string,
 	out interface{}) error {

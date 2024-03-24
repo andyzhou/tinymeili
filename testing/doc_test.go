@@ -39,7 +39,7 @@ func getDoc() (*TestDoc, error) {
 	}
 
 	//get doc
-	docId := "1711264553511968000"
+	docId := "1711277520797064000"
 	out := NewTestDoc()
 	err = indexObj.GetDoc().GetOneDocById(docId, out)
 	return out, err

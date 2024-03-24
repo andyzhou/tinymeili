@@ -11,7 +11,7 @@ const (
 	HostTag = "test"
 	Host = "http://127.0.0.1:7700"
 	ApiKey = ""
-	IndexName = "test"
+	IndexName = "test3"
 )
 
 var (
