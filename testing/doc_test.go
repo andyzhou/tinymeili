@@ -2,6 +2,7 @@ package testing
 
 import (
 	"fmt"
+	"github.com/andyzhou/tinymeili/define"
 	"math/rand"
 	"testing"
 	"time"
@@ -30,18 +31,50 @@ func addDoc() error {
 }
 
 //get one doc
-func getDoc() error {
+func getDoc() (*TestDoc, error) {
+	//get index obj
+	indexObj, err := getIndexObj(IndexName)
+	if err != nil || indexObj == nil {
+		return nil, err
+	}
+
+	//get doc
+	docId := "1711264553511968000"
+	out := NewTestDoc()
+	err = indexObj.GetDoc().GetOneDocById(docId, out)
+	return out, err
+}
+
+//query doc
+func queryDoc() error {
 	//get index obj
 	indexObj, err := getIndexObj(IndexName)
 	if err != nil || indexObj == nil {
 		return err
 	}
 
-	//get doc
-	docId := "1711194742684362000"
-	out := NewTestDoc()
-	err = indexObj.GetDoc().GetOneDocById(docId, out)
-	return err
+	para := &define.QueryPara{
+		Key: "test",
+		Page: 1,
+		PageSize: 10,
+	}
+	_, _, _, subErr := indexObj.GetDoc().QueryIndexDocs(para)
+	return subErr
+}
+
+//test add doc
+func TestAddDoc(t *testing.T) {
+	err := addDoc()
+	if err != nil {
+		t.Errorf("add doc failed, err:%v\n", err.Error())
+	}else{
+		t.Logf("add doc succeed")
+	}
+}
+
+func TestGetDoc(t *testing.T) {
+	doc, err := getDoc()
+	t.Logf("doc:%v, err:%v\n", doc, err)
 }
 
 //benchmark get doc
@@ -52,7 +85,7 @@ func BenchmarkGetDoc(b *testing.B) {
 	succeed := 0
 	failed := 0
 	for i := 0; i < b.N; i++ {
-		err = getDoc()
+		_, err = getDoc()
 		if err != nil {
 			failed++
 		}else{
@@ -78,4 +111,23 @@ func BenchmarkAddDoc(b *testing.B) {
 		}
 	}
 	b.Logf("benchmark add doc, succeed:%v, failed:%v\n", succeed, failed)
+}
+
+//benchmark query doc
+func BenchmarkQueryDoc(b *testing.B) {
+	var (
+		err error
+	)
+	succeed := 0
+	failed := 0
+	for i := 0; i < b.N; i++ {
+		err = queryDoc()
+		if err != nil {
+			failed++
+		}else{
+			succeed++
+		}
+	}
+	b.Logf("benchmark query doc, succeed:%v, failed:%v\n", succeed, failed)
+	time.Sleep(time.Second)
 }

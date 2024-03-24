@@ -17,11 +17,14 @@ type Index struct {
 }
 
 //construct
-func NewIndex(indexTag string, index *meilisearch.Index) *Index {
+func NewIndex(
+	indexTag string,
+	index *meilisearch.Index,
+	workers int) *Index {
 	this := &Index{
 		indexTag: indexTag,
 		index: index,
-		doc: NewDoc(index),
+		doc: NewDoc(index, workers),
 	}
 	return this
 }
@@ -32,7 +35,7 @@ func (f *Index) GetDoc() *Doc {
 }
 
 //update filterable fields
-func (f *Index) UpdateFilterableAttributes(fields ...string) error {
+func (f *Index) UpdateFilterableAttributes(fields []string) error {
 	_, err := f.index.UpdateFilterableAttributes(&fields)
 	return err
 }

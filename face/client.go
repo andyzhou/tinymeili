@@ -19,6 +19,7 @@ type clientConf struct {
 	apiKey  string
 	timeout time.Duration
 	indexes []string
+	workers int
 }
 
 //face info
@@ -77,7 +78,7 @@ func (f *Client) CreateIndex(
 	}
 
 	//init new index
-	indexObj := NewIndex(indexName, index)
+	indexObj := NewIndex(indexName, index, f.cfg.workers)
 
 	//sync into map
 	f.Lock()
@@ -112,7 +113,7 @@ func (f *Client) interInit() {
 			}
 			//init index
 			index := f.client.Index(indexName)
-			indexObj := NewIndex(indexName, index)
+			indexObj := NewIndex(indexName, index, f.cfg.workers)
 			f.indexMap[indexName] = indexObj
 		}
 	}

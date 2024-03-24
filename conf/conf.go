@@ -8,6 +8,7 @@ type (
 		Hosts   map[string]string //tag -> host
 		ApiKey  string
 		TimeOut time.Duration
-		Indexes []string
+		Indexes []string //index names
+		Workers int //inter concurrency workers
 	}
 )

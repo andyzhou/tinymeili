@@ -58,6 +58,7 @@ func (f *Node) interInit() {
 			host: host,
 			apiKey: f.cfg.ApiKey,
 			indexes: f.cfg.Indexes,
+			workers: f.cfg.Workers,
 		}
 		if f.cfg.TimeOut > 0 {
 			cfg.timeout = f.cfg.TimeOut * time.Second
