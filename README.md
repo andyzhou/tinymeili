@@ -1,2 +1,5 @@
 # tiny meiLi
-search lib for meiLi search, still developing!
+search client api for meiLi search, second dev code.
+
+# example
+pls see sub dir of `example`
