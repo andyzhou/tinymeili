@@ -41,22 +41,22 @@ func NewMeiLi() *MeiLi {
 //api
 ///////////
 
-//remove node
-func (f *MeiLi) RemoveNode(nodeKind string) error {
-	return f.interFace.RemoveNode(nodeKind)
+//remove client
+func (f *MeiLi) RemoveClient(tag string) error {
+	return f.interFace.RemoveClient(tag)
 }
 
-//get node
-func (f *MeiLi) GetNode(nodeKind string) (*face.Node, error) {
-	return f.interFace.GetNode(nodeKind)
+//get client
+func (f *MeiLi) GetClient(tag string) (*face.Client, error) {
+	return f.interFace.GetClient(tag)
 }
 
-//add node
-func (f *MeiLi) AddNode(cfg *conf.NodeConf) error {
-	return f.interFace.AddNode(cfg)
+//add client
+func (f *MeiLi) AddClient(cfg *conf.ClientConf) error {
+	return f.interFace.AddClient(cfg)
 }
 
-//gen node config
-func (f *MeiLi) GenNodeConfig() *conf.NodeConf {
-	return f.interFace.GenNodeConf()
+//gen client config
+func (f *MeiLi) GenClientConfig() *conf.ClientConf {
+	return f.interFace.GenClientConf()
 }

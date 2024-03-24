@@ -19,7 +19,7 @@ var (
 
 //face info
 type InterFace struct {
-	nodeMap map[string]*Node //kind -> *Node
+	clientMap map[string]*Client //kind -> *Client
 	sync.RWMutex
 }
 
@@ -34,67 +34,73 @@ func GetInterFace() *InterFace {
 //construct
 func NewInterFace() *InterFace {
 	this := &InterFace{
-		nodeMap: map[string]*Node{},
+		clientMap: map[string]*Client{},
 	}
 	return this
 }
 
-//remove node by kind
-func (f *InterFace) RemoveNode(nodeKind string) error {
+//remove client by tag
+func (f *InterFace) RemoveClient(tag string) error {
 	//check
-	if nodeKind == "" {
+	if tag == "" {
 		return errors.New("invalid parameter")
 	}
 
 	//remove with locker
 	f.Lock()
 	defer f.Unlock()
-	delete(f.nodeMap, nodeKind)
+	delete(f.clientMap, tag)
 	return nil
 }
 
-//get node by kind
-func (f *InterFace) GetNode(nodeKind string) (*Node, error) {
+//get all clients
+func (f *InterFace) GetAllClient() map[string]*Client {
+	f.Lock()
+	defer f.Unlock()
+	return f.clientMap
+}
+
+//get client by tag
+func (f *InterFace) GetClient(tag string) (*Client, error) {
 	//check
-	if nodeKind == "" {
+	if tag == "" {
 		return nil, errors.New("invalid parameter")
 	}
 
-	//get by tag with locker
+	//get by k with locker
 	f.Lock()
 	defer f.Unlock()
-	v, ok := f.nodeMap[nodeKind]
+	v, ok := f.clientMap[tag]
 	if ok && v != nil {
 		return v, nil
 	}
 	return nil, errors.New("no such node by kind")
 }
 
-//add new node
-func (f *InterFace) AddNode(cfg *conf.NodeConf) error {
+//add new client
+func (f *InterFace) AddClient(cfg *conf.ClientConf) error {
 	//check
-	if cfg == nil || cfg.Kind == "" {
+	if cfg == nil || cfg.Tag == "" {
 		return errors.New("invalid parameter")
 	}
 
-	//check and init node
+	//check and init client
 	f.Lock()
 	defer f.Unlock()
-	_, ok := f.nodeMap[cfg.Kind]
+	_, ok := f.clientMap[cfg.Tag]
 	if ok {
 		return errors.New("node has exists")
 	}
 
-	//init new node
-	node := NewNode(cfg)
-	f.nodeMap[cfg.Kind] = node
+	//init new client
+	client := NewClient(cfg)
+	f.clientMap[cfg.Tag] = client
 	return nil
 }
 
-//gen node conf
-func (f *InterFace) GenNodeConf() *conf.NodeConf {
-	return &conf.NodeConf{
-		Hosts: map[string]string{},
+//gen client conf
+func (f *InterFace) GenClientConf() *conf.ClientConf {
+	return &conf.ClientConf{
 		Indexes: []string{},
 	}
 }

@@ -2,9 +2,9 @@ package face
 
 import (
 	"errors"
+	"github.com/andyzhou/tinymeili/conf"
 	"github.com/meilisearch/meilisearch-go"
 	"sync"
-	"time"
 )
 
 /*
@@ -13,25 +13,16 @@ import (
  * - multi indexes for one host
  */
 
-//client conf
-type clientConf struct {
-	host    string
-	apiKey  string
-	timeout time.Duration
-	indexes []string
-	workers int
-}
-
 //face info
 type Client struct {
-	cfg *clientConf //reference
+	cfg *conf.ClientConf //reference
 	client *meilisearch.Client
 	indexMap map[string]*Index //tag -> *Index
 	sync.RWMutex
 }
 
 //construct
-func NewClient(cfg *clientConf) *Client {
+func NewClient(cfg *conf.ClientConf) *Client {
 	this := &Client{
 		cfg: cfg,
 		indexMap: map[string]*Index{},
@@ -78,7 +69,7 @@ func (f *Client) CreateIndex(
 	}
 
 	//init new index
-	indexObj := NewIndex(indexName, index, f.cfg.workers)
+	indexObj := NewIndex(indexName, index, f.cfg.Workers)
 
 	//sync into map
 	f.Lock()
@@ -95,25 +86,25 @@ func (f *Client) CreateIndex(
 func (f *Client) interInit() {
 	//setup client config
 	clientCfg := meilisearch.ClientConfig{
-		Host: f.cfg.host,
-		APIKey: f.cfg.apiKey,
-		Timeout: f.cfg.timeout,
+		Host: f.cfg.Host,
+		APIKey: f.cfg.ApiKey,
+		Timeout: f.cfg.TimeOut,
 	}
 
 	//init search client
 	f.client = meilisearch.NewClient(clientCfg)
 
 	//init indexes
-	if f.cfg.indexes != nil {
+	if f.cfg.Indexes != nil {
 		f.Lock()
 		defer f.Unlock()
-		for _, indexName := range f.cfg.indexes {
+		for _, indexName := range f.cfg.Indexes {
 			if indexName == "" {
 				continue
 			}
 			//init index
 			index := f.client.Index(indexName)
-			indexObj := NewIndex(indexName, index, f.cfg.workers)
+			indexObj := NewIndex(indexName, index, f.cfg.Workers)
 			f.indexMap[indexName] = indexObj
 		}
 	}

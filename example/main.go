@@ -16,7 +16,6 @@ import (
  */
 
 const (
-	NodeKind = "test"
 	HostTag = "test"
 	Host = "http://127.0.0.1:7700"
 	ApiKey = ""
@@ -32,17 +31,15 @@ func init()  {
 	//init client
 	mc = tinymeili.GetMeiLi()
 
-	//gen and fill node config
-	nodeCfg := mc.GenNodeConfig()
-	nodeCfg.Kind = NodeKind
-	nodeCfg.Hosts = map[string]string{
-		HostTag : Host,
-	}
-	nodeCfg.ApiKey = ApiKey
-	nodeCfg.Indexes = []string{IndexName}
+	//gen and fill client config
+	clientCfg := mc.GenClientConfig()
+	clientCfg.Tag = HostTag
+	clientCfg.Host = Host
+	clientCfg.ApiKey = ApiKey
+	clientCfg.Indexes = []string{IndexName}
 
-	//add node
-	err := mc.AddNode(nodeCfg)
+	//add client
+	err := mc.AddClient(clientCfg)
 	if err != nil {
 		panic(any(err))
 	}
@@ -50,11 +47,7 @@ func init()  {
 
 //get index obj
 func getIndexObj(indexName string) (*face.Index, error) {
-	node, err := mc.GetNode(NodeKind)
-	if err != nil || node == nil {
-		return nil, err
-	}
-	client, subErr := node.GetClient(HostTag)
+	client, subErr := mc.GetClient(HostTag)
 	if subErr != nil || client == nil {
 		return nil, subErr
 	}

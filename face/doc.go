@@ -69,6 +69,9 @@ func (f *Doc) QueryIndexDocs(
 	if para.Page <= 0 {
 		para.Page = define.DefaultPage
 	}
+	if para.PageSize <= 0 {
+		para.PageSize = define.DefaultPageSize
+	}
 	offset := (para.Page - 1) * para.PageSize
 	limit := para.PageSize
 
@@ -113,7 +116,6 @@ func (f *Doc) QueryIndexDocs(
 			}
 		}
 	}
-
 	return resp.TotalHits, resp.Hits, facetObjs, nil
 }
 
@@ -180,8 +182,7 @@ func (f *Doc) GetOneDocById(
 
 //del one doc
 func (f *Doc) DelDoc(
-		docIds ...string,
-	) error {
+	docIds ...string) error {
 	//check
 	if docIds == nil || len(docIds) <= 0 {
 		return errors.New("invalid parameter")
@@ -203,8 +204,7 @@ func (f *Doc) DelDoc(
 //del docs by filter
 //filter like: 'a = 6 and b < 10'
 func (f *Doc) DelDocsByFilter(
-		filter []string,
-	) error {
+	filter []string) error {
 	//check
 	if filter == nil {
 		return errors.New("invalid parameter")
@@ -225,9 +225,8 @@ func (f *Doc) DelDocsByFilter(
 
 //update one doc
 func (f *Doc) UpdateDoc(
-		docObj interface{},
-		docIds ...string,
-	) error {
+	docObj interface{},
+	docIds ...string) error {
 	var (
 		docId string
 	)
