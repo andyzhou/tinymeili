@@ -41,6 +41,11 @@ func NewMeiLi() *MeiLi {
 //api
 ///////////
 
+//quit
+func (f *MeiLi) Quit() {
+	f.interFace.Quit()
+}
+
 //remove client
 func (f *MeiLi) RemoveClient(tag string) error {
 	return f.interFace.RemoveClient(tag)

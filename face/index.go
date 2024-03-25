@@ -29,6 +29,11 @@ func NewIndex(
 	return this
 }
 
+//quit
+func (f *Index) Quit() {
+	f.doc.Quit()
+}
+
 //get doc face
 func (f *Index) GetDoc() *Doc {
 	return f.doc

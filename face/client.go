@@ -31,6 +31,13 @@ func NewClient(cfg *conf.ClientConf) *Client {
 	return this
 }
 
+//quit
+func (f *Client) Quit() {
+	for _, v := range f.indexMap {
+		v.Quit()
+	}
+}
+
 //get index by name
 func (f *Client) GetIndex(
 	indexName string) (*Index, error) {

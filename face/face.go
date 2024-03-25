@@ -39,12 +39,29 @@ func NewInterFace() *InterFace {
 	return this
 }
 
+//quit
+func (f *InterFace) Quit() {
+	f.Lock()
+	defer f.Unlock()
+	for tag, client := range f.clientMap {
+		client.Quit()
+		delete(f.clientMap, tag)
+	}
+}
+
 //remove client by tag
 func (f *InterFace) RemoveClient(tag string) error {
 	//check
 	if tag == "" {
 		return errors.New("invalid parameter")
 	}
+
+	//get and quit client
+	client, err := f.GetClient(tag)
+	if err != nil || client == nil {
+		return err
+	}
+	client.Quit()
 
 	//remove with locker
 	f.Lock()
