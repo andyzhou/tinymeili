@@ -98,6 +98,24 @@ func delDoc() error {
 	return err
 }
 
+//get multi doc
+func getMultiDoc() error {
+	//get index obj
+	indexObj, err := getIndexObj(IndexName)
+	if err != nil || indexObj == nil {
+		return err
+	}
+
+	//update filterable fields
+	attributeFields := []string{"id", "tags"}
+	err = indexObj.UpdateFilterableAttributes(attributeFields)
+
+	//del doc by ids
+	docIds := []string{"1711273936556697000", "1711273936562740000"}
+	_, err = indexObj.GetDoc().GetBatchDocByIds("id", docIds...)
+	return nil
+}
+
 //query doc
 func queryDoc() ([]interface{}, interface{}, error) {
 	//get index obj
@@ -145,9 +163,12 @@ func main() {
 	//	return
 	//}
 
-	//query doc
-	resp, facets, err := queryDoc()
-	log.Printf("query doc, resp:%v, facets:%v, err:%v\n", resp, facets, err)
+	//get multi docs
+	getMultiDoc()
+
+	////query doc
+	//resp, facets, err := queryDoc()
+	//log.Printf("query doc, resp:%v, facets:%v, err:%v\n", resp, facets, err)
 
 	wg.Wait()
 	log.Printf("doc opt succeed\n")

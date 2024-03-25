@@ -1,6 +1,7 @@
 package face
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -117,6 +118,51 @@ func (f *Doc) QueryIndexDocs(
 		}
 	}
 	return resp.TotalHits, resp.Hits, facetObjs, nil
+}
+
+//get bach doc by ids
+//field need set as filterable
+//return []interface{}, error
+func (f *Doc) GetBatchDocByIds(
+	field string,
+	docIds ...string) ([]interface{}, error) {
+	//check
+	if field == "" || docIds == nil {
+		return nil, errors.New("invalid parameter")
+	}
+	if f.index == nil {
+		return nil, errors.New("inter index not init")
+	}
+
+	filterBuff := bytes.NewBuffer(nil)
+	i := 0
+	limit := int64(0)
+	for _, docId := range docIds {
+		if docId == "" {
+			continue
+		}
+		if i > 0 {
+			filterBuff.WriteString(" OR ")
+		}
+		filterBuff.WriteString(fmt.Sprintf("%v = %v", field, docId))
+		i++
+		limit++
+	}
+
+	//setup search request
+	sq := &meilisearch.SearchRequest{
+		AttributesToSearchOn:[]string{field},
+		Filter: []string{filterBuff.String()},
+		Limit: limit,
+		HitsPerPage:limit,
+	}
+
+	//query origin doc
+	resp, err := f.index.Search("", sq)
+	if err != nil || resp == nil {
+		return nil, err
+	}
+	return resp.Hits, nil
 }
 
 //get one doc by field condition
