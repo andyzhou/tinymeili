@@ -122,10 +122,10 @@ func (f *Doc) QueryIndexDocs(
 //get one doc by field condition
 //sync opt
 func (f *Doc) GetOneDocByFieldCond(
-	docId, matchField string,
+	matchField, matchVal string,
 	out interface{}) error {
 	//check
-	if docId == "" ||
+	if matchVal == "" ||
 		matchField == "" || out == nil {
 		return errors.New("invalid parameter")
 	}
@@ -142,7 +142,7 @@ func (f *Doc) GetOneDocByFieldCond(
 	}
 
 	//get origin doc
-	resp, subErr := f.index.Search("", sq)
+	resp, subErr := f.index.Search(matchVal, sq)
 	if subErr != nil || resp == nil || resp.Hits == nil {
 		return subErr
 	}
