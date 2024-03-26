@@ -10,7 +10,8 @@ const (
 	HostTag = "test"
 	Host = "http://127.0.0.1:7700"
 	ApiKey = ""
-	IndexName = "test3"
+	IndexName = "test2"
+	PrimaryKey = "id"
 )
 
 var (
@@ -28,7 +29,12 @@ func init()  {
 	clientCfg.Tag = HostTag
 	clientCfg.Host = Host
 	clientCfg.ApiKey = ApiKey
-	clientCfg.Indexes = []string{IndexName}
+	clientCfg.IndexesConf = []*conf.IndexConf{
+		&conf.IndexConf{
+			IndexName: IndexName,
+			PrimaryKey: PrimaryKey,
+		},
+	}
 
 	//add client
 	err := mc.AddClient(clientCfg)

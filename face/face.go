@@ -118,6 +118,6 @@ func (f *InterFace) AddClient(cfg *conf.ClientConf) error {
 //gen client conf
 func (f *InterFace) GenClientConf() *conf.ClientConf {
 	return &conf.ClientConf{
-		Indexes: []string{},
+		IndexesConf: []*conf.IndexConf{},
 	}
 }

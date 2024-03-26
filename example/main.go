@@ -1,12 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"github.com/andyzhou/tinymeili"
+	"github.com/andyzhou/tinymeili/conf"
 	"github.com/andyzhou/tinymeili/define"
 	"github.com/andyzhou/tinymeili/face"
 	"log"
-	"math/rand"
 	"sync"
 	"time"
 )
@@ -19,7 +18,7 @@ const (
 	HostTag = "test"
 	Host = "http://127.0.0.1:7700"
 	ApiKey = ""
-	IndexName = "test"
+	IndexName = "movies_24"
 )
 
 var (
@@ -36,7 +35,13 @@ func init()  {
 	clientCfg.Tag = HostTag
 	clientCfg.Host = Host
 	clientCfg.ApiKey = ApiKey
-	clientCfg.Indexes = []string{IndexName}
+	clientCfg.TimeOut = time.Duration(5) * time.Second
+	clientCfg.IndexesConf = []*conf.IndexConf{
+		&conf.IndexConf{
+			IndexName: IndexName,
+			PrimaryKey: "id",
+		},
+	}
 
 	//add client
 	err := mc.AddClient(clientCfg)
@@ -57,14 +62,12 @@ func getIndexObj(indexName string) (*face.Index, error) {
 
 //add new doc
 func addDoc() error {
+	now := time.Now().Unix()
+
 	//init obj
-	obj := NewTestDoc()
-	obj.Id = time.Now().UnixNano()
-	obj.Title = fmt.Sprintf("test-%v", rand.Int63n(time.Now().UnixNano()))
-	obj.Tags = []string{
-		"beijing",
-		"china",
-	}
+	obj := NewReviewDoc()
+	obj.Id = now
+	obj.CreateAt = now
 
 	//get index obj
 	indexObj, err := getIndexObj(IndexName)
@@ -149,13 +152,13 @@ func main() {
 	time.AfterFunc(time.Second * 3, sf)
 	wg.Add(1)
 
-	////add new doc
-	//err := addDoc()
-	//if err != nil {
-	//	log.Printf("add doc failed, err:%v\n", err.Error())
-	//	return
-	//}
-	//
+	//add new doc
+	err := addDoc()
+	if err != nil {
+		log.Printf("add doc failed, err:%v\n", err.Error())
+		return
+	}
+
 	////del doc
 	//err = delDoc()
 	//if err != nil {
@@ -164,7 +167,7 @@ func main() {
 	//}
 
 	//get multi docs
-	getMultiDoc()
+	//getMultiDoc()
 
 	////query doc
 	//resp, facets, err := queryDoc()

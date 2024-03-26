@@ -113,10 +113,10 @@ func (f *Worker) CreateWorkers(num int) error {
 //send data to one worker, STEP-3
 //objIds used for hash calculate value
 func (f *Worker) SendData(
-	data interface{},
-	dataId string,
-	needResponses ...bool,
-) (interface{}, error) {
+		data interface{},
+		dataId string,
+		needResponses ...bool,
+	) (interface{}, error) {
 	//check
 	if data == nil {
 		return nil, errors.New("invalid parameter")

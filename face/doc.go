@@ -361,7 +361,7 @@ func (f *Doc) syncDocObj(req *syncDocReq) (*meilisearch.TaskInfo, error) {
 		err error
 	)
 	//check
-	if req == nil {
+	if req == nil || req.obj == nil {
 		return nil, errors.New("invalid parameter")
 	}
 	if f.index == nil {

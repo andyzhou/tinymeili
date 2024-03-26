@@ -3,8 +3,10 @@ package face
 import (
 	"errors"
 	"github.com/andyzhou/tinymeili/conf"
+	"github.com/andyzhou/tinymeili/define"
 	"github.com/meilisearch/meilisearch-go"
 	"sync"
+	"time"
 )
 
 /*
@@ -39,8 +41,7 @@ func (f *Client) Quit() {
 }
 
 //get index by name
-func (f *Client) GetIndex(
-	indexName string) (*Index, error) {
+func (f *Client) GetIndex(indexName string) (*Index, error) {
 	//check
 	if indexName == "" {
 		return nil, errors.New("invalid parameter")
@@ -56,32 +57,19 @@ func (f *Client) GetIndex(
 }
 
 //create and init index
-func (f *Client) CreateIndex(
-	indexName string,
-	filterableFields ...string) error {
+func (f *Client) CreateIndex(indexConf *conf.IndexConf) error {
 	//check
-	if indexName == "" {
+	if indexConf == nil || indexConf.IndexName == "" {
 		return errors.New("invalid parameter")
 	}
 
-	//init index
-	index := f.client.Index(indexName)
-
-	//update filterable fields
-	if filterableFields != nil && len(filterableFields) > 0 {
-		_, err := index.UpdateFilterableAttributes(&filterableFields)
-		if err != nil {
-			return err
-		}
-	}
-
-	//init new index
-	indexObj := NewIndex(indexName, index, f.cfg.Workers)
+	//init new index obj
+	indexObj := NewIndex(f.client, indexConf, f.cfg.Workers)
 
 	//sync into map
 	f.Lock()
 	defer f.Unlock()
-	f.indexMap[indexName] = indexObj
+	f.indexMap[indexConf.IndexName] = indexObj
 	return nil
 }
 
@@ -91,6 +79,11 @@ func (f *Client) CreateIndex(
 
 //inter init
 func (f *Client) interInit() {
+	//check config
+	if f.cfg.TimeOut <= 0 {
+		f.cfg.TimeOut = time.Duration(define.DefaultTimeOut) * time.Second
+	}
+
 	//setup client config
 	clientCfg := meilisearch.ClientConfig{
 		Host: f.cfg.Host,
@@ -102,17 +95,16 @@ func (f *Client) interInit() {
 	f.client = meilisearch.NewClient(clientCfg)
 
 	//init indexes
-	if f.cfg.Indexes != nil {
+	if f.cfg.IndexesConf != nil {
 		f.Lock()
 		defer f.Unlock()
-		for _, indexName := range f.cfg.Indexes {
-			if indexName == "" {
+		for _, indexConf := range f.cfg.IndexesConf {
+			if indexConf == nil {
 				continue
 			}
-			//init index
-			index := f.client.Index(indexName)
-			indexObj := NewIndex(indexName, index, f.cfg.Workers)
-			f.indexMap[indexName] = indexObj
+			//init index obj
+			indexObj := NewIndex(f.client, indexConf, f.cfg.Workers)
+			f.indexMap[indexConf.IndexName] = indexObj
 		}
 	}
 }
