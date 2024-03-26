@@ -355,25 +355,26 @@ func (f *Doc) removeDocObj(req *removeDocReq) error {
 }
 
 //add or update doc
-func (f *Doc) syncDocObj(req *syncDocReq) error {
+func (f *Doc) syncDocObj(req *syncDocReq) (*meilisearch.TaskInfo, error) {
 	var (
+		resp *meilisearch.TaskInfo
 		err error
 	)
 	//check
 	if req == nil {
-		return errors.New("invalid parameter")
+		return nil, errors.New("invalid parameter")
 	}
 	if f.index == nil {
-		return errors.New("inter index not init")
+		return nil, errors.New("inter index not init")
 	}
 
 	//add real doc
 	if req.isUpdate {
-		_, err = f.index.UpdateDocuments(req.obj)
+		resp, err = f.index.UpdateDocuments(req.obj)
 	}else{
-		_, err = f.index.AddDocuments(req.obj)
+		resp, err = f.index.AddDocuments(req.obj)
 	}
-	return err
+	return resp, err
 }
 
 //cb for worker opt
@@ -395,7 +396,7 @@ func (f *Doc) cbForWorkerOpt(input interface{}) (interface{}, error) {
 			if !ok || &req == nil {
 				return nil, errors.New("invalid data type")
 			}
-			err = f.syncDocObj(&req)
+			_, err = f.syncDocObj(&req)
 			return nil, err
 		}
 	case removeDocReq:
