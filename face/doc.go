@@ -8,6 +8,7 @@ import (
 	"github.com/andyzhou/tinymeili/define"
 	"github.com/andyzhou/tinymeili/lib"
 	"github.com/meilisearch/meilisearch-go"
+	"log"
 	"strconv"
 )
 
@@ -29,14 +30,19 @@ type (
 
 //face info
 type Doc struct {
+	client *meilisearch.Client //reference
 	index *meilisearch.Index //reference
 	worker *lib.Worker
 	workers int
 }
 
 //construct
-func NewDoc(index *meilisearch.Index, workers int) *Doc {
+func NewDoc(
+	client *meilisearch.Client,
+	index *meilisearch.Index,
+	workers int) *Doc {
 	this := &Doc{
+		client: client,
 		workers: workers,
 		index: index,
 		worker: lib.NewWorker(),
@@ -332,6 +338,7 @@ func (f *Doc) AddDoc(
 //remove doc
 func (f *Doc) removeDocObj(req *removeDocReq) error {
 	var (
+		resp *meilisearch.TaskInfo
 		err error
 	)
 	//check
@@ -345,12 +352,22 @@ func (f *Doc) removeDocObj(req *removeDocReq) error {
 	//remove real doc
 	if req.filter != nil {
 		//remove by filter
-		_, err = f.index.DeleteDocumentsByFilter(req.filter)
+		resp, err = f.index.DeleteDocumentsByFilter(req.filter)
 	}else{
 		//remove by ids
-		_, err = f.index.DeleteDocuments(req.docIds)
+		resp, err = f.index.DeleteDocuments(req.docIds)
 	}
-	return err
+	if err != nil {
+		return err
+	}
+
+	//wait for task status
+	finalTask, _ := f.client.WaitForTask(resp.TaskUID)
+	if finalTask.Status != "succeeded" {
+		log.Printf("doc.removeDocObj failed, err:%v\n", finalTask.Error.Code)
+		return fmt.Errorf(finalTask.Error.Code)
+	}
+	return nil
 }
 
 //add or update doc
@@ -369,9 +386,16 @@ func (f *Doc) syncDocObj(req *syncDocReq) (*meilisearch.TaskInfo, error) {
 
 	//add real doc
 	if req.isUpdate {
-		resp, err = f.index.UpdateDocuments(req.obj)
+		resp, err = f.index.UpdateDocuments(req.obj, f.index.PrimaryKey)
 	}else{
-		resp, err = f.index.AddDocuments(req.obj)
+		resp, err = f.index.AddDocuments(req.obj, f.index.PrimaryKey)
+	}
+
+	//wait for task status
+	finalTask, _ := f.client.WaitForTask(resp.TaskUID)
+	if finalTask.Status != "succeeded" {
+		log.Printf("doc.syncDocObj failed, err:%v\n", finalTask.Error.Code)
+		return nil, fmt.Errorf(finalTask.Error.Code)
 	}
 	return resp, err
 }

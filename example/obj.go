@@ -1,6 +1,6 @@
 package main
 
-type ReviewDoc struct {
+type ReviewJson struct {
 	Id       int64  `json:"id"` //auto inc val
 	DataId   int64  `json:"dataId"`
 	Parent   int64  `json:"parent"`
@@ -46,8 +46,8 @@ func NewTestDoc() *TestDoc {
 	return this
 }
 
-func NewReviewDoc() *ReviewDoc {
-	this := &ReviewDoc{}
+func NewReviewJson() *ReviewJson {
+	this := &ReviewJson{}
 	return this
 }
 

@@ -17,8 +17,8 @@ import (
 const (
 	HostTag = "test"
 	Host = "http://127.0.0.1:7700"
-	ApiKey = ""
-	IndexName = "test_0"
+	ApiKey = "test"
+	IndexName = "test_3"
 )
 
 var (
@@ -66,7 +66,7 @@ func addDoc() error {
 	now := time.Now().Unix()
 
 	//init obj
-	obj := NewReviewDoc()
+	obj := NewReviewJson()
 	obj.Id = now
 	obj.DataId = 1
 	obj.CreateAt = now
