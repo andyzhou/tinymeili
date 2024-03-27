@@ -1,7 +1,7 @@
 package main
 
 type ReviewDoc struct {
-	Id       int64  `json:"id"`
+	Id       int64  `json:"id"` //auto inc val
 	DataId   int64  `json:"dataId"`
 	Parent   int64  `json:"parent"`
 	Poster   int64  `json:"poster"`
@@ -16,6 +16,19 @@ type ReviewDoc struct {
 	Status   int    `json:"status"` //0:normal 1:removed
 	EditAt   int64  `json:"editAt"`
 	CreateAt int64  `json:"createAt"`
+	BaseJson
+}
+
+type MyReviewJson struct {
+	ReviewId int64  `json:"reviewId"`
+	DataId   int64  `json:"dataId"`
+	Parent   int64  `json:"parent"`
+	Poster   int64  `json:"poster"`
+	Receiver int64  `json:"receiver"`
+	Content  string `json:"content"`
+	IsSent	 bool	`json:"isSent"`
+	CreateAt int64  `json:"createAt"`
+	BaseJson
 }
 
 type TestDoc struct {
@@ -35,5 +48,10 @@ func NewTestDoc() *TestDoc {
 
 func NewReviewDoc() *ReviewDoc {
 	this := &ReviewDoc{}
+	return this
+}
+
+func NewMyReviewJson() *MyReviewJson {
+	this := &MyReviewJson{}
 	return this
 }

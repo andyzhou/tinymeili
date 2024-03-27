@@ -315,7 +315,6 @@ func (f *Doc) AddDoc(
 	if docIds != nil && len(docIds) > 0 {
 		docId = docIds[0]
 	}
-
 	//init request
 	req := syncDocReq{
 		obj: docObj,

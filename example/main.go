@@ -18,7 +18,7 @@ const (
 	HostTag = "test"
 	Host = "http://127.0.0.1:7700"
 	ApiKey = ""
-	IndexName = "movies_24"
+	IndexName = "test_0"
 )
 
 var (
@@ -36,6 +36,7 @@ func init()  {
 	clientCfg.Host = Host
 	clientCfg.ApiKey = ApiKey
 	clientCfg.TimeOut = time.Duration(5) * time.Second
+	clientCfg.Workers = define.DefaultWorkers
 	clientCfg.IndexesConf = []*conf.IndexConf{
 		&conf.IndexConf{
 			IndexName: IndexName,
@@ -67,6 +68,7 @@ func addDoc() error {
 	//init obj
 	obj := NewReviewDoc()
 	obj.Id = now
+	obj.DataId = 1
 	obj.CreateAt = now
 
 	//get index obj
@@ -147,9 +149,12 @@ func main() {
 		wg sync.WaitGroup
 	)
 	sf := func() {
+		mc.Quit()
+		log.Printf("tiny meiLi quit..\n")
+		time.Sleep(time.Second)
 		wg.Done()
 	}
-	time.AfterFunc(time.Second * 3, sf)
+	time.AfterFunc(time.Second * 2, sf)
 	wg.Add(1)
 
 	//add new doc

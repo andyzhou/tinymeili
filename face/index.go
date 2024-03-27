@@ -78,5 +78,5 @@ func (f *Index) interInit() {
 
 	//init doc obj
 	f.index = index
-	f.doc = NewDoc(index, f.workers)
+	f.doc = NewDoc(f.index, f.workers)
 }
