@@ -4,8 +4,8 @@ import "time"
 
 type (
 	IndexConf struct {
-		IndexName        string
-		PrimaryKey       string
+		IndexName        string //must value
+		PrimaryKey       string //must value
 		FilterableFields []string
 	}
 	ClientConf struct {

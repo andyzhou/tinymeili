@@ -225,10 +225,7 @@ func (f *Doc) GetOneDocById(
 	}
 
 	//get real doc
-	err := f.index.GetDocument(
-		docId,
-		nil,
-		&out)
+	err := f.index.GetDocument(docId, nil, &out)
 	return err
 }
 

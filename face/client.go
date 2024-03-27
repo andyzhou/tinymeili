@@ -59,7 +59,8 @@ func (f *Client) GetIndex(indexName string) (*Index, error) {
 //create and init index
 func (f *Client) CreateIndex(indexConf *conf.IndexConf) error {
 	//check
-	if indexConf == nil || indexConf.IndexName == "" {
+	if indexConf == nil || indexConf.IndexName == "" ||
+		indexConf.PrimaryKey == "" {
 		return errors.New("invalid parameter")
 	}
 
@@ -79,6 +80,9 @@ func (f *Client) CreateIndex(indexConf *conf.IndexConf) error {
 
 //inter init
 func (f *Client) interInit() {
+	var (
+		err error
+	)
 	//check config
 	if f.cfg.TimeOut <= 0 {
 		f.cfg.TimeOut = time.Duration(define.DefaultTimeOut) * time.Second
@@ -101,7 +105,10 @@ func (f *Client) interInit() {
 				continue
 			}
 			//init index obj
-			f.CreateIndex(indexConf)
+			err = f.CreateIndex(indexConf)
+			if err != nil {
+				panic(any(err))
+			}
 		}
 	}
 }
