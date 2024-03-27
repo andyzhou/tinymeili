@@ -96,15 +96,12 @@ func (f *Client) interInit() {
 
 	//init indexes
 	if f.cfg.IndexesConf != nil {
-		f.Lock()
-		defer f.Unlock()
 		for _, indexConf := range f.cfg.IndexesConf {
 			if indexConf == nil {
 				continue
 			}
 			//init index obj
-			indexObj := NewIndex(f.client, indexConf, f.cfg.Workers)
-			f.indexMap[indexConf.IndexName] = indexObj
+			f.CreateIndex(indexConf)
 		}
 	}
 }
