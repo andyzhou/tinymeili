@@ -118,15 +118,10 @@ func (f *Index) interInit() {
 
 	//wait for task
 	finalTask, _ := f.client.WaitForTask(task.TaskUID)
-	indexExists := false
-	if finalTask.Status != "succeeded" {
-		if finalTask.Error.Code == "index_already_exists" {
-			indexExists = true
-		}else{
-			err = fmt.Errorf("create index failed, err:%v", finalTask.Status)
-			log.Printf("init index %v failed, err:%v\n", f.indexConf.IndexName, err.Error())
-			panic(any(err))
-		}
+	if finalTask.Status != "succeeded" && finalTask.Error.Code != "index_already_exists" {
+		err = fmt.Errorf("create index failed, err:%v", finalTask.Status)
+		log.Printf("init index %v failed, err:%v\n", f.indexConf.IndexName, err.Error())
+		panic(any(err))
 	}
 	index, _ := f.client.GetIndex(f.indexConf.IndexName)
 
@@ -136,13 +131,11 @@ func (f *Index) interInit() {
 	//sync index obj
 	f.index = index
 
-	if !indexExists {
-		//set filterable fields
-		if f.indexConf.FilterableFields != nil && len(f.indexConf.FilterableFields) > 0 {
-			err = f.UpdateFilterableAttributes(f.indexConf.FilterableFields)
-			if err != nil {
-				panic(any(err))
-			}
+	//set filterable fields
+	if f.indexConf.FilterableFields != nil && len(f.indexConf.FilterableFields) > 0 {
+		err = f.UpdateFilterableAttributes(f.indexConf.FilterableFields)
+		if err != nil {
+			panic(any(err))
 		}
 	}
 
