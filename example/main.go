@@ -41,6 +41,7 @@ func init()  {
 		&conf.IndexConf{
 			IndexName: IndexName,
 			PrimaryKey: "id",
+			FilterableFields: []string{"dataId"},
 		},
 	}
 

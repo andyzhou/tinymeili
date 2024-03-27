@@ -116,7 +116,17 @@ func (f *Index) interInit() {
 	//set index primary key
 	index.PrimaryKey = f.indexConf.PrimaryKey
 
-	//init doc obj
+	//sync index obj
 	f.index = index
+
+	//set filterable fields
+	if f.indexConf.FilterableFields != nil && len(f.indexConf.FilterableFields) > 0 {
+		err = f.UpdateFilterableAttributes(f.indexConf.FilterableFields)
+		if err != nil {
+			panic(any(err))
+		}
+	}
+
+	//init doc obj
 	f.doc = NewDoc(f.client, f.index, f.workers)
 }
