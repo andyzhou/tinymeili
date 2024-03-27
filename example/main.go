@@ -131,13 +131,12 @@ func queryDoc() ([]interface{}, interface{}, error) {
 	}
 
 	//filter
-	filter := "tags = 'china' AND tags = 'beijing'"
-	facets := []string{"tags"}
+	filter := "dataId = 1"
+	//facets := []string{"tags"}
 
 	//setup query para
 	para := &define.QueryPara{
 		Filter: filter,
-		Facets: facets,
 		Page: 1,
 		PageSize: 10,
 	}
@@ -158,12 +157,12 @@ func main() {
 	time.AfterFunc(time.Second * 2, sf)
 	wg.Add(1)
 
-	//add new doc
-	err := addDoc()
-	if err != nil {
-		log.Printf("add doc failed, err:%v\n", err.Error())
-		return
-	}
+	////add new doc
+	//err := addDoc()
+	//if err != nil {
+	//	log.Printf("add doc failed, err:%v\n", err.Error())
+	//	return
+	//}
 
 	////del doc
 	//err = delDoc()
@@ -175,9 +174,9 @@ func main() {
 	//get multi docs
 	//getMultiDoc()
 
-	////query doc
-	//resp, facets, err := queryDoc()
-	//log.Printf("query doc, resp:%v, facets:%v, err:%v\n", resp, facets, err)
+	//query doc
+	resp, facets, err := queryDoc()
+	log.Printf("query doc, resp:%v, facets:%v, err:%v\n", resp, facets, err)
 
 	wg.Wait()
 	log.Printf("doc opt succeed\n")

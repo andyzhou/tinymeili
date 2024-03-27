@@ -56,14 +56,27 @@ func (f *Index) UpdateFilterableAttributes(fields []string) error {
 	if fields == nil || len(fields) <= 0 {
 		return errors.New("invalid parameter")
 	}
-	//update fields
-	task, err := f.index.UpdateFilterableAttributes(&fields)
+
+	//reset filterable fields
+	task, err := f.index.ResetFilterableAttributes()
+	if err != nil {
+		return err
+	}
+	//wait for task
+	finalTask, _ := f.client.WaitForTask(task.TaskUID)
+	if finalTask.Status != "succeeded" {
+		return fmt.Errorf(finalTask.Error.Code)
+	}
+
+
+	//update filterable fields
+	task, err = f.index.UpdateFilterableAttributes(&fields)
 	if err != nil {
 		return err
 	}
 
 	//wait for task
-	finalTask, _ := f.client.WaitForTask(task.TaskUID)
+	finalTask, _ = f.client.WaitForTask(task.TaskUID)
 	if finalTask.Status != "succeeded" {
 		return fmt.Errorf(finalTask.Error.Code)
 	}
