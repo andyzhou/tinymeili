@@ -82,6 +82,27 @@ func (f *Index) UpdateFilterableAttributes(fields []string) error {
 	return nil
 }
 
+//update sortable fields
+func (f *Index) UpdateSortableFields(fields []string) error {
+	//check
+	if fields == nil || len(fields) <= 0 {
+		return errors.New("invalid parameter")
+	}
+
+	//update sortable fields
+	task, err := f.index.UpdateSortableAttributes(&fields)
+	if err != nil {
+		return err
+	}
+
+	//wait for task
+	finalTask, _ := f.client.WaitForTask(task.TaskUID)
+	if finalTask.Status != "succeeded" {
+		return fmt.Errorf(finalTask.Error.Code)
+	}
+	return nil
+}
+
 //update primary key
 func (f *Index) UpdatePrimaryKey(key string) error {
 	//check
@@ -134,6 +155,14 @@ func (f *Index) interInit() {
 	//set filterable fields
 	if f.indexConf.FilterableFields != nil && len(f.indexConf.FilterableFields) > 0 {
 		err = f.UpdateFilterableAttributes(f.indexConf.FilterableFields)
+		if err != nil {
+			panic(any(err))
+		}
+	}
+
+	//set sortable fields
+	if f.indexConf.SortableFields != nil && len(f.indexConf.SortableFields) > 0 {
+		err = f.UpdateSortableFields(f.indexConf.SortableFields)
 		if err != nil {
 			panic(any(err))
 		}

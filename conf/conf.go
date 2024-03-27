@@ -7,6 +7,7 @@ type (
 		IndexName        string //must value
 		PrimaryKey       string //must value
 		FilterableFields []string
+		SortableFields   []string
 	}
 	ClientConf struct {
 		Tag         string
