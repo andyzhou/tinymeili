@@ -230,7 +230,9 @@ func (f *Doc) GetOneDocById(
 }
 
 //del one doc
+//dataId used for pick hashed son worker
 func (f *Doc) DelDoc(
+	dataId string,
 	docIds ...string) error {
 	//check
 	if docIds == nil || len(docIds) <= 0 {
@@ -246,7 +248,7 @@ func (f *Doc) DelDoc(
 	}
 
 	//send worker queue
-	_, err := f.worker.SendData(req, "")
+	_, err := f.worker.SendData(req, dataId)
 	return err
 }
 
@@ -273,11 +275,12 @@ func (f *Doc) DelDocsByFilter(
 }
 
 //update one doc
+//dataIds used for pick hashed son worker
 func (f *Doc) UpdateDoc(
 	docObj interface{},
-	docIds ...string) error {
+	dataIds ...string) error {
 	var (
-		docId string
+		dataId string
 	)
 	//check
 	if docObj == nil {
@@ -286,8 +289,8 @@ func (f *Doc) UpdateDoc(
 	if f.index == nil {
 		return errors.New("inter index not init")
 	}
-	if docIds != nil && len(docIds) > 0 {
-		docId = docIds[0]
+	if dataIds != nil && len(dataIds) > 0 {
+		dataId = dataIds[0]
 	}
 
 	//init request
@@ -297,16 +300,17 @@ func (f *Doc) UpdateDoc(
 	}
 
 	//send worker queue
-	_, err := f.worker.SendData(req, docId)
+	_, err := f.worker.SendData(req, dataId)
 	return err
 }
 
 //add one or batch doc
+//dataIds used for pick hashed son worker
 func (f *Doc) AddDoc(
 	docObj interface{},
-	docIds ...string) error {
+	dataIds ...string) error {
 	var (
-		docId string
+		dataId string
 	)
 	//check
 	if docObj == nil {
@@ -315,8 +319,8 @@ func (f *Doc) AddDoc(
 	if f.index == nil {
 		return errors.New("inter index not init")
 	}
-	if docIds != nil && len(docIds) > 0 {
-		docId = docIds[0]
+	if dataIds != nil && len(dataIds) > 0 {
+		dataId = dataIds[0]
 	}
 	//init request
 	req := syncDocReq{
@@ -324,7 +328,7 @@ func (f *Doc) AddDoc(
 	}
 
 	//send worker queue
-	_, err := f.worker.SendData(req, docId)
+	_, err := f.worker.SendData(req, dataId)
 	return err
 }
 

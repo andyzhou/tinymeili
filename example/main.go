@@ -96,7 +96,7 @@ func delDoc() error {
 
 	//del doc by ids
 	docIds := []string{"1711266923113935000"}
-	err = indexObj.GetDoc().DelDoc(docIds...)
+	err = indexObj.GetDoc().DelDoc("", docIds...)
 
 	////del doc by filter
 	//filter := "tags = 'china'"
