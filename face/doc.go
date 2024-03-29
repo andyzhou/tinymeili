@@ -79,8 +79,6 @@ func (f *Doc) QueryIndexDocs(
 	if para.PageSize <= 0 {
 		para.PageSize = define.DefaultPageSize
 	}
-	offset := (para.Page - 1) * para.PageSize
-	limit := para.PageSize
 
 	//setup search request
 	sq := &meilisearch.SearchRequest{
@@ -88,8 +86,7 @@ func (f *Doc) QueryIndexDocs(
 		Filter: para.Filter,
 		Facets: para.Facets,
 		Sort: para.Sort,
-		Offset: int64(offset),
-		Limit: int64(limit),
+		Page: int64(para.Page),
 		HitsPerPage:int64(para.PageSize),
 	}
 
@@ -322,6 +319,7 @@ func (f *Doc) AddDoc(
 	if dataIds != nil && len(dataIds) > 0 {
 		dataId = dataIds[0]
 	}
+
 	//init request
 	req := syncDocReq{
 		obj: docObj,
@@ -391,11 +389,19 @@ func (f *Doc) syncDocObj(req *syncDocReq) (*meilisearch.TaskInfo, error) {
 	}else{
 		resp, err = f.index.AddDocuments(req.obj, f.index.PrimaryKey)
 	}
+	if err != nil {
+		return nil, err
+	}
+	if resp == nil {
+		return nil, errors.New("no any response from meili search")
+	}
 
 	//wait for task status
-	finalTask, _ := f.client.WaitForTask(resp.TaskUID)
+	finalTask, subErr := f.client.WaitForTask(resp.TaskUID)
+	if subErr != nil {
+		return nil, subErr
+	}
 	if finalTask.Status != "succeeded" {
-		log.Printf("doc.syncDocObj failed, err:%v\n", finalTask.Error.Code)
 		return nil, fmt.Errorf(finalTask.Error.Code)
 	}
 	return resp, err

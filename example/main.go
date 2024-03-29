@@ -35,7 +35,7 @@ func init()  {
 	clientCfg.Tag = HostTag
 	clientCfg.Host = Host
 	clientCfg.ApiKey = ApiKey
-	clientCfg.TimeOut = time.Duration(5) * time.Second
+	clientCfg.TimeOut = time.Duration(30) * time.Second
 	clientCfg.Workers = define.DefaultWorkers
 	clientCfg.IndexesConf = []*conf.IndexConf{
 		&conf.IndexConf{
@@ -63,12 +63,12 @@ func getIndexObj(indexName string) (*face.Index, error) {
 }
 
 //add new doc
-func addDoc() error {
+func addDoc(beginId int64) error {
 	now := time.Now().Unix()
 
 	//init obj
 	obj := NewReviewJson()
-	obj.Id = now
+	obj.Id = beginId
 	obj.DataId = 1
 	obj.CreateAt = now
 
@@ -79,7 +79,7 @@ func addDoc() error {
 	}
 
 	//add doc
-	err = indexObj.GetDoc().AddDoc(obj)
+	err = indexObj.GetDoc().AddDoc(*obj)
 	return err
 }
 
@@ -138,7 +138,7 @@ func queryDoc() ([]interface{}, interface{}, error) {
 	para := &define.QueryPara{
 		Filter: filter,
 		Page: 1,
-		PageSize: 10,
+		PageSize: 2,
 	}
 	_, resp, facetObj, subErr := indexObj.GetDoc().QueryIndexDocs(para)
 	return resp, facetObj, subErr
@@ -149,20 +149,24 @@ func main() {
 		wg sync.WaitGroup
 	)
 	sf := func() {
-		mc.Quit()
+		//mc.Quit()
 		log.Printf("tiny meiLi quit..\n")
 		time.Sleep(time.Second)
-		wg.Done()
+		//wg.Done()
 	}
 	time.AfterFunc(time.Second * 2, sf)
 	wg.Add(1)
 
-	////add new doc
-	//err := addDoc()
-	//if err != nil {
-	//	log.Printf("add doc failed, err:%v\n", err.Error())
-	//	return
-	//}
+	now := time.Now().UnixNano()
+	for i := int64(0); i < 50; i++ {
+		//add new doc
+		beginId := now + i
+		err := addDoc(beginId)
+		if err != nil {
+			log.Printf("add doc failed, err:%v\n", err.Error())
+			return
+		}
+	}
 
 	////del doc
 	//err = delDoc()
@@ -174,9 +178,9 @@ func main() {
 	//get multi docs
 	//getMultiDoc()
 
-	//query doc
-	resp, facets, err := queryDoc()
-	log.Printf("query doc, resp:%v, facets:%v, err:%v\n", resp, facets, err)
+	////query doc
+	//resp, facets, err := queryDoc()
+	//log.Printf("query doc, resp:%v, facets:%v, err:%v\n", resp, facets, err)
 
 	wg.Wait()
 	log.Printf("doc opt succeed\n")
