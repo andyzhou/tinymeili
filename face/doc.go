@@ -8,7 +8,6 @@ import (
 	"github.com/andyzhou/tinymeili/define"
 	"github.com/andyzhou/tinymeili/lib"
 	"github.com/meilisearch/meilisearch-go"
-	"log"
 	"strconv"
 )
 
@@ -359,11 +358,16 @@ func (f *Doc) removeDocObj(req *removeDocReq) error {
 	if err != nil {
 		return err
 	}
+	if resp == nil {
+		return errors.New("no any response from meili search")
+	}
 
 	//wait for task status
-	finalTask, _ := f.client.WaitForTask(resp.TaskUID)
+	finalTask, subErr := f.client.WaitForTask(resp.TaskUID)
+	if subErr != nil {
+		return subErr
+	}
 	if finalTask.Status != "succeeded" {
-		log.Printf("doc.removeDocObj failed, err:%v\n", finalTask.Error.Code)
 		return fmt.Errorf(finalTask.Error.Code)
 	}
 	return nil
