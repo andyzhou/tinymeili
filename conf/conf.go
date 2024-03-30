@@ -8,6 +8,8 @@ type (
 		PrimaryKey       string //must value
 		FilterableFields []string
 		SortableFields   []string
+		CreateIndex      bool
+		UpdateFields 	 bool
 	}
 	ClientConf struct {
 		Tag         string
@@ -15,6 +17,7 @@ type (
 		ApiKey      string
 		TimeOut     time.Duration
 		IndexesConf []*IndexConf //indexes config
+		CreateIndex bool         //create index or not
 		Workers     int          //inter concurrency workers
 	}
 )

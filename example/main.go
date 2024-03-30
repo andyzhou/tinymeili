@@ -42,6 +42,8 @@ func init()  {
 			IndexName: IndexName,
 			PrimaryKey: "id",
 			FilterableFields: []string{"dataId"},
+			CreateIndex: false,
+			UpdateFields: false,
 		},
 	}
 
@@ -157,16 +159,16 @@ func main() {
 	time.AfterFunc(time.Second * 2, sf)
 	wg.Add(1)
 
-	now := time.Now().UnixNano()
-	for i := int64(0); i < 50; i++ {
-		//add new doc
-		beginId := now + i
-		err := addDoc(beginId)
-		if err != nil {
-			log.Printf("add doc failed, err:%v\n", err.Error())
-			return
-		}
-	}
+	//now := time.Now().UnixNano()
+	//for i := int64(0); i < 1; i++ {
+	//	//add new doc
+	//	beginId := now + i
+	//	err := addDoc(beginId)
+	//	if err != nil {
+	//		log.Printf("add doc failed, err:%v\n", err.Error())
+	//		return
+	//	}
+	//}
 
 	////del doc
 	//err = delDoc()
