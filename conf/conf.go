@@ -17,7 +17,6 @@ type (
 		ApiKey      string
 		TimeOut     time.Duration
 		IndexesConf []*IndexConf //indexes config
-		CreateIndex bool         //create index or not
 		Workers     int          //inter concurrency workers
 	}
 )
