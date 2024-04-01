@@ -119,8 +119,8 @@ func getMultiDoc() error {
 	err = indexObj.UpdateFilterableAttributes(attributeFields)
 
 	//del doc by ids
-	docIds := []string{"1711273936556697000", "1711273936562740000"}
-	_, err = indexObj.GetDoc().GetBatchDocByIds("id", docIds...)
+	docIds := []string{"1711762759189243000", "1711762797676375000"}
+	_, err = indexObj.GetDoc().GetBatchDocsByIds("id", docIds...)
 	return nil
 }
 
@@ -178,7 +178,7 @@ func main() {
 	//}
 
 	//get multi docs
-	//getMultiDoc()
+	getMultiDoc()
 
 	////query doc
 	//resp, facets, err := queryDoc()

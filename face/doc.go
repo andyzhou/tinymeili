@@ -122,20 +122,21 @@ func (f *Doc) QueryIndexDocs(
 	return resp.TotalHits, resp.Hits, facetObjs, nil
 }
 
-//get bach doc by ids
+//get batch doc by ids
 //field need set as filterable
-//return []interface{}, error
-func (f *Doc) GetBatchDocByIds(
+func (f *Doc) GetBatchDocsByIds(
 	field string,
-	docIds ...string) ([]interface{}, error) {
+	docIds ...string,
+) ([]map[string]interface{}, error) {
 	//check
-	if field == "" || docIds == nil {
+	if docIds == nil || len(docIds) <= 0 {
 		return nil, errors.New("invalid parameter")
 	}
 	if f.index == nil {
 		return nil, errors.New("inter index not init")
 	}
 
+	//setup filter
 	filterBuff := bytes.NewBuffer(nil)
 	i := 0
 	limit := int64(0)
@@ -151,20 +152,20 @@ func (f *Doc) GetBatchDocByIds(
 		limit++
 	}
 
-	//setup search request
-	sq := &meilisearch.SearchRequest{
-		AttributesToSearchOn:[]string{field},
+	//setup doc query
+	dq := &meilisearch.DocumentsQuery{
 		Filter: []string{filterBuff.String()},
-		Limit: limit,
-		HitsPerPage:limit,
+	}
+	resp := &meilisearch.DocumentsResult{
+		Results: []map[string]interface{}{},
 	}
 
-	//query origin doc
-	resp, err := f.index.Search("", sq)
+	//get real doc
+	err := f.index.GetDocuments(dq, resp)
 	if err != nil || resp == nil {
 		return nil, err
 	}
-	return resp.Hits, nil
+	return resp.Results, err
 }
 
 //get one doc by field condition
