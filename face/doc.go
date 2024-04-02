@@ -88,6 +88,9 @@ func (f *Doc) QueryIndexDocs(
 		Page: int64(para.Page),
 		HitsPerPage:int64(para.PageSize),
 	}
+	if para.AttributesToSearch != nil && len(para.AttributesToSearch) > 0 {
+		sq.AttributesToSearchOn = para.AttributesToSearch
+	}
 
 	//query origin doc
 	resp, subErr := f.index.Search(para.Key, sq)
