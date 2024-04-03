@@ -34,6 +34,7 @@ type MyReviewJson struct {
 type TestDoc struct {
 	Id    int64    `json:"id"`
 	Title string   `json:"title"`
+	Property map[string]interface{} `json:"property"`
 	Tags  []string `json:"tags"`
 	BaseJson
 }
@@ -41,6 +42,7 @@ type TestDoc struct {
 //construct
 func NewTestDoc() *TestDoc {
 	this := &TestDoc{
+		Property: map[string]interface{}{},
 		Tags: []string{},
 	}
 	return this

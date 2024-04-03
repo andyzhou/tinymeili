@@ -18,7 +18,7 @@ const (
 	HostTag = "test"
 	Host = "http://127.0.0.1:7700"
 	ApiKey = "test"
-	IndexName = "test_3"
+	IndexName = "test_0"
 )
 
 var (
@@ -41,9 +41,9 @@ func init()  {
 		&conf.IndexConf{
 			IndexName: IndexName,
 			PrimaryKey: "id",
-			FilterableFields: []string{"dataId"},
-			CreateIndex: false,
-			UpdateFields: false,
+			FilterableFields: []string{"tags", "property"},
+			CreateIndex: true,
+			UpdateFields: true,
 		},
 	}
 
@@ -66,13 +66,15 @@ func getIndexObj(indexName string) (*face.Index, error) {
 
 //add new doc
 func addDoc(beginId int64) error {
-	now := time.Now().Unix()
-
 	//init obj
-	obj := NewReviewJson()
+	obj := NewTestDoc()
 	obj.Id = beginId
-	obj.DataId = 1
-	obj.CreateAt = now
+	obj.Tags = []string{"china","beijing"}
+	obj.Property = map[string]interface{}{
+		"sex":1,
+		"age":10,
+		"city":"beijing",
+	}
 
 	//get index obj
 	indexObj, err := getIndexObj(IndexName)
@@ -133,17 +135,30 @@ func queryDoc() ([]interface{}, interface{}, error) {
 	}
 
 	//filter
-	filter := "dataId = 1"
+	filter := "property.age >= 0 AND property.age < 10"
 	//facets := []string{"tags"}
 
 	//setup query para
 	para := &define.QueryPara{
 		Filter: filter,
 		Page: 1,
-		PageSize: 2,
+		PageSize: 10,
 	}
 	_, resp, facetObj, subErr := indexObj.GetDoc().QueryIndexDocs(para)
 	return resp, facetObj, subErr
+}
+
+func addBatchDoc()  {
+	now := time.Now().UnixNano()
+	for i := int64(0); i < 1; i++ {
+		//add new doc
+		beginId := now + i
+		err := addDoc(beginId)
+		if err != nil {
+			log.Printf("add doc failed, err:%v\n", err.Error())
+			return
+		}
+	}
 }
 
 func main() {
@@ -159,16 +174,8 @@ func main() {
 	time.AfterFunc(time.Second * 2, sf)
 	wg.Add(1)
 
-	//now := time.Now().UnixNano()
-	//for i := int64(0); i < 1; i++ {
-	//	//add new doc
-	//	beginId := now + i
-	//	err := addDoc(beginId)
-	//	if err != nil {
-	//		log.Printf("add doc failed, err:%v\n", err.Error())
-	//		return
-	//	}
-	//}
+	////add batch doc
+	//addBatchDoc()
 
 	////del doc
 	//err = delDoc()
@@ -178,11 +185,11 @@ func main() {
 	//}
 
 	//get multi docs
-	getMultiDoc()
+	//getMultiDoc()
 
-	////query doc
-	//resp, facets, err := queryDoc()
-	//log.Printf("query doc, resp:%v, facets:%v, err:%v\n", resp, facets, err)
+	//query doc
+	resp, facets, err := queryDoc()
+	log.Printf("query doc, resp:%v, facets:%v, err:%v\n", resp, facets, err)
 
 	wg.Wait()
 	log.Printf("doc opt succeed\n")

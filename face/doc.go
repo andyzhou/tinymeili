@@ -128,9 +128,9 @@ func (f *Doc) QueryIndexDocs(
 //get batch doc by ids
 //field need set as filterable
 func (f *Doc) GetBatchDocsByIds(
-	field string,
-	docIds ...string,
-) ([]map[string]interface{}, error) {
+		field string,
+		docIds ...string,
+	) ([]map[string]interface{}, error) {
 	//check
 	if docIds == nil || len(docIds) <= 0 {
 		return nil, errors.New("invalid parameter")
