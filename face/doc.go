@@ -128,7 +128,7 @@ func (f *Doc) QueryIndexDocs(
 //get batch doc by ids
 //field need set as filterable
 func (f *Doc) GetBatchDocsByIds(
-		field string,
+		condField string,
 		docIds ...string,
 	) ([]map[string]interface{}, error) {
 	//check
@@ -142,7 +142,6 @@ func (f *Doc) GetBatchDocsByIds(
 	//setup filter
 	filterBuff := bytes.NewBuffer(nil)
 	i := 0
-	limit := int64(0)
 	for _, docId := range docIds {
 		if docId == "" {
 			continue
@@ -150,9 +149,8 @@ func (f *Doc) GetBatchDocsByIds(
 		if i > 0 {
 			filterBuff.WriteString(" OR ")
 		}
-		filterBuff.WriteString(fmt.Sprintf("%v = %v", field, docId))
+		filterBuff.WriteString(fmt.Sprintf("%v = %v", condField, docId))
 		i++
-		limit++
 	}
 
 	//setup doc query
