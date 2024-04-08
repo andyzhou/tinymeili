@@ -8,6 +8,8 @@ import (
 
 /*
  * lib face
+ * @author <AndyZhou>
+ * @mail <diudiu8848@163.com>
  */
 
 //global variable

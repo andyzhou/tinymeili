@@ -11,6 +11,8 @@ import (
 
 /*
  * one node client face
+ * @author <AndyZhou>
+ * @mail <diudiu8848@163.com>
  * - one host, one client
  * - multi indexes for one host
  */

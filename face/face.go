@@ -8,6 +8,8 @@ import (
 
 /*
  * inter face
+ * @author <AndyZhou>
+ * @mail <diudiu8848@163.com>
  * - base on meili search `https://github.com/meilisearch/meilisearch-go`
  */
 
