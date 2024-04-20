@@ -195,7 +195,8 @@ func (f *Doc) GetOneDocByFieldCond(
 
 	//get origin doc
 	resp, subErr := f.index.Search(matchVal, sq)
-	if subErr != nil || resp == nil || resp.Hits == nil {
+	if subErr != nil || resp == nil ||
+		resp.Hits == nil || len(resp.Hits) <= 0 {
 		return subErr
 	}
 
