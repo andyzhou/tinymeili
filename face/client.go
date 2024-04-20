@@ -76,6 +76,25 @@ func (f *Client) CreateIndex(indexConf *conf.IndexConf) error {
 	return nil
 }
 
+//re-create and init index
+func (f *Client) ReCreateIndex(indexName string) error {
+	//check
+	if indexName == "" {
+		return errors.New("invalid parameter")
+	}
+	//get index by name with locker
+	f.Lock()
+	defer f.Unlock()
+	index, ok := f.indexMap[indexName]
+	if !ok || index == nil {
+		return errors.New("no such index")
+	}
+
+	//begin recreate index
+	err := index.ReCreateIndex()
+	return err
+}
+
 ////////////////
 //private func
 ////////////////

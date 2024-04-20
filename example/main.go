@@ -148,6 +148,7 @@ func queryDoc() ([]interface{}, interface{}, error) {
 	return resp, facetObj, subErr
 }
 
+//add batch doc
 func addBatchDoc()  {
 	now := time.Now().UnixNano()
 	for i := int64(0); i < 1; i++ {
@@ -160,6 +161,17 @@ func addBatchDoc()  {
 		}
 	}
 }
+
+//recreate index
+func recreateIndex() error {
+	client, err := mc.GetClient(HostTag)
+	if err != nil {
+		return err
+	}
+	err = client.ReCreateIndex(IndexName)
+	return err
+}
+
 
 func main() {
 	var (
@@ -187,9 +199,13 @@ func main() {
 	//get multi docs
 	//getMultiDoc()
 
-	//query doc
-	resp, facets, err := queryDoc()
-	log.Printf("query doc, resp:%v, facets:%v, err:%v\n", resp, facets, err)
+	////query doc
+	//resp, facets, err := queryDoc()
+	//log.Printf("query doc, resp:%v, facets:%v, err:%v\n", resp, facets, err)
+
+	//recreate index
+	err := recreateIndex()
+	log.Printf("recreate index, resp:%v\n", err)
 
 	wg.Wait()
 	log.Printf("doc opt succeed\n")

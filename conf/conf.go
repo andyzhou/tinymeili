@@ -8,6 +8,7 @@ type (
 		PrimaryKey       string //must value
 		FilterableFields []string
 		SortableFields   []string
+		RemoveIndex 	 bool
 		CreateIndex      bool
 		UpdateFields 	 bool
 	}

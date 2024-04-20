@@ -125,12 +125,42 @@ func (f *Index) UpdatePrimaryKey(key string) error {
 	return nil
 }
 
+//rebuild index
+func (f *Index) ReCreateIndex() error {
+	//remove index first
+	task, err := f.client.DeleteIndex(f.indexConf.IndexName)
+	if err != nil {
+		return err
+	}
+
+	//wait for task
+	finalTask, subErr := f.client.WaitForTask(task.TaskUID)
+	if subErr != nil {
+		return subErr
+	}
+
+	if finalTask.Status != "succeeded" {
+		err = fmt.Errorf("create index failed, err:%v", finalTask.Status)
+		log.Printf("init index %v failed, err:%v\n", f.indexConf.IndexName, err.Error())
+		return err
+	}
+
+	//begin init new index
+	err = f.interInit(true)
+	return err
+}
+
 //inter init
-func (f *Index) interInit() {
+func (f *Index) interInit(onlyReturns ...bool) error {
 	var (
 		index *meilisearch.Index
 		err error
+		onlyReturn bool
 	)
+	if onlyReturns != nil && len(onlyReturns) > 0 {
+		onlyReturn = onlyReturns[0]
+	}
+
 	//init index config
 	indexCfg := &meilisearch.IndexConfig{
 		Uid: f.indexConf.IndexName,
@@ -142,18 +172,30 @@ func (f *Index) interInit() {
 		//create index
 		task, subErr := f.client.CreateIndex(indexCfg)
 		if subErr != nil {
-			panic(any(subErr))
+			if onlyReturn {
+				return subErr
+			}else{
+				panic(any(subErr))
+			}
 		}
 
 		//wait for task
 		finalTask, subErrTwo := f.client.WaitForTask(task.TaskUID)
 		if subErrTwo != nil {
-			panic(any(subErrTwo))
+			if onlyReturn {
+				return subErrTwo
+			}else{
+				panic(any(subErrTwo))
+			}
 		}
 		if finalTask.Status != "succeeded" && finalTask.Error.Code != "index_already_exists" {
 			err = fmt.Errorf("create index failed, err:%v", finalTask.Status)
 			log.Printf("init index %v failed, err:%v\n", f.indexConf.IndexName, err.Error())
-			panic(any(err))
+			if onlyReturn {
+				return err
+			}else{
+				panic(any(err))
+			}
 		}
 		index, _ = f.client.GetIndex(f.indexConf.IndexName)
 	}else{
@@ -174,7 +216,11 @@ func (f *Index) interInit() {
 		if f.indexConf.UpdateFields {
 			err = f.UpdateFilterableAttributes(f.indexConf.FilterableFields)
 			if err != nil {
-				panic(any(err))
+				if onlyReturn {
+					return err
+				}else{
+					panic(any(err))
+				}
 			}
 		}
 	}
@@ -184,11 +230,16 @@ func (f *Index) interInit() {
 		if f.indexConf.UpdateFields {
 			err = f.UpdateSortableFields(f.indexConf.SortableFields)
 			if err != nil {
-				panic(any(err))
+				if onlyReturn {
+					return err
+				}else{
+					panic(any(err))
+				}
 			}
 		}
 	}
 
 	//init doc obj
 	f.doc = NewDoc(f.client, f.index, f.workers)
+	return nil
 }
