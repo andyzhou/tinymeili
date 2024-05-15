@@ -204,8 +204,8 @@ func main() {
 	//log.Printf("query doc, resp:%v, facets:%v, err:%v\n", resp, facets, err)
 
 	//recreate index
-	err := recreateIndex()
-	log.Printf("recreate index, resp:%v\n", err)
+	//err := recreateIndex()
+	//log.Printf("recreate index, resp:%v\n", err)
 
 	wg.Wait()
 	log.Printf("doc opt succeed\n")
