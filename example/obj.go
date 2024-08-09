@@ -32,10 +32,11 @@ type MyReviewJson struct {
 }
 
 type TestDoc struct {
-	Id    int64    `json:"id"`
-	Title string   `json:"title"`
+	Id       int64                  `json:"id"`
+	Poster   int64                  `json:"poster"`
+	Title    string                 `json:"title"`
 	Property map[string]interface{} `json:"property"`
-	Tags  []string `json:"tags"`
+	Tags     []string               `json:"tags"`
 	BaseJson
 }
 

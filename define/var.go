@@ -5,9 +5,10 @@ type (
 	QueryPara struct {
 		Key                string
 		AttributesToSearch []string
-		Filter             interface{}
+		Distinct           string //distinct field
+		Filter             interface{} //filter condition
 		Sort               []string
-		Facets             []string
+		Facets             []string //agg fields
 		Page, PageSize     int
 	}
 )

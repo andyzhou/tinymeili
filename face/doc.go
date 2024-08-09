@@ -90,6 +90,9 @@ func (f *Doc) QueryIndexDocs(
 		Page: int64(para.Page),
 		HitsPerPage:int64(para.PageSize),
 	}
+	if para.Distinct != "" {
+		sq.Distinct = para.Distinct
+	}
 	if para.AttributesToSearch != nil && len(para.AttributesToSearch) > 0 {
 		sq.AttributesToSearchOn = para.AttributesToSearch
 	}

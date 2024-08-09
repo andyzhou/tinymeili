@@ -2,7 +2,7 @@ module github.com/andyzhou/tinymeili
 
 go 1.19
 
-require github.com/meilisearch/meilisearch-go v0.26.3
+require github.com/meilisearch/meilisearch-go v0.27.2
 
 require (
 	github.com/andybalholm/brotli v1.0.4 // indirect

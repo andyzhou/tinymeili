@@ -1,11 +1,13 @@
 package main
 
 import (
+	"errors"
 	"github.com/andyzhou/tinymeili"
 	"github.com/andyzhou/tinymeili/conf"
 	"github.com/andyzhou/tinymeili/define"
 	"github.com/andyzhou/tinymeili/face"
 	"log"
+	"math/rand"
 	"sync"
 	"time"
 )
@@ -41,7 +43,7 @@ func init()  {
 		&conf.IndexConf{
 			IndexName: IndexName,
 			PrimaryKey: "id",
-			FilterableFields: []string{"tags", "property"},
+			FilterableFields: []string{"poster", "tags", "property"},
 			CreateIndex: true,
 			UpdateFields: true,
 		},
@@ -69,6 +71,7 @@ func addDoc(beginId int64) error {
 	//init obj
 	obj := NewTestDoc()
 	obj.Id = beginId
+	obj.Poster = int64(rand.Intn(5) + 1)
 	obj.Tags = []string{"china","beijing"}
 	obj.Property = map[string]interface{}{
 		"sex":1,
@@ -135,12 +138,16 @@ func queryDoc() ([]interface{}, interface{}, error) {
 	}
 
 	//filter
-	filter := "property.age >= 0 AND property.age < 10"
+	//filter := "property.age >= 0 AND property.age < 10"
 	//facets := []string{"tags"}
+
+	//distinct field
+	distinctField := "poster"
 
 	//setup query para
 	para := &define.QueryPara{
-		Filter: filter,
+		//Filter: filter,
+		Distinct: distinctField,
 		Page: 1,
 		PageSize: 10,
 	}
@@ -151,7 +158,7 @@ func queryDoc() ([]interface{}, interface{}, error) {
 //add batch doc
 func addBatchDoc()  {
 	now := time.Now().UnixNano()
-	for i := int64(0); i < 1; i++ {
+	for i := int64(0); i < 20; i++ {
 		//add new doc
 		beginId := now + i
 		err := addDoc(beginId)
@@ -172,6 +179,18 @@ func recreateIndex() error {
 	return err
 }
 
+//create index
+func createIndex(cfg *conf.IndexConf) error {
+	if cfg == nil {
+		return errors.New("invalid parameter")
+	}
+	client, err := mc.GetClient(HostTag)
+	if err != nil {
+		return err
+	}
+	err = client.CreateIndex(cfg)
+	return err
+}
 
 func main() {
 	var (
@@ -186,7 +205,7 @@ func main() {
 	time.AfterFunc(time.Second * 2, sf)
 	wg.Add(1)
 
-	////add batch doc
+	//add batch doc
 	//addBatchDoc()
 
 	////del doc
@@ -199,12 +218,23 @@ func main() {
 	//get multi docs
 	//getMultiDoc()
 
-	////query doc
-	//resp, facets, err := queryDoc()
-	//log.Printf("query doc, resp:%v, facets:%v, err:%v\n", resp, facets, err)
+	//query doc
+	resp, facets, err := queryDoc()
+	log.Printf("query doc, resp:%v, facets:%v, err:%v\n", resp, facets, err)
 
-	//recreate index
-	//err := recreateIndex()
+	////create index
+	//indexCfg := &conf.IndexConf{
+	//	IndexName: IndexName,
+	//	PrimaryKey: "id",
+	//	FilterableFields: []string{
+	//		"poster",
+	//		"property",
+	//		"tags",
+	//	},
+	//	CreateIndex: true,
+	//	UpdateFields: true,
+	//}
+	//err := createIndex(indexCfg)
 	//log.Printf("recreate index, resp:%v\n", err)
 
 	wg.Wait()
