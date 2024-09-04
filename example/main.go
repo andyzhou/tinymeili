@@ -120,13 +120,14 @@ func getMultiDoc() error {
 	}
 
 	//update filterable fields
-	attributeFields := []string{"id", "tags"}
+	attributeFields := []string{"id"}
 	err = indexObj.UpdateFilterableAttributes(attributeFields)
 
 	//del doc by ids
-	docIds := []string{"1711762759189243000", "1711762797676375000"}
-	_, err = indexObj.GetDoc().GetBatchDocsByIds("id", docIds...)
-	return nil
+	docIds := []string{"28", "29"}
+	resp, subErr := indexObj.GetDoc().GetBatchDocsByIds("id", docIds...)
+	log.Printf("resp:%v\n", resp)
+	return subErr
 }
 
 //query doc
@@ -142,12 +143,12 @@ func queryDoc() ([]interface{}, interface{}, error) {
 	//facets := []string{"tags"}
 
 	//distinct field
-	distinctField := "poster"
+	//distinctField := "poster"
 
 	//setup query para
 	para := &define.QueryPara{
 		//Filter: filter,
-		Distinct: distinctField,
+		//Distinct: distinctField,
 		Page: 1,
 		PageSize: 10,
 	}
@@ -216,11 +217,11 @@ func main() {
 	//}
 
 	//get multi docs
-	//getMultiDoc()
+	getMultiDoc()
 
-	//query doc
-	resp, facets, err := queryDoc()
-	log.Printf("query doc, resp:%v, facets:%v, err:%v\n", resp, facets, err)
+	////query doc
+	//resp, facets, err := queryDoc()
+	//log.Printf("query doc, resp:%v, facets:%v, err:%v\n", resp, facets, err)
 
 	////create index
 	//indexCfg := &conf.IndexConf{

@@ -84,6 +84,7 @@ func (f *Doc) QueryIndexDocs(
 	//setup search request
 	sq := &meilisearch.SearchRequest{
 		Query: para.Key,
+		AttributesToSearchOn: para.AttributesToSearch,
 		Filter: para.Filter,
 		Facets: para.Facets,
 		Sort: para.Sort,
