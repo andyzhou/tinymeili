@@ -178,11 +178,10 @@ func (f *Doc) GetBatchDocsByIds(
 //get one doc by field condition
 //sync opt
 func (f *Doc) GetOneDocByFieldCond(
-	matchField, matchVal string,
+	filters interface{},
 	out interface{}) error {
 	//check
-	if matchVal == "" ||
-		matchField == "" || out == nil {
+	if filters == nil || out == nil {
 		return errors.New("invalid parameter")
 	}
 	if f.index == nil {
@@ -191,14 +190,15 @@ func (f *Doc) GetOneDocByFieldCond(
 
 	//setup search request
 	sq := &meilisearch.SearchRequest{
+		Filter: filters,
 		Offset: 0,
 		Limit: 1,
 		HitsPerPage:1,
-		AttributesToSearchOn:[]string{matchField},
+		//AttributesToSearchOn:[]string{matchField},
 	}
 
 	//get origin doc
-	resp, subErr := f.index.Search(matchVal, sq)
+	resp, subErr := f.index.Search("", sq)
 	if subErr != nil || resp == nil ||
 		resp.Hits == nil || len(resp.Hits) <= 0 {
 		return subErr
