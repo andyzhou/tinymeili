@@ -31,9 +31,9 @@ type (
 
 //face info
 type Doc struct {
-	client *meilisearch.Client //reference
-	index *meilisearch.Index //reference
-	worker *lib.Worker
+	client  *meilisearch.Client //reference
+	index   *meilisearch.Index  //reference
+	worker  *lib.Worker
 	workers int
 }
 

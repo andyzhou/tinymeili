@@ -128,7 +128,25 @@ func (f *Index) UpdatePrimaryKey(key string) error {
 //rebuild index
 func (f *Index) ReCreateIndex() error {
 	//remove index first
-	task, err := f.client.DeleteIndex(f.indexConf.IndexName)
+	err := f.DeleteIndex(f.indexConf.IndexName)
+	if err != nil {
+		return err
+	}
+
+	//begin init new index
+	err = f.interInit(true)
+	return err
+}
+
+//delete index
+func (f *Index) DeleteIndex(indexName string) error {
+	//check
+	if indexName == "" {
+		return errors.New("invalid parameter")
+	}
+
+	//remove index first
+	task, err := f.client.DeleteIndex(indexName)
 	if err != nil {
 		return err
 	}
@@ -138,16 +156,12 @@ func (f *Index) ReCreateIndex() error {
 	if subErr != nil {
 		return subErr
 	}
-
 	if finalTask.Status != "succeeded" {
 		err = fmt.Errorf("create index failed, err:%v", finalTask.Status)
 		log.Printf("init index %v failed, err:%v\n", f.indexConf.IndexName, err.Error())
 		return err
 	}
-
-	//begin init new index
-	err = f.interInit(true)
-	return err
+	return nil
 }
 
 //inter init

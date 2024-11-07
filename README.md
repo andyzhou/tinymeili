@@ -8,5 +8,5 @@ search client api for meiLi search, second dev code.
 pls see sub dir of `example`
 
 #3rd depend
-- meilisearch service v1.9.0
+- meilisearch service v1.9.1
 - meilisearch go client v0.27.2
