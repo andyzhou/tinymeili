@@ -22,7 +22,7 @@ import (
 type (
 	SonWorker struct {
 		workerId int32
-		queue *Queue
+		queue    *Queue
 		sync.RWMutex
 	}
 )

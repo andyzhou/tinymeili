@@ -2,11 +2,12 @@ package face
 
 import (
 	"errors"
+	"sync"
+	"time"
+
 	"github.com/andyzhou/tinymeili/conf"
 	"github.com/andyzhou/tinymeili/define"
 	"github.com/meilisearch/meilisearch-go"
-	"sync"
-	"time"
 )
 
 /*

@@ -2,14 +2,15 @@ package main
 
 import (
 	"errors"
-	"github.com/andyzhou/tinymeili"
-	"github.com/andyzhou/tinymeili/conf"
-	"github.com/andyzhou/tinymeili/define"
-	"github.com/andyzhou/tinymeili/face"
 	"log"
 	"math/rand"
 	"sync"
 	"time"
+
+	"github.com/andyzhou/tinymeili"
+	"github.com/andyzhou/tinymeili/conf"
+	"github.com/andyzhou/tinymeili/define"
+	"github.com/andyzhou/tinymeili/face"
 )
 
 /*
@@ -17,9 +18,9 @@ import (
  */
 
 const (
-	HostTag = "test"
-	Host = "http://127.0.0.1:7700"
-	ApiKey = "test"
+	HostTag   = "test"
+	Host      = "http://127.0.0.1:7700"
+	ApiKey    = "test"
 	IndexName = "test2"
 )
 

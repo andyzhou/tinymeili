@@ -17,8 +17,8 @@ import (
 //inter type
 type (
 	interReq struct {
-		req interface{} //origin input request
-		resp chan interface{}
+		req      interface{} //origin input request
+		resp     chan interface{}
 		needResp bool
 	}
 )
@@ -26,9 +26,9 @@ type (
 //face info
 type Queue struct {
 	queueSize int
-	reqChan chan interReq
+	reqChan   chan interReq
 	closeChan chan bool
-	cbForReq func(data interface{}) (interface{}, error)
+	cbForReq  func(data interface{}) (interface{}, error)
 	cbForQuit func()
 	sync.RWMutex
 }

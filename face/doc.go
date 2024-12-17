@@ -5,10 +5,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"strconv"
+
 	"github.com/andyzhou/tinymeili/define"
 	"github.com/andyzhou/tinymeili/lib"
 	"github.com/meilisearch/meilisearch-go"
-	"strconv"
 )
 
 /*

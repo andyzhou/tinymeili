@@ -3,9 +3,10 @@ package face
 import (
 	"errors"
 	"fmt"
+	"log"
+
 	"github.com/andyzhou/tinymeili/conf"
 	"github.com/meilisearch/meilisearch-go"
-	"log"
 )
 
 /*

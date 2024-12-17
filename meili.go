@@ -1,9 +1,10 @@
 package tinymeili
 
 import (
+	"sync"
+
 	"github.com/andyzhou/tinymeili/conf"
 	"github.com/andyzhou/tinymeili/face"
-	"sync"
 )
 
 /*
