@@ -17,11 +17,11 @@ import (
 
 //face info
 type Index struct {
-	client *meilisearch.Client //reference
+	client    *meilisearch.Client //reference
 	indexConf *conf.IndexConf
-	workers int
-	index *meilisearch.Index
-	doc *Doc
+	workers   int
+	index     *meilisearch.Index
+	doc       *Doc
 }
 
 //construct

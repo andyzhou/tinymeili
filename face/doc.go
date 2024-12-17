@@ -21,7 +21,7 @@ import (
 //inter opt
 type (
 	syncDocReq struct {
-		obj interface{}
+		obj      interface{}
 		isUpdate bool
 	}
 	removeDocReq struct {

@@ -20,8 +20,8 @@ import (
 
 //face info
 type Client struct {
-	cfg *conf.ClientConf //reference
-	client *meilisearch.Client
+	cfg      *conf.ClientConf //reference
+	client   *meilisearch.Client
 	indexMap map[string]*Index //tag -> *Index
 	sync.RWMutex
 }
