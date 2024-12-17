@@ -2,6 +2,7 @@ package face
 
 import (
 	"errors"
+	"runtime"
 	"sync"
 	"time"
 
@@ -38,9 +39,16 @@ func NewClient(cfg *conf.ClientConf) *Client {
 
 //quit
 func (f *Client) Quit() {
+	//release index map
+	f.Lock()
+	defer f.Unlock()
 	for _, v := range f.indexMap {
 		v.Quit()
 	}
+
+	//gc opt
+	f.indexMap = map[string]*Index{}
+	runtime.GC()
 }
 
 //get index by name
@@ -83,6 +91,7 @@ func (f *Client) ReCreateIndex(indexName string) error {
 	if indexName == "" {
 		return errors.New("invalid parameter")
 	}
+
 	//get index by name with locker
 	f.Lock()
 	defer f.Unlock()
