@@ -20,7 +20,7 @@ const (
 	HostTag = "test"
 	Host = "http://127.0.0.1:7700"
 	ApiKey = "test"
-	IndexName = "test_0"
+	IndexName = "test2"
 )
 
 var (
@@ -217,26 +217,26 @@ func main() {
 	//}
 
 	//get multi docs
-	getMultiDoc()
+	//getMultiDoc()
 
 	////query doc
 	//resp, facets, err := queryDoc()
 	//log.Printf("query doc, resp:%v, facets:%v, err:%v\n", resp, facets, err)
 
-	////create index
-	//indexCfg := &conf.IndexConf{
-	//	IndexName: IndexName,
-	//	PrimaryKey: "id",
-	//	FilterableFields: []string{
-	//		"poster",
-	//		"property",
-	//		"tags",
-	//	},
-	//	CreateIndex: true,
-	//	UpdateFields: true,
-	//}
-	//err := createIndex(indexCfg)
-	//log.Printf("recreate index, resp:%v\n", err)
+	//create index
+	indexCfg := &conf.IndexConf{
+		IndexName: IndexName,
+		PrimaryKey: "id",
+		FilterableFields: []string{
+			"poster",
+			"property",
+			"tags",
+		},
+		CreateIndex: true,
+		UpdateFields: true,
+	}
+	err := createIndex(indexCfg)
+	log.Printf("recreate index, resp:%v\n", err)
 
 	wg.Wait()
 	log.Printf("doc opt succeed\n")

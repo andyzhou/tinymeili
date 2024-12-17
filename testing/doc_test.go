@@ -2,6 +2,7 @@ package testing
 
 import (
 	"fmt"
+	"github.com/andyzhou/tinymeili/conf"
 	"github.com/andyzhou/tinymeili/define"
 	"math/rand"
 	"testing"
@@ -77,6 +78,28 @@ func TestGetDoc(t *testing.T) {
 	t.Logf("doc:%v, err:%v\n", doc, err)
 }
 
+func TestCreateIndex(t *testing.T)  {
+	//create index
+	indexCfg := &conf.IndexConf{
+		IndexName: IndexName,
+		PrimaryKey: "id",
+		FilterableFields: []string{
+			"poster",
+			"property",
+			"tags",
+		},
+		CreateIndex: true,
+		UpdateFields: true,
+	}
+	client, err := mc.GetClient(HostTag)
+	if err != nil {
+		t.Errorf("get client failed, err:%v\n", err.Error())
+		return
+	}
+	err = client.CreateIndex(indexCfg)
+	t.Logf("create index result, err:%v\n", err)
+}
+
 //benchmark get doc
 func BenchmarkGetDoc(b *testing.B) {
 	var (
@@ -111,6 +134,9 @@ func BenchmarkAddDoc(b *testing.B) {
 		}
 	}
 	b.Logf("benchmark add doc, succeed:%v, failed:%v\n", succeed, failed)
+
+	//quit
+	//mc.Quit()
 }
 
 //benchmark query doc

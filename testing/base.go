@@ -9,7 +9,7 @@ import (
 const (
 	HostTag = "test"
 	Host = "http://127.0.0.1:7700"
-	ApiKey = ""
+	ApiKey = "test"
 	IndexName = "test2"
 	PrimaryKey = "id"
 )
@@ -30,7 +30,7 @@ func init()  {
 	clientCfg.Host = Host
 	clientCfg.ApiKey = ApiKey
 	clientCfg.IndexesConf = []*conf.IndexConf{
-		&conf.IndexConf{
+		{
 			IndexName: IndexName,
 			PrimaryKey: PrimaryKey,
 		},
