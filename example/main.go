@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"log"
 	"math/rand"
 	"sync"
@@ -70,6 +69,7 @@ func getIndexObj(indexName string) (*face.Index, error) {
 
 //add new doc
 func addDoc(beginId int64) error {
+	//setup tags
 	tags := []string{
 		"go",
 		"java",
@@ -80,7 +80,6 @@ func addDoc(beginId int64) error {
 	}
 	randIdx := rand.Intn(len(tags)) + 1
 	randTags := tags[0:randIdx]
-
 	//init obj
 	obj := NewTestDoc()
 	obj.Id = beginId
@@ -91,6 +90,12 @@ func addDoc(beginId int64) error {
 		"age":10,
 		"city":"beijing",
 	}
+
+	////get embed value
+	//vector, _ := GetEmbedding("go")
+	//if len(vector) > 0 {
+	//	obj.Vectors = vector
+	//}
 
 	//get index obj
 	indexObj, err := getIndexObj(IndexName)
@@ -155,8 +160,6 @@ func queryDoc() ([]interface{}, interface{}, error) {
 	//filter := "property.age >= 0 AND property.age < 10"
 	//facets := []string{"tags"}
 
-	filter := fmt.Sprintf("_semanticSimilarity('%s', tags) > 0.3", "go")
-
 	//filter := "_semanticSimilarity('go', tags) > 0.1"
 	//sorter := []string{"_semanticSimilarity('go', tags):desc"}
 
@@ -165,7 +168,7 @@ func queryDoc() ([]interface{}, interface{}, error) {
 
 	//setup query para
 	para := &define.QueryPara{
-		Filter: filter,
+		//Filter: filter,
 		//Distinct: distinctField,
 		//Sort: sorter,
 		Page: 1,
@@ -216,6 +219,7 @@ func createIndex(cfg *conf.IndexConf) error {
 func main() {
 	var (
 		wg sync.WaitGroup
+		err error
 	)
 	sf := func() {
 		//mc.Quit()
@@ -251,6 +255,7 @@ func main() {
 			"poster",
 			"property",
 			"tags",
+			"vectors",
 		},
 		CreateIndex: true,
 		UpdateFields: true,

@@ -42,8 +42,9 @@ func (f *Client) Quit() {
 	//release index map
 	f.Lock()
 	defer f.Unlock()
-	for _, v := range f.indexMap {
+	for k, v := range f.indexMap {
 		v.Quit()
+		delete(f.indexMap, k)
 	}
 
 	//gc opt
@@ -120,7 +121,7 @@ func (f *Client) interInit() {
 		f.cfg.TimeOut = time.Duration(define.DefaultTimeOut) * time.Second
 	}
 
-	////setup client config
+	////setup client config, for old api version
 	//clientCfg := meilisearch.ClientConfig{
 	//	Host: f.cfg.Host,
 	//	APIKey: f.cfg.ApiKey,
