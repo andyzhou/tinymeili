@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/andyzhou/tinymeili/conf"
 	"github.com/meilisearch/meilisearch-go"
@@ -17,16 +18,16 @@ import (
 
 //face info
 type Index struct {
-	client    *meilisearch.Client //reference
 	indexConf *conf.IndexConf
-	index     *meilisearch.Index
+	client    meilisearch.ServiceManager //reference
+	index     meilisearch.IndexManager
 	doc       *Doc
 	workers   int
 }
 
 //construct
 func NewIndex(
-	client *meilisearch.Client,
+	client meilisearch.ServiceManager,
 	indexConf *conf.IndexConf,
 	workers int) *Index {
 	this := &Index{
@@ -66,7 +67,7 @@ func (f *Index) UpdateFilterableAttributes(fields []string) error {
 		return err
 	}
 	//wait for task
-	finalTask, _ := f.client.WaitForTask(task.TaskUID)
+	finalTask, _ := f.client.WaitForTask(task.TaskUID, f.getTimeout())
 	if finalTask.Status != "succeeded" {
 		return fmt.Errorf(finalTask.Error.Code)
 	}
@@ -78,7 +79,7 @@ func (f *Index) UpdateFilterableAttributes(fields []string) error {
 	}
 
 	//wait for task
-	finalTask, _ = f.client.WaitForTask(task.TaskUID)
+	finalTask, _ = f.client.WaitForTask(task.TaskUID, f.getTimeout())
 	if finalTask.Status != "succeeded" {
 		return fmt.Errorf(finalTask.Error.Code)
 	}
@@ -99,7 +100,7 @@ func (f *Index) UpdateSortableFields(fields []string) error {
 	}
 
 	//wait for task
-	finalTask, _ := f.client.WaitForTask(task.TaskUID)
+	finalTask, _ := f.client.WaitForTask(task.TaskUID, f.getTimeout())
 	if finalTask.Status != "succeeded" {
 		return fmt.Errorf(finalTask.Error.Code)
 	}
@@ -119,7 +120,7 @@ func (f *Index) UpdatePrimaryKey(key string) error {
 	}
 
 	//wait for task
-	finalTask, _ := f.client.WaitForTask(task.TaskUID)
+	finalTask, _ := f.client.WaitForTask(task.TaskUID, f.getTimeout())
 	if finalTask.Status != "succeeded" {
 		return fmt.Errorf(finalTask.Error.Code)
 	}
@@ -153,7 +154,7 @@ func (f *Index) DeleteIndex(indexName string) error {
 	}
 
 	//wait for task
-	finalTask, subErr := f.client.WaitForTask(task.TaskUID)
+	finalTask, subErr := f.client.WaitForTask(task.TaskUID, f.getTimeout())
 	if subErr != nil {
 		return subErr
 	}
@@ -165,10 +166,19 @@ func (f *Index) DeleteIndex(indexName string) error {
 	return nil
 }
 
+//get timeout
+func (f *Index) getTimeout() time.Duration {
+	timeout := f.indexConf.Timeout
+	if timeout <= 0 {
+		timeout = time.Second
+	}
+	return timeout
+}
+
 //inter init
 func (f *Index) interInit(onlyReturns ...bool) error {
 	var (
-		index *meilisearch.Index
+		index meilisearch.IndexManager
 		err error
 		onlyReturn bool
 	)
@@ -195,7 +205,7 @@ func (f *Index) interInit(onlyReturns ...bool) error {
 		}
 
 		//wait for task
-		finalTask, subErrTwo := f.client.WaitForTask(task.TaskUID)
+		finalTask, subErrTwo := f.client.WaitForTask(task.TaskUID, f.getTimeout())
 		if subErrTwo != nil {
 			if onlyReturn {
 				return subErrTwo
@@ -218,10 +228,10 @@ func (f *Index) interInit(onlyReturns ...bool) error {
 		index = f.client.Index(f.indexConf.IndexName)
 	}
 
-	if f.indexConf.PrimaryKey != "" {
-		//set index primary key
-		index.PrimaryKey = f.indexConf.PrimaryKey
-	}
+	//if f.indexConf.PrimaryKey != "" {
+	//	//set index primary key
+	//	index.PrimaryKey = f.indexConf.PrimaryKey
+	//}
 
 	//sync index obj
 	f.index = index
@@ -255,6 +265,6 @@ func (f *Index) interInit(onlyReturns ...bool) error {
 	}
 
 	//init doc obj
-	f.doc = NewDoc(f.client, f.index, f.workers)
+	f.doc = NewDoc(f.client, f.index, f.indexConf, f.workers)
 	return nil
 }

@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"log"
 	"math/rand"
 	"sync"
@@ -69,11 +70,22 @@ func getIndexObj(indexName string) (*face.Index, error) {
 
 //add new doc
 func addDoc(beginId int64) error {
+	tags := []string{
+		"go",
+		"java",
+		"编程",
+		"技术",
+		"mysql",
+		"redis",
+	}
+	randIdx := rand.Intn(len(tags)) + 1
+	randTags := tags[0:randIdx]
+
 	//init obj
 	obj := NewTestDoc()
 	obj.Id = beginId
 	obj.Poster = int64(rand.Intn(5) + 1)
-	obj.Tags = []string{"china","beijing"}
+	obj.Tags = randTags
 	obj.Property = map[string]interface{}{
 		"sex":1,
 		"age":10,
@@ -143,13 +155,19 @@ func queryDoc() ([]interface{}, interface{}, error) {
 	//filter := "property.age >= 0 AND property.age < 10"
 	//facets := []string{"tags"}
 
+	filter := fmt.Sprintf("_semanticSimilarity('%s', tags) > 0.3", "go")
+
+	//filter := "_semanticSimilarity('go', tags) > 0.1"
+	//sorter := []string{"_semanticSimilarity('go', tags):desc"}
+
 	//distinct field
 	//distinctField := "poster"
 
 	//setup query para
 	para := &define.QueryPara{
-		//Filter: filter,
+		Filter: filter,
 		//Distinct: distinctField,
+		//Sort: sorter,
 		Page: 1,
 		PageSize: 10,
 	}
@@ -160,7 +178,7 @@ func queryDoc() ([]interface{}, interface{}, error) {
 //add batch doc
 func addBatchDoc()  {
 	now := time.Now().UnixNano()
-	for i := int64(0); i < 20; i++ {
+	for i := int64(0); i < 5; i++ {
 		//add new doc
 		beginId := now + i
 		err := addDoc(beginId)
@@ -183,6 +201,7 @@ func recreateIndex() error {
 
 //create index
 func createIndex(cfg *conf.IndexConf) error {
+	return nil
 	if cfg == nil {
 		return errors.New("invalid parameter")
 	}
@@ -220,9 +239,9 @@ func main() {
 	//get multi docs
 	//getMultiDoc()
 
-	////query doc
-	//resp, facets, err := queryDoc()
-	//log.Printf("query doc, resp:%v, facets:%v, err:%v\n", resp, facets, err)
+	//query doc
+	resp, facets, err := queryDoc()
+	log.Printf("query doc, resp:%v, facets:%v, err:%v\n", resp, facets, err)
 
 	//create index
 	indexCfg := &conf.IndexConf{
@@ -236,7 +255,7 @@ func main() {
 		CreateIndex: true,
 		UpdateFields: true,
 	}
-	err := createIndex(indexCfg)
+	err = createIndex(indexCfg)
 	log.Printf("recreate index, resp:%v\n", err)
 
 	wg.Wait()

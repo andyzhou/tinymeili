@@ -5,7 +5,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/andyzhou/tinymeili/conf"
 	"strconv"
+	"time"
 
 	"github.com/andyzhou/tinymeili/define"
 	"github.com/andyzhou/tinymeili/lib"
@@ -21,8 +23,8 @@ import (
 //inter opt
 type (
 	syncDocReq struct {
-		obj      interface{}
-		isUpdate bool
+		obj        interface{}
+		isUpdate   bool
 	}
 	removeDocReq struct {
 		docIds []string
@@ -32,21 +34,24 @@ type (
 
 //face info
 type Doc struct {
-	client  *meilisearch.Client //reference
-	index   *meilisearch.Index  //reference
-	worker  *lib.Worker
-	workers int
+	client    meilisearch.ServiceManager //reference
+	index     meilisearch.IndexManager   //reference
+	indexConf *conf.IndexConf            //reference
+	worker    *lib.Worker
+	workers   int
 }
 
 //construct
 func NewDoc(
-	client *meilisearch.Client,
-	index *meilisearch.Index,
+	client meilisearch.ServiceManager,
+	index meilisearch.IndexManager,
+	indexConf *conf.IndexConf,
 	workers int) *Doc {
 	this := &Doc{
 		client: client,
 		workers: workers,
 		index: index,
+		indexConf: indexConf,
 		worker: lib.NewWorker(),
 	}
 	this.interInit()
@@ -373,7 +378,7 @@ func (f *Doc) removeDocObj(req *removeDocReq) error {
 	}
 
 	//wait for task status
-	finalTask, subErr := f.client.WaitForTask(resp.TaskUID)
+	finalTask, subErr := f.client.WaitForTask(resp.TaskUID, f.getTimeout())
 	if subErr != nil {
 		return subErr
 	}
@@ -399,9 +404,9 @@ func (f *Doc) syncDocObj(req *syncDocReq) (*meilisearch.TaskInfo, error) {
 
 	//add real doc
 	if req.isUpdate {
-		resp, err = f.index.UpdateDocuments(req.obj, f.index.PrimaryKey)
+		resp, err = f.index.UpdateDocuments(req.obj, f.indexConf.PrimaryKey)
 	}else{
-		resp, err = f.index.AddDocuments(req.obj, f.index.PrimaryKey)
+		resp, err = f.index.AddDocuments(req.obj, f.indexConf.PrimaryKey)
 	}
 	if err != nil {
 		return nil, err
@@ -411,7 +416,7 @@ func (f *Doc) syncDocObj(req *syncDocReq) (*meilisearch.TaskInfo, error) {
 	}
 
 	//wait for task status
-	finalTask, subErr := f.client.WaitForTask(resp.TaskUID)
+	finalTask, subErr := f.client.WaitForTask(resp.TaskUID, f.getTimeout())
 	if subErr != nil {
 		return nil, subErr
 	}
@@ -458,6 +463,15 @@ func (f *Doc) cbForWorkerOpt(input interface{}) (interface{}, error) {
 			return nil, fmt.Errorf("invalid data type `%v`", dataType)
 		}
 	}
+}
+
+//get timeout
+func (f *Doc) getTimeout() time.Duration {
+	timeout := f.indexConf.Timeout
+	if timeout <= 0 {
+		timeout = time.Second
+	}
+	return timeout
 }
 
 //inter init

@@ -22,7 +22,7 @@ import (
 //face info
 type Client struct {
 	cfg      *conf.ClientConf //reference
-	client   *meilisearch.Client
+	client   meilisearch.ServiceManager
 	indexMap map[string]*Index //tag -> *Index
 	sync.RWMutex
 }
@@ -70,7 +70,8 @@ func (f *Client) GetIndex(indexName string) (*Index, error) {
 //create and init index
 func (f *Client) CreateIndex(indexConf *conf.IndexConf) error {
 	//check
-	if indexConf == nil || indexConf.IndexName == "" ||
+	if indexConf == nil ||
+		indexConf.IndexName == "" ||
 		indexConf.PrimaryKey == "" {
 		return errors.New("invalid parameter")
 	}
@@ -119,15 +120,17 @@ func (f *Client) interInit() {
 		f.cfg.TimeOut = time.Duration(define.DefaultTimeOut) * time.Second
 	}
 
-	//setup client config
-	clientCfg := meilisearch.ClientConfig{
-		Host: f.cfg.Host,
-		APIKey: f.cfg.ApiKey,
-		Timeout: f.cfg.TimeOut,
-	}
+	////setup client config
+	//clientCfg := meilisearch.ClientConfig{
+	//	Host: f.cfg.Host,
+	//	APIKey: f.cfg.ApiKey,
+	//	Timeout: f.cfg.TimeOut,
+	//}
+	//
+	//client := meilisearch.New(f.cfg.Host, meilisearch.WithAPIKey(f.cfg.ApiKey))
 
 	//init search client
-	f.client = meilisearch.NewClient(clientCfg)
+	f.client = meilisearch.New(f.cfg.Host, meilisearch.WithAPIKey(f.cfg.ApiKey))
 
 	//init indexes
 	if f.cfg.IndexesConf != nil {

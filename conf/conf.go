@@ -11,6 +11,7 @@ type (
 		RemoveIndex 	 bool
 		CreateIndex      bool
 		UpdateFields 	 bool
+		Timeout 		 time.Duration
 	}
 	ClientConf struct {
 		Tag         string

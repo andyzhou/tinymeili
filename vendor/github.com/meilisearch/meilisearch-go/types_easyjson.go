@@ -164,7 +164,137 @@ func (v *UpdateIndexRequest) UnmarshalJSON(data []byte) error {
 func (v *UpdateIndexRequest) UnmarshalEasyJSON(l *jlexer.Lexer) {
 	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo1(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo2(in *jlexer.Lexer, out *TypoTolerance) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo2(in *jlexer.Lexer, out *UpdateDocumentByFunctionRequest) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "filter":
+			out.Filter = string(in.String())
+		case "function":
+			out.Function = string(in.String())
+		case "context":
+			if in.IsNull() {
+				in.Skip()
+			} else {
+				in.Delim('{')
+				if !in.IsDelim('}') {
+					out.Context = make(map[string]interface{})
+				} else {
+					out.Context = nil
+				}
+				for !in.IsDelim('}') {
+					key := string(in.String())
+					in.WantColon()
+					var v1 interface{}
+					if m, ok := v1.(easyjson.Unmarshaler); ok {
+						m.UnmarshalEasyJSON(in)
+					} else if m, ok := v1.(json.Unmarshaler); ok {
+						_ = m.UnmarshalJSON(in.Raw())
+					} else {
+						v1 = in.Interface()
+					}
+					(out.Context)[key] = v1
+					in.WantComma()
+				}
+				in.Delim('}')
+			}
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo2(out *jwriter.Writer, in UpdateDocumentByFunctionRequest) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	if in.Filter != "" {
+		const prefix string = ",\"filter\":"
+		first = false
+		out.RawString(prefix[1:])
+		out.String(string(in.Filter))
+	}
+	{
+		const prefix string = ",\"function\":"
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
+		out.String(string(in.Function))
+	}
+	if len(in.Context) != 0 {
+		const prefix string = ",\"context\":"
+		out.RawString(prefix)
+		{
+			out.RawByte('{')
+			v2First := true
+			for v2Name, v2Value := range in.Context {
+				if v2First {
+					v2First = false
+				} else {
+					out.RawByte(',')
+				}
+				out.String(string(v2Name))
+				out.RawByte(':')
+				if m, ok := v2Value.(easyjson.Marshaler); ok {
+					m.MarshalEasyJSON(out)
+				} else if m, ok := v2Value.(json.Marshaler); ok {
+					out.Raw(m.MarshalJSON())
+				} else {
+					out.Raw(json.Marshal(v2Value))
+				}
+			}
+			out.RawByte('}')
+		}
+	}
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v UpdateDocumentByFunctionRequest) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo2(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v UpdateDocumentByFunctionRequest) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo2(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *UpdateDocumentByFunctionRequest) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo2(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *UpdateDocumentByFunctionRequest) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo2(l, v)
+}
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo3(in *jlexer.Lexer, out *TypoTolerance) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -203,9 +333,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo2(in *jlexer.Lexer, 
 					out.DisableOnWords = (out.DisableOnWords)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v1 string
-					v1 = string(in.String())
-					out.DisableOnWords = append(out.DisableOnWords, v1)
+					var v3 string
+					v3 = string(in.String())
+					out.DisableOnWords = append(out.DisableOnWords, v3)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -226,9 +356,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo2(in *jlexer.Lexer, 
 					out.DisableOnAttributes = (out.DisableOnAttributes)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v2 string
-					v2 = string(in.String())
-					out.DisableOnAttributes = append(out.DisableOnAttributes, v2)
+					var v4 string
+					v4 = string(in.String())
+					out.DisableOnAttributes = append(out.DisableOnAttributes, v4)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -243,7 +373,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo2(in *jlexer.Lexer, 
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo2(out *jwriter.Writer, in TypoTolerance) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo3(out *jwriter.Writer, in TypoTolerance) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -262,11 +392,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo2(out *jwriter.Write
 		out.RawString(prefix)
 		{
 			out.RawByte('[')
-			for v3, v4 := range in.DisableOnWords {
-				if v3 > 0 {
+			for v5, v6 := range in.DisableOnWords {
+				if v5 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v4))
+				out.String(string(v6))
 			}
 			out.RawByte(']')
 		}
@@ -276,11 +406,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo2(out *jwriter.Write
 		out.RawString(prefix)
 		{
 			out.RawByte('[')
-			for v5, v6 := range in.DisableOnAttributes {
-				if v5 > 0 {
+			for v7, v8 := range in.DisableOnAttributes {
+				if v7 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v6))
+				out.String(string(v8))
 			}
 			out.RawByte(']')
 		}
@@ -291,27 +421,27 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo2(out *jwriter.Write
 // MarshalJSON supports json.Marshaler interface
 func (v TypoTolerance) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo2(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo3(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v TypoTolerance) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo2(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo3(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *TypoTolerance) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo2(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo3(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *TypoTolerance) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo2(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo3(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo3(in *jlexer.Lexer, out *TenantTokenOptions) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo4(in *jlexer.Lexer, out *TenantTokenOptions) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -346,7 +476,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo3(in *jlexer.Lexer, 
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo3(out *jwriter.Writer, in TenantTokenOptions) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo4(out *jwriter.Writer, in TenantTokenOptions) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -366,27 +496,27 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo3(out *jwriter.Write
 // MarshalJSON supports json.Marshaler interface
 func (v TenantTokenOptions) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo3(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo4(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v TenantTokenOptions) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo3(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo4(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *TenantTokenOptions) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo3(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo4(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *TenantTokenOptions) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo3(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo4(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo4(in *jlexer.Lexer, out *TenantTokenClaims) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo5(in *jlexer.Lexer, out *TenantTokenClaims) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -471,7 +601,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo4(in *jlexer.Lexer, 
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo4(out *jwriter.Writer, in TenantTokenClaims) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo5(out *jwriter.Writer, in TenantTokenClaims) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -532,27 +662,27 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo4(out *jwriter.Write
 // MarshalJSON supports json.Marshaler interface
 func (v TenantTokenClaims) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo4(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo5(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v TenantTokenClaims) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo4(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo5(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *TenantTokenClaims) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo4(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo5(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *TenantTokenClaims) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo4(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo5(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo5(in *jlexer.Lexer, out *TasksQuery) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo6(in *jlexer.Lexer, out *TasksQuery) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -587,9 +717,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo5(in *jlexer.Lexer, 
 					out.UIDS = (out.UIDS)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v7 int64
-					v7 = int64(in.Int64())
-					out.UIDS = append(out.UIDS, v7)
+					var v9 int64
+					v9 = int64(in.Int64())
+					out.UIDS = append(out.UIDS, v9)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -614,9 +744,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo5(in *jlexer.Lexer, 
 					out.IndexUIDS = (out.IndexUIDS)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v8 string
-					v8 = string(in.String())
-					out.IndexUIDS = append(out.IndexUIDS, v8)
+					var v10 string
+					v10 = string(in.String())
+					out.IndexUIDS = append(out.IndexUIDS, v10)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -637,9 +767,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo5(in *jlexer.Lexer, 
 					out.Statuses = (out.Statuses)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v9 TaskStatus
-					v9 = TaskStatus(in.String())
-					out.Statuses = append(out.Statuses, v9)
+					var v11 TaskStatus
+					v11 = TaskStatus(in.String())
+					out.Statuses = append(out.Statuses, v11)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -660,9 +790,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo5(in *jlexer.Lexer, 
 					out.Types = (out.Types)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v10 TaskType
-					v10 = TaskType(in.String())
-					out.Types = append(out.Types, v10)
+					var v12 TaskType
+					v12 = TaskType(in.String())
+					out.Types = append(out.Types, v12)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -683,9 +813,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo5(in *jlexer.Lexer, 
 					out.CanceledBy = (out.CanceledBy)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v11 int64
-					v11 = int64(in.Int64())
-					out.CanceledBy = append(out.CanceledBy, v11)
+					var v13 int64
+					v13 = int64(in.Int64())
+					out.CanceledBy = append(out.CanceledBy, v13)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -714,6 +844,8 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo5(in *jlexer.Lexer, 
 			if data := in.Raw(); in.Ok() {
 				in.AddError((out.AfterFinishedAt).UnmarshalJSON(data))
 			}
+		case "Reverse":
+			out.Reverse = bool(in.Bool())
 		default:
 			in.SkipRecursive()
 		}
@@ -724,7 +856,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo5(in *jlexer.Lexer, 
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo5(out *jwriter.Writer, in TasksQuery) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo6(out *jwriter.Writer, in TasksQuery) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -735,11 +867,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo5(out *jwriter.Write
 			out.RawString("null")
 		} else {
 			out.RawByte('[')
-			for v12, v13 := range in.UIDS {
-				if v12 > 0 {
+			for v14, v15 := range in.UIDS {
+				if v14 > 0 {
 					out.RawByte(',')
 				}
-				out.Int64(int64(v13))
+				out.Int64(int64(v15))
 			}
 			out.RawByte(']')
 		}
@@ -761,11 +893,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo5(out *jwriter.Write
 			out.RawString("null")
 		} else {
 			out.RawByte('[')
-			for v14, v15 := range in.IndexUIDS {
-				if v14 > 0 {
+			for v16, v17 := range in.IndexUIDS {
+				if v16 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v15))
+				out.String(string(v17))
 			}
 			out.RawByte(']')
 		}
@@ -777,11 +909,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo5(out *jwriter.Write
 			out.RawString("null")
 		} else {
 			out.RawByte('[')
-			for v16, v17 := range in.Statuses {
-				if v16 > 0 {
+			for v18, v19 := range in.Statuses {
+				if v18 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v17))
+				out.String(string(v19))
 			}
 			out.RawByte(']')
 		}
@@ -793,11 +925,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo5(out *jwriter.Write
 			out.RawString("null")
 		} else {
 			out.RawByte('[')
-			for v18, v19 := range in.Types {
-				if v18 > 0 {
+			for v20, v21 := range in.Types {
+				if v20 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v19))
+				out.String(string(v21))
 			}
 			out.RawByte(']')
 		}
@@ -809,11 +941,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo5(out *jwriter.Write
 			out.RawString("null")
 		} else {
 			out.RawByte('[')
-			for v20, v21 := range in.CanceledBy {
-				if v20 > 0 {
+			for v22, v23 := range in.CanceledBy {
+				if v22 > 0 {
 					out.RawByte(',')
 				}
-				out.Int64(int64(v21))
+				out.Int64(int64(v23))
 			}
 			out.RawByte(']')
 		}
@@ -848,33 +980,38 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo5(out *jwriter.Write
 		out.RawString(prefix)
 		out.Raw((in.AfterFinishedAt).MarshalJSON())
 	}
+	{
+		const prefix string = ",\"Reverse\":"
+		out.RawString(prefix)
+		out.Bool(bool(in.Reverse))
+	}
 	out.RawByte('}')
 }
 
 // MarshalJSON supports json.Marshaler interface
 func (v TasksQuery) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo5(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo6(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v TasksQuery) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo5(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo6(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *TasksQuery) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo5(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo6(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *TasksQuery) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo5(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo6(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo6(in *jlexer.Lexer, out *TaskResult) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo7(in *jlexer.Lexer, out *TaskResult) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -909,9 +1046,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo6(in *jlexer.Lexer, 
 					out.Results = (out.Results)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v22 Task
-					(v22).UnmarshalEasyJSON(in)
-					out.Results = append(out.Results, v22)
+					var v24 Task
+					(v24).UnmarshalEasyJSON(in)
+					out.Results = append(out.Results, v24)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -934,7 +1071,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo6(in *jlexer.Lexer, 
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo6(out *jwriter.Writer, in TaskResult) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo7(out *jwriter.Writer, in TaskResult) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -945,11 +1082,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo6(out *jwriter.Write
 			out.RawString("null")
 		} else {
 			out.RawByte('[')
-			for v23, v24 := range in.Results {
-				if v23 > 0 {
+			for v25, v26 := range in.Results {
+				if v25 > 0 {
 					out.RawByte(',')
 				}
-				(v24).MarshalEasyJSON(out)
+				(v26).MarshalEasyJSON(out)
 			}
 			out.RawByte(']')
 		}
@@ -980,27 +1117,27 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo6(out *jwriter.Write
 // MarshalJSON supports json.Marshaler interface
 func (v TaskResult) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo6(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo7(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v TaskResult) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo6(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo7(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *TaskResult) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo6(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo7(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *TaskResult) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo6(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo7(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo7(in *jlexer.Lexer, out *TaskInfo) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo8(in *jlexer.Lexer, out *TaskInfo) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -1041,7 +1178,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo7(in *jlexer.Lexer, 
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo7(out *jwriter.Writer, in TaskInfo) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo8(out *jwriter.Writer, in TaskInfo) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -1076,27 +1213,27 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo7(out *jwriter.Write
 // MarshalJSON supports json.Marshaler interface
 func (v TaskInfo) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo7(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo8(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v TaskInfo) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo7(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo8(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *TaskInfo) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo7(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo8(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *TaskInfo) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo7(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo8(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo8(in *jlexer.Lexer, out *Task) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo9(in *jlexer.Lexer, out *Task) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -1126,7 +1263,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo8(in *jlexer.Lexer, 
 		case "type":
 			out.Type = TaskType(in.String())
 		case "error":
-			easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo9(in, &out.Error)
+			easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo10(in, &out.Error)
 		case "duration":
 			out.Duration = string(in.String())
 		case "enqueuedAt":
@@ -1155,7 +1292,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo8(in *jlexer.Lexer, 
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo8(out *jwriter.Writer, in Task) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo9(out *jwriter.Writer, in Task) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -1187,7 +1324,7 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo8(out *jwriter.Write
 	if true {
 		const prefix string = ",\"error\":"
 		out.RawString(prefix)
-		easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo9(out, in.Error)
+		easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo10(out, in.Error)
 	}
 	if in.Duration != "" {
 		const prefix string = ",\"duration\":"
@@ -1225,27 +1362,27 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo8(out *jwriter.Write
 // MarshalJSON supports json.Marshaler interface
 func (v Task) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo8(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo9(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v Task) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo8(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo9(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *Task) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo8(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo9(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *Task) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo8(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo9(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo9(in *jlexer.Lexer, out *meilisearchApiError) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo10(in *jlexer.Lexer, out *meilisearchApiError) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -1282,7 +1419,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo9(in *jlexer.Lexer, 
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo9(out *jwriter.Writer, in meilisearchApiError) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo10(out *jwriter.Writer, in meilisearchApiError) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -1308,7 +1445,7 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo9(out *jwriter.Write
 	}
 	out.RawByte('}')
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo10(in *jlexer.Lexer, out *SwapIndexesParams) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo11(in *jlexer.Lexer, out *SwapIndexesParams) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -1343,9 +1480,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo10(in *jlexer.Lexer,
 					out.Indexes = (out.Indexes)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v25 string
-					v25 = string(in.String())
-					out.Indexes = append(out.Indexes, v25)
+					var v27 string
+					v27 = string(in.String())
+					out.Indexes = append(out.Indexes, v27)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -1360,7 +1497,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo10(in *jlexer.Lexer,
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo10(out *jwriter.Writer, in SwapIndexesParams) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo11(out *jwriter.Writer, in SwapIndexesParams) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -1371,11 +1508,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo10(out *jwriter.Writ
 			out.RawString("null")
 		} else {
 			out.RawByte('[')
-			for v26, v27 := range in.Indexes {
-				if v26 > 0 {
+			for v28, v29 := range in.Indexes {
+				if v28 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v27))
+				out.String(string(v29))
 			}
 			out.RawByte(']')
 		}
@@ -1386,27 +1523,27 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo10(out *jwriter.Writ
 // MarshalJSON supports json.Marshaler interface
 func (v SwapIndexesParams) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo10(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo11(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v SwapIndexesParams) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo10(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo11(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *SwapIndexesParams) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo10(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo11(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *SwapIndexesParams) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo10(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo11(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo11(in *jlexer.Lexer, out *StatsIndex) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo12(in *jlexer.Lexer, out *StatsIndex) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -1438,13 +1575,21 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo11(in *jlexer.Lexer,
 				for !in.IsDelim('}') {
 					key := string(in.String())
 					in.WantColon()
-					var v28 int64
-					v28 = int64(in.Int64())
-					(out.FieldDistribution)[key] = v28
+					var v30 int64
+					v30 = int64(in.Int64())
+					(out.FieldDistribution)[key] = v30
 					in.WantComma()
 				}
 				in.Delim('}')
 			}
+		case "rawDocumentDbSize":
+			out.RawDocumentDbSize = int64(in.Int64())
+		case "avgDocumentSize":
+			out.AvgDocumentSize = int64(in.Int64())
+		case "numberOfEmbeddedDocuments":
+			out.NumberOfEmbeddedDocuments = int64(in.Int64())
+		case "numberOfEmbeddings":
+			out.NumberOfEmbeddings = int64(in.Int64())
 		default:
 			in.SkipRecursive()
 		}
@@ -1455,7 +1600,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo11(in *jlexer.Lexer,
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo11(out *jwriter.Writer, in StatsIndex) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo12(out *jwriter.Writer, in StatsIndex) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -1476,19 +1621,39 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo11(out *jwriter.Writ
 			out.RawString(`null`)
 		} else {
 			out.RawByte('{')
-			v29First := true
-			for v29Name, v29Value := range in.FieldDistribution {
-				if v29First {
-					v29First = false
+			v31First := true
+			for v31Name, v31Value := range in.FieldDistribution {
+				if v31First {
+					v31First = false
 				} else {
 					out.RawByte(',')
 				}
-				out.String(string(v29Name))
+				out.String(string(v31Name))
 				out.RawByte(':')
-				out.Int64(int64(v29Value))
+				out.Int64(int64(v31Value))
 			}
 			out.RawByte('}')
 		}
+	}
+	{
+		const prefix string = ",\"rawDocumentDbSize\":"
+		out.RawString(prefix)
+		out.Int64(int64(in.RawDocumentDbSize))
+	}
+	{
+		const prefix string = ",\"avgDocumentSize\":"
+		out.RawString(prefix)
+		out.Int64(int64(in.AvgDocumentSize))
+	}
+	{
+		const prefix string = ",\"numberOfEmbeddedDocuments\":"
+		out.RawString(prefix)
+		out.Int64(int64(in.NumberOfEmbeddedDocuments))
+	}
+	{
+		const prefix string = ",\"numberOfEmbeddings\":"
+		out.RawString(prefix)
+		out.Int64(int64(in.NumberOfEmbeddings))
 	}
 	out.RawByte('}')
 }
@@ -1496,27 +1661,27 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo11(out *jwriter.Writ
 // MarshalJSON supports json.Marshaler interface
 func (v StatsIndex) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo11(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo12(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v StatsIndex) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo11(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo12(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *StatsIndex) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo11(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo12(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *StatsIndex) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo11(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo12(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo12(in *jlexer.Lexer, out *Stats) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo13(in *jlexer.Lexer, out *Stats) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -1537,6 +1702,8 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo12(in *jlexer.Lexer,
 		switch key {
 		case "databaseSize":
 			out.DatabaseSize = int64(in.Int64())
+		case "usedDatabaseSize":
+			out.UsedDatabaseSize = int64(in.Int64())
 		case "lastUpdate":
 			if data := in.Raw(); in.Ok() {
 				in.AddError((out.LastUpdate).UnmarshalJSON(data))
@@ -1550,9 +1717,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo12(in *jlexer.Lexer,
 				for !in.IsDelim('}') {
 					key := string(in.String())
 					in.WantColon()
-					var v30 StatsIndex
-					(v30).UnmarshalEasyJSON(in)
-					(out.Indexes)[key] = v30
+					var v32 StatsIndex
+					(v32).UnmarshalEasyJSON(in)
+					(out.Indexes)[key] = v32
 					in.WantComma()
 				}
 				in.Delim('}')
@@ -1567,7 +1734,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo12(in *jlexer.Lexer,
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo12(out *jwriter.Writer, in Stats) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo13(out *jwriter.Writer, in Stats) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -1575,6 +1742,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo12(out *jwriter.Writ
 		const prefix string = ",\"databaseSize\":"
 		out.RawString(prefix[1:])
 		out.Int64(int64(in.DatabaseSize))
+	}
+	{
+		const prefix string = ",\"usedDatabaseSize\":"
+		out.RawString(prefix)
+		out.Int64(int64(in.UsedDatabaseSize))
 	}
 	{
 		const prefix string = ",\"lastUpdate\":"
@@ -1588,16 +1760,16 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo12(out *jwriter.Writ
 			out.RawString(`null`)
 		} else {
 			out.RawByte('{')
-			v31First := true
-			for v31Name, v31Value := range in.Indexes {
-				if v31First {
-					v31First = false
+			v33First := true
+			for v33Name, v33Value := range in.Indexes {
+				if v33First {
+					v33First = false
 				} else {
 					out.RawByte(',')
 				}
-				out.String(string(v31Name))
+				out.String(string(v33Name))
 				out.RawByte(':')
-				(v31Value).MarshalEasyJSON(out)
+				(v33Value).MarshalEasyJSON(out)
 			}
 			out.RawByte('}')
 		}
@@ -1608,27 +1780,27 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo12(out *jwriter.Writ
 // MarshalJSON supports json.Marshaler interface
 func (v Stats) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo12(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo13(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v Stats) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo12(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo13(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *Stats) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo12(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo13(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *Stats) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo12(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo13(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo13(in *jlexer.Lexer, out *SimilarDocumentResult) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo14(in *jlexer.Lexer, out *SimilarDocumentResult) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -1663,15 +1835,15 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo13(in *jlexer.Lexer,
 					out.Hits = (out.Hits)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v32 interface{}
-					if m, ok := v32.(easyjson.Unmarshaler); ok {
+					var v34 interface{}
+					if m, ok := v34.(easyjson.Unmarshaler); ok {
 						m.UnmarshalEasyJSON(in)
-					} else if m, ok := v32.(json.Unmarshaler); ok {
+					} else if m, ok := v34.(json.Unmarshaler); ok {
 						_ = m.UnmarshalJSON(in.Raw())
 					} else {
-						v32 = in.Interface()
+						v34 = in.Interface()
 					}
-					out.Hits = append(out.Hits, v32)
+					out.Hits = append(out.Hits, v34)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -1696,7 +1868,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo13(in *jlexer.Lexer,
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo13(out *jwriter.Writer, in SimilarDocumentResult) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo14(out *jwriter.Writer, in SimilarDocumentResult) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -1706,16 +1878,16 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo13(out *jwriter.Writ
 		out.RawString(prefix[1:])
 		{
 			out.RawByte('[')
-			for v33, v34 := range in.Hits {
-				if v33 > 0 {
+			for v35, v36 := range in.Hits {
+				if v35 > 0 {
 					out.RawByte(',')
 				}
-				if m, ok := v34.(easyjson.Marshaler); ok {
+				if m, ok := v36.(easyjson.Marshaler); ok {
 					m.MarshalEasyJSON(out)
-				} else if m, ok := v34.(json.Marshaler); ok {
+				} else if m, ok := v36.(json.Marshaler); ok {
 					out.Raw(m.MarshalJSON())
 				} else {
-					out.Raw(json.Marshal(v34))
+					out.Raw(json.Marshal(v36))
 				}
 			}
 			out.RawByte(']')
@@ -1777,27 +1949,27 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo13(out *jwriter.Writ
 // MarshalJSON supports json.Marshaler interface
 func (v SimilarDocumentResult) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo13(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo14(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v SimilarDocumentResult) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo13(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo14(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *SimilarDocumentResult) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo13(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo14(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *SimilarDocumentResult) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo13(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo14(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo14(in *jlexer.Lexer, out *SimilarDocumentQuery) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo15(in *jlexer.Lexer, out *SimilarDocumentQuery) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -1842,9 +2014,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo14(in *jlexer.Lexer,
 					out.AttributesToRetrieve = (out.AttributesToRetrieve)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v35 string
-					v35 = string(in.String())
-					out.AttributesToRetrieve = append(out.AttributesToRetrieve, v35)
+					var v37 string
+					v37 = string(in.String())
+					out.AttributesToRetrieve = append(out.AttributesToRetrieve, v37)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -1873,7 +2045,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo14(in *jlexer.Lexer,
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo14(out *jwriter.Writer, in SimilarDocumentQuery) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo15(out *jwriter.Writer, in SimilarDocumentQuery) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -1889,7 +2061,7 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo14(out *jwriter.Writ
 			out.Raw(json.Marshal(in.Id))
 		}
 	}
-	if in.Embedder != "" {
+	{
 		const prefix string = ",\"embedder\":"
 		if first {
 			first = false
@@ -1901,91 +2073,51 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo14(out *jwriter.Writ
 	}
 	if len(in.AttributesToRetrieve) != 0 {
 		const prefix string = ",\"attributesToRetrieve\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
+		out.RawString(prefix)
 		{
 			out.RawByte('[')
-			for v36, v37 := range in.AttributesToRetrieve {
-				if v36 > 0 {
+			for v38, v39 := range in.AttributesToRetrieve {
+				if v38 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v37))
+				out.String(string(v39))
 			}
 			out.RawByte(']')
 		}
 	}
 	if in.Offset != 0 {
 		const prefix string = ",\"offset\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
+		out.RawString(prefix)
 		out.Int64(int64(in.Offset))
 	}
 	if in.Limit != 0 {
 		const prefix string = ",\"limit\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
+		out.RawString(prefix)
 		out.Int64(int64(in.Limit))
 	}
 	if in.Filter != "" {
 		const prefix string = ",\"filter\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
+		out.RawString(prefix)
 		out.String(string(in.Filter))
 	}
 	if in.ShowRankingScore {
 		const prefix string = ",\"showRankingScore\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
+		out.RawString(prefix)
 		out.Bool(bool(in.ShowRankingScore))
 	}
 	if in.ShowRankingScoreDetails {
 		const prefix string = ",\"showRankingScoreDetails\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
+		out.RawString(prefix)
 		out.Bool(bool(in.ShowRankingScoreDetails))
 	}
 	if in.RankingScoreThreshold != 0 {
 		const prefix string = ",\"rankingScoreThreshold\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
+		out.RawString(prefix)
 		out.Float64(float64(in.RankingScoreThreshold))
 	}
 	if in.RetrieveVectors {
 		const prefix string = ",\"retrieveVectors\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
+		out.RawString(prefix)
 		out.Bool(bool(in.RetrieveVectors))
 	}
 	out.RawByte('}')
@@ -1994,27 +2126,27 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo14(out *jwriter.Writ
 // MarshalJSON supports json.Marshaler interface
 func (v SimilarDocumentQuery) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo14(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo15(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v SimilarDocumentQuery) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo14(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo15(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *SimilarDocumentQuery) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo14(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo15(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *SimilarDocumentQuery) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo14(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo15(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo15(in *jlexer.Lexer, out *Settings) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo16(in *jlexer.Lexer, out *Settings) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -2049,9 +2181,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo15(in *jlexer.Lexer,
 					out.RankingRules = (out.RankingRules)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v38 string
-					v38 = string(in.String())
-					out.RankingRules = append(out.RankingRules, v38)
+					var v40 string
+					v40 = string(in.String())
+					out.RankingRules = append(out.RankingRules, v40)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -2082,15 +2214,86 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo15(in *jlexer.Lexer,
 					out.SearchableAttributes = (out.SearchableAttributes)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v39 string
-					v39 = string(in.String())
-					out.SearchableAttributes = append(out.SearchableAttributes, v39)
+					var v41 string
+					v41 = string(in.String())
+					out.SearchableAttributes = append(out.SearchableAttributes, v41)
+					in.WantComma()
+				}
+				in.Delim(']')
+			}
+		case "dictionary":
+			if in.IsNull() {
+				in.Skip()
+				out.Dictionary = nil
+			} else {
+				in.Delim('[')
+				if out.Dictionary == nil {
+					if !in.IsDelim(']') {
+						out.Dictionary = make([]string, 0, 4)
+					} else {
+						out.Dictionary = []string{}
+					}
+				} else {
+					out.Dictionary = (out.Dictionary)[:0]
+				}
+				for !in.IsDelim(']') {
+					var v42 string
+					v42 = string(in.String())
+					out.Dictionary = append(out.Dictionary, v42)
 					in.WantComma()
 				}
 				in.Delim(']')
 			}
 		case "searchCutoffMs":
 			out.SearchCutoffMs = int64(in.Int64())
+		case "proximityPrecision":
+			out.ProximityPrecision = ProximityPrecisionType(in.String())
+		case "separatorTokens":
+			if in.IsNull() {
+				in.Skip()
+				out.SeparatorTokens = nil
+			} else {
+				in.Delim('[')
+				if out.SeparatorTokens == nil {
+					if !in.IsDelim(']') {
+						out.SeparatorTokens = make([]string, 0, 4)
+					} else {
+						out.SeparatorTokens = []string{}
+					}
+				} else {
+					out.SeparatorTokens = (out.SeparatorTokens)[:0]
+				}
+				for !in.IsDelim(']') {
+					var v43 string
+					v43 = string(in.String())
+					out.SeparatorTokens = append(out.SeparatorTokens, v43)
+					in.WantComma()
+				}
+				in.Delim(']')
+			}
+		case "nonSeparatorTokens":
+			if in.IsNull() {
+				in.Skip()
+				out.NonSeparatorTokens = nil
+			} else {
+				in.Delim('[')
+				if out.NonSeparatorTokens == nil {
+					if !in.IsDelim(']') {
+						out.NonSeparatorTokens = make([]string, 0, 4)
+					} else {
+						out.NonSeparatorTokens = []string{}
+					}
+				} else {
+					out.NonSeparatorTokens = (out.NonSeparatorTokens)[:0]
+				}
+				for !in.IsDelim(']') {
+					var v44 string
+					v44 = string(in.String())
+					out.NonSeparatorTokens = append(out.NonSeparatorTokens, v44)
+					in.WantComma()
+				}
+				in.Delim(']')
+			}
 		case "displayedAttributes":
 			if in.IsNull() {
 				in.Skip()
@@ -2107,9 +2310,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo15(in *jlexer.Lexer,
 					out.DisplayedAttributes = (out.DisplayedAttributes)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v40 string
-					v40 = string(in.String())
-					out.DisplayedAttributes = append(out.DisplayedAttributes, v40)
+					var v45 string
+					v45 = string(in.String())
+					out.DisplayedAttributes = append(out.DisplayedAttributes, v45)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -2130,9 +2333,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo15(in *jlexer.Lexer,
 					out.StopWords = (out.StopWords)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v41 string
-					v41 = string(in.String())
-					out.StopWords = append(out.StopWords, v41)
+					var v46 string
+					v46 = string(in.String())
+					out.StopWords = append(out.StopWords, v46)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -2150,30 +2353,30 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo15(in *jlexer.Lexer,
 				for !in.IsDelim('}') {
 					key := string(in.String())
 					in.WantColon()
-					var v42 []string
+					var v47 []string
 					if in.IsNull() {
 						in.Skip()
-						v42 = nil
+						v47 = nil
 					} else {
 						in.Delim('[')
-						if v42 == nil {
+						if v47 == nil {
 							if !in.IsDelim(']') {
-								v42 = make([]string, 0, 4)
+								v47 = make([]string, 0, 4)
 							} else {
-								v42 = []string{}
+								v47 = []string{}
 							}
 						} else {
-							v42 = (v42)[:0]
+							v47 = (v47)[:0]
 						}
 						for !in.IsDelim(']') {
-							var v43 string
-							v43 = string(in.String())
-							v42 = append(v42, v43)
+							var v48 string
+							v48 = string(in.String())
+							v47 = append(v47, v48)
 							in.WantComma()
 						}
 						in.Delim(']')
 					}
-					(out.Synonyms)[key] = v42
+					(out.Synonyms)[key] = v47
 					in.WantComma()
 				}
 				in.Delim('}')
@@ -2194,9 +2397,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo15(in *jlexer.Lexer,
 					out.FilterableAttributes = (out.FilterableAttributes)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v44 string
-					v44 = string(in.String())
-					out.FilterableAttributes = append(out.FilterableAttributes, v44)
+					var v49 string
+					v49 = string(in.String())
+					out.FilterableAttributes = append(out.FilterableAttributes, v49)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -2217,9 +2420,40 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo15(in *jlexer.Lexer,
 					out.SortableAttributes = (out.SortableAttributes)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v45 string
-					v45 = string(in.String())
-					out.SortableAttributes = append(out.SortableAttributes, v45)
+					var v50 string
+					v50 = string(in.String())
+					out.SortableAttributes = append(out.SortableAttributes, v50)
+					in.WantComma()
+				}
+				in.Delim(']')
+			}
+		case "localizedAttributes":
+			if in.IsNull() {
+				in.Skip()
+				out.LocalizedAttributes = nil
+			} else {
+				in.Delim('[')
+				if out.LocalizedAttributes == nil {
+					if !in.IsDelim(']') {
+						out.LocalizedAttributes = make([]*LocalizedAttributes, 0, 8)
+					} else {
+						out.LocalizedAttributes = []*LocalizedAttributes{}
+					}
+				} else {
+					out.LocalizedAttributes = (out.LocalizedAttributes)[:0]
+				}
+				for !in.IsDelim(']') {
+					var v51 *LocalizedAttributes
+					if in.IsNull() {
+						in.Skip()
+						v51 = nil
+					} else {
+						if v51 == nil {
+							v51 = new(LocalizedAttributes)
+						}
+						(*v51).UnmarshalEasyJSON(in)
+					}
+					out.LocalizedAttributes = append(out.LocalizedAttributes, v51)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -2267,13 +2501,25 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo15(in *jlexer.Lexer,
 				for !in.IsDelim('}') {
 					key := string(in.String())
 					in.WantColon()
-					var v46 Embedder
-					(v46).UnmarshalEasyJSON(in)
-					(out.Embedders)[key] = v46
+					var v52 Embedder
+					(v52).UnmarshalEasyJSON(in)
+					(out.Embedders)[key] = v52
 					in.WantComma()
 				}
 				in.Delim('}')
 			}
+		case "prefixSearch":
+			if in.IsNull() {
+				in.Skip()
+				out.PrefixSearch = nil
+			} else {
+				if out.PrefixSearch == nil {
+					out.PrefixSearch = new(string)
+				}
+				*out.PrefixSearch = string(in.String())
+			}
+		case "facetSearch":
+			out.FacetSearch = bool(in.Bool())
 		default:
 			in.SkipRecursive()
 		}
@@ -2284,7 +2530,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo15(in *jlexer.Lexer,
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo15(out *jwriter.Writer, in Settings) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo16(out *jwriter.Writer, in Settings) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -2294,11 +2540,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo15(out *jwriter.Writ
 		out.RawString(prefix[1:])
 		{
 			out.RawByte('[')
-			for v47, v48 := range in.RankingRules {
-				if v47 > 0 {
+			for v53, v54 := range in.RankingRules {
+				if v53 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v48))
+				out.String(string(v54))
 			}
 			out.RawByte(']')
 		}
@@ -2323,11 +2569,30 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo15(out *jwriter.Writ
 		}
 		{
 			out.RawByte('[')
-			for v49, v50 := range in.SearchableAttributes {
-				if v49 > 0 {
+			for v55, v56 := range in.SearchableAttributes {
+				if v55 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v50))
+				out.String(string(v56))
+			}
+			out.RawByte(']')
+		}
+	}
+	if len(in.Dictionary) != 0 {
+		const prefix string = ",\"dictionary\":"
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
+		{
+			out.RawByte('[')
+			for v57, v58 := range in.Dictionary {
+				if v57 > 0 {
+					out.RawByte(',')
+				}
+				out.String(string(v58))
 			}
 			out.RawByte(']')
 		}
@@ -2342,6 +2607,54 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo15(out *jwriter.Writ
 		}
 		out.Int64(int64(in.SearchCutoffMs))
 	}
+	if in.ProximityPrecision != "" {
+		const prefix string = ",\"proximityPrecision\":"
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
+		out.String(string(in.ProximityPrecision))
+	}
+	if len(in.SeparatorTokens) != 0 {
+		const prefix string = ",\"separatorTokens\":"
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
+		{
+			out.RawByte('[')
+			for v59, v60 := range in.SeparatorTokens {
+				if v59 > 0 {
+					out.RawByte(',')
+				}
+				out.String(string(v60))
+			}
+			out.RawByte(']')
+		}
+	}
+	if len(in.NonSeparatorTokens) != 0 {
+		const prefix string = ",\"nonSeparatorTokens\":"
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
+		{
+			out.RawByte('[')
+			for v61, v62 := range in.NonSeparatorTokens {
+				if v61 > 0 {
+					out.RawByte(',')
+				}
+				out.String(string(v62))
+			}
+			out.RawByte(']')
+		}
+	}
 	if len(in.DisplayedAttributes) != 0 {
 		const prefix string = ",\"displayedAttributes\":"
 		if first {
@@ -2352,11 +2665,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo15(out *jwriter.Writ
 		}
 		{
 			out.RawByte('[')
-			for v51, v52 := range in.DisplayedAttributes {
-				if v51 > 0 {
+			for v63, v64 := range in.DisplayedAttributes {
+				if v63 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v52))
+				out.String(string(v64))
 			}
 			out.RawByte(']')
 		}
@@ -2371,11 +2684,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo15(out *jwriter.Writ
 		}
 		{
 			out.RawByte('[')
-			for v53, v54 := range in.StopWords {
-				if v53 > 0 {
+			for v65, v66 := range in.StopWords {
+				if v65 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v54))
+				out.String(string(v66))
 			}
 			out.RawByte(']')
 		}
@@ -2390,24 +2703,24 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo15(out *jwriter.Writ
 		}
 		{
 			out.RawByte('{')
-			v55First := true
-			for v55Name, v55Value := range in.Synonyms {
-				if v55First {
-					v55First = false
+			v67First := true
+			for v67Name, v67Value := range in.Synonyms {
+				if v67First {
+					v67First = false
 				} else {
 					out.RawByte(',')
 				}
-				out.String(string(v55Name))
+				out.String(string(v67Name))
 				out.RawByte(':')
-				if v55Value == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
+				if v67Value == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
 					out.RawString("null")
 				} else {
 					out.RawByte('[')
-					for v56, v57 := range v55Value {
-						if v56 > 0 {
+					for v68, v69 := range v67Value {
+						if v68 > 0 {
 							out.RawByte(',')
 						}
-						out.String(string(v57))
+						out.String(string(v69))
 					}
 					out.RawByte(']')
 				}
@@ -2425,11 +2738,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo15(out *jwriter.Writ
 		}
 		{
 			out.RawByte('[')
-			for v58, v59 := range in.FilterableAttributes {
-				if v58 > 0 {
+			for v70, v71 := range in.FilterableAttributes {
+				if v70 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v59))
+				out.String(string(v71))
 			}
 			out.RawByte(']')
 		}
@@ -2444,11 +2757,34 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo15(out *jwriter.Writ
 		}
 		{
 			out.RawByte('[')
-			for v60, v61 := range in.SortableAttributes {
-				if v60 > 0 {
+			for v72, v73 := range in.SortableAttributes {
+				if v72 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v61))
+				out.String(string(v73))
+			}
+			out.RawByte(']')
+		}
+	}
+	if len(in.LocalizedAttributes) != 0 {
+		const prefix string = ",\"localizedAttributes\":"
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
+		{
+			out.RawByte('[')
+			for v74, v75 := range in.LocalizedAttributes {
+				if v74 > 0 {
+					out.RawByte(',')
+				}
+				if v75 == nil {
+					out.RawString("null")
+				} else {
+					(*v75).MarshalEasyJSON(out)
+				}
 			}
 			out.RawByte(']')
 		}
@@ -2493,19 +2829,39 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo15(out *jwriter.Writ
 		}
 		{
 			out.RawByte('{')
-			v62First := true
-			for v62Name, v62Value := range in.Embedders {
-				if v62First {
-					v62First = false
+			v76First := true
+			for v76Name, v76Value := range in.Embedders {
+				if v76First {
+					v76First = false
 				} else {
 					out.RawByte(',')
 				}
-				out.String(string(v62Name))
+				out.String(string(v76Name))
 				out.RawByte(':')
-				(v62Value).MarshalEasyJSON(out)
+				(v76Value).MarshalEasyJSON(out)
 			}
 			out.RawByte('}')
 		}
+	}
+	if in.PrefixSearch != nil {
+		const prefix string = ",\"prefixSearch\":"
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
+		out.String(string(*in.PrefixSearch))
+	}
+	if in.FacetSearch {
+		const prefix string = ",\"facetSearch\":"
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
+		out.Bool(bool(in.FacetSearch))
 	}
 	out.RawByte('}')
 }
@@ -2513,27 +2869,27 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo15(out *jwriter.Writ
 // MarshalJSON supports json.Marshaler interface
 func (v Settings) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo15(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo16(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v Settings) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo15(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo16(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *Settings) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo15(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo16(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *Settings) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo15(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo16(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo16(in *jlexer.Lexer, out *SearchResponse) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo17(in *jlexer.Lexer, out *SearchResponse) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -2568,15 +2924,15 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo16(in *jlexer.Lexer,
 					out.Hits = (out.Hits)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v63 interface{}
-					if m, ok := v63.(easyjson.Unmarshaler); ok {
+					var v77 interface{}
+					if m, ok := v77.(easyjson.Unmarshaler); ok {
 						m.UnmarshalEasyJSON(in)
-					} else if m, ok := v63.(json.Unmarshaler); ok {
+					} else if m, ok := v77.(json.Unmarshaler); ok {
 						_ = m.UnmarshalJSON(in.Raw())
 					} else {
-						v63 = in.Interface()
+						v77 = in.Interface()
 					}
-					out.Hits = append(out.Hits, v63)
+					out.Hits = append(out.Hits, v77)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -2627,7 +2983,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo16(in *jlexer.Lexer,
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo16(out *jwriter.Writer, in SearchResponse) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo17(out *jwriter.Writer, in SearchResponse) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -2638,16 +2994,16 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo16(out *jwriter.Writ
 			out.RawString("null")
 		} else {
 			out.RawByte('[')
-			for v64, v65 := range in.Hits {
-				if v64 > 0 {
+			for v78, v79 := range in.Hits {
+				if v78 > 0 {
 					out.RawByte(',')
 				}
-				if m, ok := v65.(easyjson.Marshaler); ok {
+				if m, ok := v79.(easyjson.Marshaler); ok {
 					m.MarshalEasyJSON(out)
-				} else if m, ok := v65.(json.Marshaler); ok {
+				} else if m, ok := v79.(json.Marshaler); ok {
 					out.Raw(m.MarshalJSON())
 				} else {
-					out.Raw(json.Marshal(v65))
+					out.Raw(json.Marshal(v79))
 				}
 			}
 			out.RawByte(']')
@@ -2731,27 +3087,27 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo16(out *jwriter.Writ
 // MarshalJSON supports json.Marshaler interface
 func (v SearchResponse) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo16(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo17(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v SearchResponse) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo16(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo17(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *SearchResponse) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo16(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo17(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *SearchResponse) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo16(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo17(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo17(in *jlexer.Lexer, out *SearchRequestHybrid) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo18(in *jlexer.Lexer, out *SearchRequestHybrid) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -2784,7 +3140,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo17(in *jlexer.Lexer,
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo17(out *jwriter.Writer, in SearchRequestHybrid) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo18(out *jwriter.Writer, in SearchRequestHybrid) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -2794,7 +3150,7 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo17(out *jwriter.Writ
 		out.RawString(prefix[1:])
 		out.Float64(float64(in.SemanticRatio))
 	}
-	if in.Embedder != "" {
+	{
 		const prefix string = ",\"embedder\":"
 		if first {
 			first = false
@@ -2810,27 +3166,27 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo17(out *jwriter.Writ
 // MarshalJSON supports json.Marshaler interface
 func (v SearchRequestHybrid) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo17(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo18(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v SearchRequestHybrid) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo17(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo18(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *SearchRequestHybrid) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo17(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo18(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *SearchRequestHybrid) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo17(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo18(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo18(in *jlexer.Lexer, out *SearchRequest) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo19(in *jlexer.Lexer, out *SearchRequest) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -2869,9 +3225,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo18(in *jlexer.Lexer,
 					out.AttributesToRetrieve = (out.AttributesToRetrieve)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v66 string
-					v66 = string(in.String())
-					out.AttributesToRetrieve = append(out.AttributesToRetrieve, v66)
+					var v80 string
+					v80 = string(in.String())
+					out.AttributesToRetrieve = append(out.AttributesToRetrieve, v80)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -2892,9 +3248,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo18(in *jlexer.Lexer,
 					out.AttributesToSearchOn = (out.AttributesToSearchOn)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v67 string
-					v67 = string(in.String())
-					out.AttributesToSearchOn = append(out.AttributesToSearchOn, v67)
+					var v81 string
+					v81 = string(in.String())
+					out.AttributesToSearchOn = append(out.AttributesToSearchOn, v81)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -2915,9 +3271,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo18(in *jlexer.Lexer,
 					out.AttributesToCrop = (out.AttributesToCrop)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v68 string
-					v68 = string(in.String())
-					out.AttributesToCrop = append(out.AttributesToCrop, v68)
+					var v82 string
+					v82 = string(in.String())
+					out.AttributesToCrop = append(out.AttributesToCrop, v82)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -2942,9 +3298,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo18(in *jlexer.Lexer,
 					out.AttributesToHighlight = (out.AttributesToHighlight)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v69 string
-					v69 = string(in.String())
-					out.AttributesToHighlight = append(out.AttributesToHighlight, v69)
+					var v83 string
+					v83 = string(in.String())
+					out.AttributesToHighlight = append(out.AttributesToHighlight, v83)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -2954,7 +3310,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo18(in *jlexer.Lexer,
 		case "highlightPostTag":
 			out.HighlightPostTag = string(in.String())
 		case "matchingStrategy":
-			out.MatchingStrategy = string(in.String())
+			out.MatchingStrategy = MatchingStrategy(in.String())
 		case "filter":
 			if m, ok := out.Filter.(easyjson.Unmarshaler); ok {
 				m.UnmarshalEasyJSON(in)
@@ -2985,9 +3341,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo18(in *jlexer.Lexer,
 					out.Facets = (out.Facets)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v70 string
-					v70 = string(in.String())
-					out.Facets = append(out.Facets, v70)
+					var v84 string
+					v84 = string(in.String())
+					out.Facets = append(out.Facets, v84)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -3008,9 +3364,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo18(in *jlexer.Lexer,
 					out.Sort = (out.Sort)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v71 string
-					v71 = string(in.String())
-					out.Sort = append(out.Sort, v71)
+					var v85 string
+					v85 = string(in.String())
+					out.Sort = append(out.Sort, v85)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -3031,9 +3387,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo18(in *jlexer.Lexer,
 					out.Vector = (out.Vector)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v72 float32
-					v72 = float32(in.Float32())
-					out.Vector = append(out.Vector, v72)
+					var v86 float32
+					v86 = float32(in.Float32())
+					out.Vector = append(out.Vector, v86)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -3062,6 +3418,39 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo18(in *jlexer.Lexer,
 			out.RetrieveVectors = bool(in.Bool())
 		case "rankingScoreThreshold":
 			out.RankingScoreThreshold = float64(in.Float64())
+		case "federationOptions":
+			if in.IsNull() {
+				in.Skip()
+				out.FederationOptions = nil
+			} else {
+				if out.FederationOptions == nil {
+					out.FederationOptions = new(SearchFederationOptions)
+				}
+				(*out.FederationOptions).UnmarshalEasyJSON(in)
+			}
+		case "locales":
+			if in.IsNull() {
+				in.Skip()
+				out.Locates = nil
+			} else {
+				in.Delim('[')
+				if out.Locates == nil {
+					if !in.IsDelim(']') {
+						out.Locates = make([]string, 0, 4)
+					} else {
+						out.Locates = []string{}
+					}
+				} else {
+					out.Locates = (out.Locates)[:0]
+				}
+				for !in.IsDelim(']') {
+					var v87 string
+					v87 = string(in.String())
+					out.Locates = append(out.Locates, v87)
+					in.WantComma()
+				}
+				in.Delim(']')
+			}
 		default:
 			in.SkipRecursive()
 		}
@@ -3072,7 +3461,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo18(in *jlexer.Lexer,
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo18(out *jwriter.Writer, in SearchRequest) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo19(out *jwriter.Writer, in SearchRequest) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -3102,11 +3491,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo18(out *jwriter.Writ
 		}
 		{
 			out.RawByte('[')
-			for v73, v74 := range in.AttributesToRetrieve {
-				if v73 > 0 {
+			for v88, v89 := range in.AttributesToRetrieve {
+				if v88 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v74))
+				out.String(string(v89))
 			}
 			out.RawByte(']')
 		}
@@ -3121,11 +3510,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo18(out *jwriter.Writ
 		}
 		{
 			out.RawByte('[')
-			for v75, v76 := range in.AttributesToSearchOn {
-				if v75 > 0 {
+			for v90, v91 := range in.AttributesToSearchOn {
+				if v90 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v76))
+				out.String(string(v91))
 			}
 			out.RawByte(']')
 		}
@@ -3140,11 +3529,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo18(out *jwriter.Writ
 		}
 		{
 			out.RawByte('[')
-			for v77, v78 := range in.AttributesToCrop {
-				if v77 > 0 {
+			for v92, v93 := range in.AttributesToCrop {
+				if v92 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v78))
+				out.String(string(v93))
 			}
 			out.RawByte(']')
 		}
@@ -3179,11 +3568,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo18(out *jwriter.Writ
 		}
 		{
 			out.RawByte('[')
-			for v79, v80 := range in.AttributesToHighlight {
-				if v79 > 0 {
+			for v94, v95 := range in.AttributesToHighlight {
+				if v94 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v80))
+				out.String(string(v95))
 			}
 			out.RawByte(']')
 		}
@@ -3274,11 +3663,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo18(out *jwriter.Writ
 		}
 		{
 			out.RawByte('[')
-			for v81, v82 := range in.Facets {
-				if v81 > 0 {
+			for v96, v97 := range in.Facets {
+				if v96 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v82))
+				out.String(string(v97))
 			}
 			out.RawByte(']')
 		}
@@ -3293,11 +3682,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo18(out *jwriter.Writ
 		}
 		{
 			out.RawByte('[')
-			for v83, v84 := range in.Sort {
-				if v83 > 0 {
+			for v98, v99 := range in.Sort {
+				if v98 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v84))
+				out.String(string(v99))
 			}
 			out.RawByte(']')
 		}
@@ -3312,11 +3701,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo18(out *jwriter.Writ
 		}
 		{
 			out.RawByte('[')
-			for v85, v86 := range in.Vector {
-				if v85 > 0 {
+			for v100, v101 := range in.Vector {
+				if v100 > 0 {
 					out.RawByte(',')
 				}
-				out.Float32(float32(v86))
+				out.Float32(float32(v101))
 			}
 			out.RawByte(']')
 		}
@@ -3366,10 +3755,14 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo18(out *jwriter.Writ
 		out.RawString(prefix)
 		out.String(string(in.Distinct))
 	}
-	if in.Hybrid != nil {
+	{
 		const prefix string = ",\"hybrid\":"
 		out.RawString(prefix)
-		(*in.Hybrid).MarshalEasyJSON(out)
+		if in.Hybrid == nil {
+			out.RawString("null")
+		} else {
+			(*in.Hybrid).MarshalEasyJSON(out)
+		}
 	}
 	if in.RetrieveVectors {
 		const prefix string = ",\"retrieveVectors\":"
@@ -3381,33 +3774,118 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo18(out *jwriter.Writ
 		out.RawString(prefix)
 		out.Float64(float64(in.RankingScoreThreshold))
 	}
+	if in.FederationOptions != nil {
+		const prefix string = ",\"federationOptions\":"
+		out.RawString(prefix)
+		(*in.FederationOptions).MarshalEasyJSON(out)
+	}
+	if len(in.Locates) != 0 {
+		const prefix string = ",\"locales\":"
+		out.RawString(prefix)
+		{
+			out.RawByte('[')
+			for v102, v103 := range in.Locates {
+				if v102 > 0 {
+					out.RawByte(',')
+				}
+				out.String(string(v103))
+			}
+			out.RawByte(']')
+		}
+	}
 	out.RawByte('}')
 }
 
 // MarshalJSON supports json.Marshaler interface
 func (v SearchRequest) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo18(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo19(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v SearchRequest) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo18(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo19(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *SearchRequest) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo18(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo19(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *SearchRequest) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo18(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo19(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo19(in *jlexer.Lexer, out *Pagination) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo20(in *jlexer.Lexer, out *SearchFederationOptions) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "weight":
+			out.Weight = float64(in.Float64())
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo20(out *jwriter.Writer, in SearchFederationOptions) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	{
+		const prefix string = ",\"weight\":"
+		out.RawString(prefix[1:])
+		out.Float64(float64(in.Weight))
+	}
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v SearchFederationOptions) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo20(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v SearchFederationOptions) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo20(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *SearchFederationOptions) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo20(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *SearchFederationOptions) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo20(l, v)
+}
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo21(in *jlexer.Lexer, out *Pagination) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -3438,7 +3916,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo19(in *jlexer.Lexer,
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo19(out *jwriter.Writer, in Pagination) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo21(out *jwriter.Writer, in Pagination) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -3453,27 +3931,27 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo19(out *jwriter.Writ
 // MarshalJSON supports json.Marshaler interface
 func (v Pagination) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo19(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo21(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v Pagination) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo19(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo21(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *Pagination) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo19(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo21(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *Pagination) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo19(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo21(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo20(in *jlexer.Lexer, out *MultiSearchResponse) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo22(in *jlexer.Lexer, out *MultiSearchResponse) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -3508,13 +3986,52 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo20(in *jlexer.Lexer,
 					out.Results = (out.Results)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v87 SearchResponse
-					(v87).UnmarshalEasyJSON(in)
-					out.Results = append(out.Results, v87)
+					var v104 SearchResponse
+					(v104).UnmarshalEasyJSON(in)
+					out.Results = append(out.Results, v104)
 					in.WantComma()
 				}
 				in.Delim(']')
 			}
+		case "hits":
+			if in.IsNull() {
+				in.Skip()
+				out.Hits = nil
+			} else {
+				in.Delim('[')
+				if out.Hits == nil {
+					if !in.IsDelim(']') {
+						out.Hits = make([]interface{}, 0, 4)
+					} else {
+						out.Hits = []interface{}{}
+					}
+				} else {
+					out.Hits = (out.Hits)[:0]
+				}
+				for !in.IsDelim(']') {
+					var v105 interface{}
+					if m, ok := v105.(easyjson.Unmarshaler); ok {
+						m.UnmarshalEasyJSON(in)
+					} else if m, ok := v105.(json.Unmarshaler); ok {
+						_ = m.UnmarshalJSON(in.Raw())
+					} else {
+						v105 = in.Interface()
+					}
+					out.Hits = append(out.Hits, v105)
+					in.WantComma()
+				}
+				in.Delim(']')
+			}
+		case "processingTimeMs":
+			out.ProcessingTimeMs = int64(in.Int64())
+		case "offset":
+			out.Offset = int64(in.Int64())
+		case "limit":
+			out.Limit = int64(in.Int64())
+		case "estimatedTotalHits":
+			out.EstimatedTotalHits = int64(in.Int64())
+		case "semanticHitCount":
+			out.SemanticHitCount = int64(in.Int64())
 		default:
 			in.SkipRecursive()
 		}
@@ -3525,25 +4042,99 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo20(in *jlexer.Lexer,
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo20(out *jwriter.Writer, in MultiSearchResponse) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo22(out *jwriter.Writer, in MultiSearchResponse) {
 	out.RawByte('{')
 	first := true
 	_ = first
-	{
+	if len(in.Results) != 0 {
 		const prefix string = ",\"results\":"
+		first = false
 		out.RawString(prefix[1:])
-		if in.Results == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
-			out.RawString("null")
-		} else {
+		{
 			out.RawByte('[')
-			for v88, v89 := range in.Results {
-				if v88 > 0 {
+			for v106, v107 := range in.Results {
+				if v106 > 0 {
 					out.RawByte(',')
 				}
-				(v89).MarshalEasyJSON(out)
+				(v107).MarshalEasyJSON(out)
 			}
 			out.RawByte(']')
 		}
+	}
+	if len(in.Hits) != 0 {
+		const prefix string = ",\"hits\":"
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
+		{
+			out.RawByte('[')
+			for v108, v109 := range in.Hits {
+				if v108 > 0 {
+					out.RawByte(',')
+				}
+				if m, ok := v109.(easyjson.Marshaler); ok {
+					m.MarshalEasyJSON(out)
+				} else if m, ok := v109.(json.Marshaler); ok {
+					out.Raw(m.MarshalJSON())
+				} else {
+					out.Raw(json.Marshal(v109))
+				}
+			}
+			out.RawByte(']')
+		}
+	}
+	if in.ProcessingTimeMs != 0 {
+		const prefix string = ",\"processingTimeMs\":"
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
+		out.Int64(int64(in.ProcessingTimeMs))
+	}
+	if in.Offset != 0 {
+		const prefix string = ",\"offset\":"
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
+		out.Int64(int64(in.Offset))
+	}
+	if in.Limit != 0 {
+		const prefix string = ",\"limit\":"
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
+		out.Int64(int64(in.Limit))
+	}
+	if in.EstimatedTotalHits != 0 {
+		const prefix string = ",\"estimatedTotalHits\":"
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
+		out.Int64(int64(in.EstimatedTotalHits))
+	}
+	if in.SemanticHitCount != 0 {
+		const prefix string = ",\"semanticHitCount\":"
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
+		out.Int64(int64(in.SemanticHitCount))
 	}
 	out.RawByte('}')
 }
@@ -3551,27 +4142,27 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo20(out *jwriter.Writ
 // MarshalJSON supports json.Marshaler interface
 func (v MultiSearchResponse) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo20(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo22(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v MultiSearchResponse) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo20(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo22(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *MultiSearchResponse) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo20(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo22(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *MultiSearchResponse) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo20(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo22(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo21(in *jlexer.Lexer, out *MultiSearchRequest) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo23(in *jlexer.Lexer, out *MultiSearchRequest) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -3590,6 +4181,16 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo21(in *jlexer.Lexer,
 			continue
 		}
 		switch key {
+		case "federation":
+			if in.IsNull() {
+				in.Skip()
+				out.Federation = nil
+			} else {
+				if out.Federation == nil {
+					out.Federation = new(MultiSearchFederation)
+				}
+				(*out.Federation).UnmarshalEasyJSON(in)
+			}
 		case "queries":
 			if in.IsNull() {
 				in.Skip()
@@ -3606,17 +4207,17 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo21(in *jlexer.Lexer,
 					out.Queries = (out.Queries)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v90 *SearchRequest
+					var v110 *SearchRequest
 					if in.IsNull() {
 						in.Skip()
-						v90 = nil
+						v110 = nil
 					} else {
-						if v90 == nil {
-							v90 = new(SearchRequest)
+						if v110 == nil {
+							v110 = new(SearchRequest)
 						}
-						(*v90).UnmarshalEasyJSON(in)
+						(*v110).UnmarshalEasyJSON(in)
 					}
-					out.Queries = append(out.Queries, v90)
+					out.Queries = append(out.Queries, v110)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -3631,25 +4232,36 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo21(in *jlexer.Lexer,
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo21(out *jwriter.Writer, in MultiSearchRequest) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo23(out *jwriter.Writer, in MultiSearchRequest) {
 	out.RawByte('{')
 	first := true
 	_ = first
+	if in.Federation != nil {
+		const prefix string = ",\"federation\":"
+		first = false
+		out.RawString(prefix[1:])
+		(*in.Federation).MarshalEasyJSON(out)
+	}
 	{
 		const prefix string = ",\"queries\":"
-		out.RawString(prefix[1:])
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
 		if in.Queries == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
 			out.RawString("null")
 		} else {
 			out.RawByte('[')
-			for v91, v92 := range in.Queries {
-				if v91 > 0 {
+			for v111, v112 := range in.Queries {
+				if v111 > 0 {
 					out.RawByte(',')
 				}
-				if v92 == nil {
+				if v112 == nil {
 					out.RawString("null")
 				} else {
-					(*v92).MarshalEasyJSON(out)
+					(*v112).MarshalEasyJSON(out)
 				}
 			}
 			out.RawByte(']')
@@ -3661,27 +4273,106 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo21(out *jwriter.Writ
 // MarshalJSON supports json.Marshaler interface
 func (v MultiSearchRequest) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo21(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo23(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v MultiSearchRequest) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo21(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo23(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *MultiSearchRequest) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo21(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo23(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *MultiSearchRequest) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo21(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo23(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo22(in *jlexer.Lexer, out *MinWordSizeForTypos) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo24(in *jlexer.Lexer, out *MultiSearchFederation) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "offset":
+			out.Offset = int64(in.Int64())
+		case "limit":
+			out.Limit = int64(in.Int64())
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo24(out *jwriter.Writer, in MultiSearchFederation) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	if in.Offset != 0 {
+		const prefix string = ",\"offset\":"
+		first = false
+		out.RawString(prefix[1:])
+		out.Int64(int64(in.Offset))
+	}
+	if in.Limit != 0 {
+		const prefix string = ",\"limit\":"
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
+		out.Int64(int64(in.Limit))
+	}
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v MultiSearchFederation) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo24(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v MultiSearchFederation) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo24(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *MultiSearchFederation) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo24(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *MultiSearchFederation) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo24(l, v)
+}
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo25(in *jlexer.Lexer, out *MinWordSizeForTypos) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -3714,7 +4405,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo22(in *jlexer.Lexer,
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo22(out *jwriter.Writer, in MinWordSizeForTypos) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo25(out *jwriter.Writer, in MinWordSizeForTypos) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -3740,27 +4431,166 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo22(out *jwriter.Writ
 // MarshalJSON supports json.Marshaler interface
 func (v MinWordSizeForTypos) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo22(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo25(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v MinWordSizeForTypos) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo22(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo25(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *MinWordSizeForTypos) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo22(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo25(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *MinWordSizeForTypos) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo22(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo25(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo23(in *jlexer.Lexer, out *KeysResults) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo26(in *jlexer.Lexer, out *LocalizedAttributes) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "locales":
+			if in.IsNull() {
+				in.Skip()
+				out.Locales = nil
+			} else {
+				in.Delim('[')
+				if out.Locales == nil {
+					if !in.IsDelim(']') {
+						out.Locales = make([]string, 0, 4)
+					} else {
+						out.Locales = []string{}
+					}
+				} else {
+					out.Locales = (out.Locales)[:0]
+				}
+				for !in.IsDelim(']') {
+					var v113 string
+					v113 = string(in.String())
+					out.Locales = append(out.Locales, v113)
+					in.WantComma()
+				}
+				in.Delim(']')
+			}
+		case "attributePatterns":
+			if in.IsNull() {
+				in.Skip()
+				out.AttributePatterns = nil
+			} else {
+				in.Delim('[')
+				if out.AttributePatterns == nil {
+					if !in.IsDelim(']') {
+						out.AttributePatterns = make([]string, 0, 4)
+					} else {
+						out.AttributePatterns = []string{}
+					}
+				} else {
+					out.AttributePatterns = (out.AttributePatterns)[:0]
+				}
+				for !in.IsDelim(']') {
+					var v114 string
+					v114 = string(in.String())
+					out.AttributePatterns = append(out.AttributePatterns, v114)
+					in.WantComma()
+				}
+				in.Delim(']')
+			}
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo26(out *jwriter.Writer, in LocalizedAttributes) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	if len(in.Locales) != 0 {
+		const prefix string = ",\"locales\":"
+		first = false
+		out.RawString(prefix[1:])
+		{
+			out.RawByte('[')
+			for v115, v116 := range in.Locales {
+				if v115 > 0 {
+					out.RawByte(',')
+				}
+				out.String(string(v116))
+			}
+			out.RawByte(']')
+		}
+	}
+	if len(in.AttributePatterns) != 0 {
+		const prefix string = ",\"attributePatterns\":"
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
+		{
+			out.RawByte('[')
+			for v117, v118 := range in.AttributePatterns {
+				if v117 > 0 {
+					out.RawByte(',')
+				}
+				out.String(string(v118))
+			}
+			out.RawByte(']')
+		}
+	}
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v LocalizedAttributes) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo26(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v LocalizedAttributes) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo26(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *LocalizedAttributes) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo26(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *LocalizedAttributes) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo26(l, v)
+}
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo27(in *jlexer.Lexer, out *KeysResults) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -3795,9 +4625,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo23(in *jlexer.Lexer,
 					out.Results = (out.Results)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v93 Key
-					(v93).UnmarshalEasyJSON(in)
-					out.Results = append(out.Results, v93)
+					var v119 Key
+					(v119).UnmarshalEasyJSON(in)
+					out.Results = append(out.Results, v119)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -3818,7 +4648,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo23(in *jlexer.Lexer,
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo23(out *jwriter.Writer, in KeysResults) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo27(out *jwriter.Writer, in KeysResults) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -3829,11 +4659,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo23(out *jwriter.Writ
 			out.RawString("null")
 		} else {
 			out.RawByte('[')
-			for v94, v95 := range in.Results {
-				if v94 > 0 {
+			for v120, v121 := range in.Results {
+				if v120 > 0 {
 					out.RawByte(',')
 				}
-				(v95).MarshalEasyJSON(out)
+				(v121).MarshalEasyJSON(out)
 			}
 			out.RawByte(']')
 		}
@@ -3859,27 +4689,27 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo23(out *jwriter.Writ
 // MarshalJSON supports json.Marshaler interface
 func (v KeysResults) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo23(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo27(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v KeysResults) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo23(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo27(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *KeysResults) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo23(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo27(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *KeysResults) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo23(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo27(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo24(in *jlexer.Lexer, out *KeysQuery) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo28(in *jlexer.Lexer, out *KeysQuery) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -3912,7 +4742,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo24(in *jlexer.Lexer,
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo24(out *jwriter.Writer, in KeysQuery) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo28(out *jwriter.Writer, in KeysQuery) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -3932,27 +4762,27 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo24(out *jwriter.Writ
 // MarshalJSON supports json.Marshaler interface
 func (v KeysQuery) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo24(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo28(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v KeysQuery) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo24(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo28(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *KeysQuery) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo24(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo28(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *KeysQuery) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo24(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo28(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo25(in *jlexer.Lexer, out *KeyUpdate) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo29(in *jlexer.Lexer, out *KeyUpdate) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -3985,7 +4815,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo25(in *jlexer.Lexer,
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo25(out *jwriter.Writer, in KeyUpdate) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo29(out *jwriter.Writer, in KeyUpdate) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -4011,27 +4841,27 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo25(out *jwriter.Writ
 // MarshalJSON supports json.Marshaler interface
 func (v KeyUpdate) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo25(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo29(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v KeyUpdate) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo25(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo29(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *KeyUpdate) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo25(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo29(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *KeyUpdate) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo25(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo29(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo26(in *jlexer.Lexer, out *KeyParsed) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo30(in *jlexer.Lexer, out *KeyParsed) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -4072,9 +4902,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo26(in *jlexer.Lexer,
 					out.Actions = (out.Actions)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v96 string
-					v96 = string(in.String())
-					out.Actions = append(out.Actions, v96)
+					var v122 string
+					v122 = string(in.String())
+					out.Actions = append(out.Actions, v122)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -4095,9 +4925,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo26(in *jlexer.Lexer,
 					out.Indexes = (out.Indexes)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v97 string
-					v97 = string(in.String())
-					out.Indexes = append(out.Indexes, v97)
+					var v123 string
+					v123 = string(in.String())
+					out.Indexes = append(out.Indexes, v123)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -4122,7 +4952,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo26(in *jlexer.Lexer,
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo26(out *jwriter.Writer, in KeyParsed) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo30(out *jwriter.Writer, in KeyParsed) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -4146,11 +4976,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo26(out *jwriter.Writ
 		out.RawString(prefix)
 		{
 			out.RawByte('[')
-			for v98, v99 := range in.Actions {
-				if v98 > 0 {
+			for v124, v125 := range in.Actions {
+				if v124 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v99))
+				out.String(string(v125))
 			}
 			out.RawByte(']')
 		}
@@ -4160,11 +4990,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo26(out *jwriter.Writ
 		out.RawString(prefix)
 		{
 			out.RawByte('[')
-			for v100, v101 := range in.Indexes {
-				if v100 > 0 {
+			for v126, v127 := range in.Indexes {
+				if v126 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v101))
+				out.String(string(v127))
 			}
 			out.RawByte(']')
 		}
@@ -4184,27 +5014,27 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo26(out *jwriter.Writ
 // MarshalJSON supports json.Marshaler interface
 func (v KeyParsed) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo26(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo30(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v KeyParsed) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo26(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo30(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *KeyParsed) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo26(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo30(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *KeyParsed) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo26(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo30(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo27(in *jlexer.Lexer, out *Key) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo31(in *jlexer.Lexer, out *Key) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -4247,9 +5077,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo27(in *jlexer.Lexer,
 					out.Actions = (out.Actions)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v102 string
-					v102 = string(in.String())
-					out.Actions = append(out.Actions, v102)
+					var v128 string
+					v128 = string(in.String())
+					out.Actions = append(out.Actions, v128)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -4270,9 +5100,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo27(in *jlexer.Lexer,
 					out.Indexes = (out.Indexes)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v103 string
-					v103 = string(in.String())
-					out.Indexes = append(out.Indexes, v103)
+					var v129 string
+					v129 = string(in.String())
+					out.Indexes = append(out.Indexes, v129)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -4299,7 +5129,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo27(in *jlexer.Lexer,
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo27(out *jwriter.Writer, in Key) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo31(out *jwriter.Writer, in Key) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -4328,11 +5158,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo27(out *jwriter.Writ
 		out.RawString(prefix)
 		{
 			out.RawByte('[')
-			for v104, v105 := range in.Actions {
-				if v104 > 0 {
+			for v130, v131 := range in.Actions {
+				if v130 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v105))
+				out.String(string(v131))
 			}
 			out.RawByte(']')
 		}
@@ -4342,11 +5172,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo27(out *jwriter.Writ
 		out.RawString(prefix)
 		{
 			out.RawByte('[')
-			for v106, v107 := range in.Indexes {
-				if v106 > 0 {
+			for v132, v133 := range in.Indexes {
+				if v132 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v107))
+				out.String(string(v133))
 			}
 			out.RawByte(']')
 		}
@@ -4372,27 +5202,27 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo27(out *jwriter.Writ
 // MarshalJSON supports json.Marshaler interface
 func (v Key) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo27(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo31(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v Key) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo27(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo31(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *Key) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo27(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo31(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *Key) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo27(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo31(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo28(in *jlexer.Lexer, out *IndexesResults) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo32(in *jlexer.Lexer, out *IndexesResults) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -4419,17 +5249,25 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo28(in *jlexer.Lexer,
 				in.Delim('[')
 				if out.Results == nil {
 					if !in.IsDelim(']') {
-						out.Results = make([]Index, 0, 0)
+						out.Results = make([]*IndexResult, 0, 8)
 					} else {
-						out.Results = []Index{}
+						out.Results = []*IndexResult{}
 					}
 				} else {
 					out.Results = (out.Results)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v108 Index
-					(v108).UnmarshalEasyJSON(in)
-					out.Results = append(out.Results, v108)
+					var v134 *IndexResult
+					if in.IsNull() {
+						in.Skip()
+						v134 = nil
+					} else {
+						if v134 == nil {
+							v134 = new(IndexResult)
+						}
+						(*v134).UnmarshalEasyJSON(in)
+					}
+					out.Results = append(out.Results, v134)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -4450,7 +5288,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo28(in *jlexer.Lexer,
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo28(out *jwriter.Writer, in IndexesResults) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo32(out *jwriter.Writer, in IndexesResults) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -4461,11 +5299,15 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo28(out *jwriter.Writ
 			out.RawString("null")
 		} else {
 			out.RawByte('[')
-			for v109, v110 := range in.Results {
-				if v109 > 0 {
+			for v135, v136 := range in.Results {
+				if v135 > 0 {
 					out.RawByte(',')
 				}
-				(v110).MarshalEasyJSON(out)
+				if v136 == nil {
+					out.RawString("null")
+				} else {
+					(*v136).MarshalEasyJSON(out)
+				}
 			}
 			out.RawByte(']')
 		}
@@ -4491,27 +5333,27 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo28(out *jwriter.Writ
 // MarshalJSON supports json.Marshaler interface
 func (v IndexesResults) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo28(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo32(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v IndexesResults) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo28(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo32(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *IndexesResults) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo28(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo32(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *IndexesResults) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo28(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo32(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo29(in *jlexer.Lexer, out *IndexesQuery) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo33(in *jlexer.Lexer, out *IndexesQuery) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -4544,7 +5386,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo29(in *jlexer.Lexer,
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo29(out *jwriter.Writer, in IndexesQuery) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo33(out *jwriter.Writer, in IndexesQuery) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -4564,27 +5406,27 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo29(out *jwriter.Writ
 // MarshalJSON supports json.Marshaler interface
 func (v IndexesQuery) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo29(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo33(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v IndexesQuery) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo29(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo33(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *IndexesQuery) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo29(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo33(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *IndexesQuery) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo29(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo33(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo30(in *jlexer.Lexer, out *Index) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo34(in *jlexer.Lexer, out *IndexResult) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -4625,7 +5467,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo30(in *jlexer.Lexer,
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo30(out *jwriter.Writer, in Index) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo34(out *jwriter.Writer, in IndexResult) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -4653,29 +5495,102 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo30(out *jwriter.Writ
 }
 
 // MarshalJSON supports json.Marshaler interface
-func (v Index) MarshalJSON() ([]byte, error) {
+func (v IndexResult) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo30(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo34(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
-func (v Index) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo30(w, v)
+func (v IndexResult) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo34(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
-func (v *Index) UnmarshalJSON(data []byte) error {
+func (v *IndexResult) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo30(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo34(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
-func (v *Index) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo30(l, v)
+func (v *IndexResult) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo34(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo31(in *jlexer.Lexer, out *Health) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo35(in *jlexer.Lexer, out *IndexConfig) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "Uid":
+			out.Uid = string(in.String())
+		case "PrimaryKey":
+			out.PrimaryKey = string(in.String())
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo35(out *jwriter.Writer, in IndexConfig) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	{
+		const prefix string = ",\"Uid\":"
+		out.RawString(prefix[1:])
+		out.String(string(in.Uid))
+	}
+	{
+		const prefix string = ",\"PrimaryKey\":"
+		out.RawString(prefix)
+		out.String(string(in.PrimaryKey))
+	}
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v IndexConfig) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo35(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v IndexConfig) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo35(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *IndexConfig) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo35(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *IndexConfig) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo35(l, v)
+}
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo36(in *jlexer.Lexer, out *Health) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -4706,7 +5621,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo31(in *jlexer.Lexer,
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo31(out *jwriter.Writer, in Health) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo36(out *jwriter.Writer, in Health) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -4721,27 +5636,27 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo31(out *jwriter.Writ
 // MarshalJSON supports json.Marshaler interface
 func (v Health) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo31(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo36(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v Health) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo31(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo36(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *Health) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo31(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo36(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *Health) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo31(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo36(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo32(in *jlexer.Lexer, out *Faceting) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo37(in *jlexer.Lexer, out *Faceting) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -4762,6 +5677,22 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo32(in *jlexer.Lexer,
 		switch key {
 		case "maxValuesPerFacet":
 			out.MaxValuesPerFacet = int64(in.Int64())
+		case "sortFacetValuesBy":
+			if in.IsNull() {
+				in.Skip()
+			} else {
+				in.Delim('{')
+				out.SortFacetValuesBy = make(map[string]SortFacetType)
+				for !in.IsDelim('}') {
+					key := string(in.String())
+					in.WantColon()
+					var v137 SortFacetType
+					v137 = SortFacetType(in.String())
+					(out.SortFacetValuesBy)[key] = v137
+					in.WantComma()
+				}
+				in.Delim('}')
+			}
 		default:
 			in.SkipRecursive()
 		}
@@ -4772,7 +5703,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo32(in *jlexer.Lexer,
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo32(out *jwriter.Writer, in Faceting) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo37(out *jwriter.Writer, in Faceting) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -4781,33 +5712,54 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo32(out *jwriter.Writ
 		out.RawString(prefix[1:])
 		out.Int64(int64(in.MaxValuesPerFacet))
 	}
+	{
+		const prefix string = ",\"sortFacetValuesBy\":"
+		out.RawString(prefix)
+		if in.SortFacetValuesBy == nil && (out.Flags&jwriter.NilMapAsEmpty) == 0 {
+			out.RawString(`null`)
+		} else {
+			out.RawByte('{')
+			v138First := true
+			for v138Name, v138Value := range in.SortFacetValuesBy {
+				if v138First {
+					v138First = false
+				} else {
+					out.RawByte(',')
+				}
+				out.String(string(v138Name))
+				out.RawByte(':')
+				out.String(string(v138Value))
+			}
+			out.RawByte('}')
+		}
+	}
 	out.RawByte('}')
 }
 
 // MarshalJSON supports json.Marshaler interface
 func (v Faceting) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo32(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo37(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v Faceting) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo32(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo37(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *Faceting) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo32(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo37(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *Faceting) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo32(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo37(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo33(in *jlexer.Lexer, out *FacetSearchResponse) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo38(in *jlexer.Lexer, out *FacetSearchResponse) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -4842,15 +5794,15 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo33(in *jlexer.Lexer,
 					out.FacetHits = (out.FacetHits)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v111 interface{}
-					if m, ok := v111.(easyjson.Unmarshaler); ok {
+					var v139 interface{}
+					if m, ok := v139.(easyjson.Unmarshaler); ok {
 						m.UnmarshalEasyJSON(in)
-					} else if m, ok := v111.(json.Unmarshaler); ok {
+					} else if m, ok := v139.(json.Unmarshaler); ok {
 						_ = m.UnmarshalJSON(in.Raw())
 					} else {
-						v111 = in.Interface()
+						v139 = in.Interface()
 					}
-					out.FacetHits = append(out.FacetHits, v111)
+					out.FacetHits = append(out.FacetHits, v139)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -4869,7 +5821,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo33(in *jlexer.Lexer,
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo33(out *jwriter.Writer, in FacetSearchResponse) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo38(out *jwriter.Writer, in FacetSearchResponse) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -4880,16 +5832,16 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo33(out *jwriter.Writ
 			out.RawString("null")
 		} else {
 			out.RawByte('[')
-			for v112, v113 := range in.FacetHits {
-				if v112 > 0 {
+			for v140, v141 := range in.FacetHits {
+				if v140 > 0 {
 					out.RawByte(',')
 				}
-				if m, ok := v113.(easyjson.Marshaler); ok {
+				if m, ok := v141.(easyjson.Marshaler); ok {
 					m.MarshalEasyJSON(out)
-				} else if m, ok := v113.(json.Marshaler); ok {
+				} else if m, ok := v141.(json.Marshaler); ok {
 					out.Raw(m.MarshalJSON())
 				} else {
-					out.Raw(json.Marshal(v113))
+					out.Raw(json.Marshal(v141))
 				}
 			}
 			out.RawByte(']')
@@ -4911,27 +5863,27 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo33(out *jwriter.Writ
 // MarshalJSON supports json.Marshaler interface
 func (v FacetSearchResponse) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo33(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo38(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v FacetSearchResponse) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo33(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo38(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *FacetSearchResponse) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo33(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo38(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *FacetSearchResponse) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo33(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo38(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo34(in *jlexer.Lexer, out *FacetSearchRequest) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo39(in *jlexer.Lexer, out *FacetSearchRequest) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -4976,9 +5928,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo34(in *jlexer.Lexer,
 					out.AttributesToSearchOn = (out.AttributesToSearchOn)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v114 string
-					v114 = string(in.String())
-					out.AttributesToSearchOn = append(out.AttributesToSearchOn, v114)
+					var v142 string
+					v142 = string(in.String())
+					out.AttributesToSearchOn = append(out.AttributesToSearchOn, v142)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -4993,7 +5945,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo34(in *jlexer.Lexer,
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo34(out *jwriter.Writer, in FacetSearchRequest) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo39(out *jwriter.Writer, in FacetSearchRequest) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -5053,11 +6005,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo34(out *jwriter.Writ
 		}
 		{
 			out.RawByte('[')
-			for v115, v116 := range in.AttributesToSearchOn {
-				if v115 > 0 {
+			for v143, v144 := range in.AttributesToSearchOn {
+				if v143 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v116))
+				out.String(string(v144))
 			}
 			out.RawByte(']')
 		}
@@ -5068,27 +6020,249 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo34(out *jwriter.Writ
 // MarshalJSON supports json.Marshaler interface
 func (v FacetSearchRequest) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo34(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo39(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v FacetSearchRequest) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo34(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo39(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *FacetSearchRequest) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo34(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo39(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *FacetSearchRequest) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo34(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo39(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo35(in *jlexer.Lexer, out *Embedder) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo40(in *jlexer.Lexer, out *ExperimentalFeaturesResult) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "logsRoute":
+			out.LogsRoute = bool(in.Bool())
+		case "metrics":
+			out.Metrics = bool(in.Bool())
+		case "editDocumentsByFunction":
+			out.EditDocumentsByFunction = bool(in.Bool())
+		case "containsFilter":
+			out.ContainsFilter = bool(in.Bool())
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo40(out *jwriter.Writer, in ExperimentalFeaturesResult) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	{
+		const prefix string = ",\"logsRoute\":"
+		out.RawString(prefix[1:])
+		out.Bool(bool(in.LogsRoute))
+	}
+	{
+		const prefix string = ",\"metrics\":"
+		out.RawString(prefix)
+		out.Bool(bool(in.Metrics))
+	}
+	{
+		const prefix string = ",\"editDocumentsByFunction\":"
+		out.RawString(prefix)
+		out.Bool(bool(in.EditDocumentsByFunction))
+	}
+	{
+		const prefix string = ",\"containsFilter\":"
+		out.RawString(prefix)
+		out.Bool(bool(in.ContainsFilter))
+	}
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v ExperimentalFeaturesResult) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo40(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v ExperimentalFeaturesResult) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo40(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *ExperimentalFeaturesResult) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo40(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *ExperimentalFeaturesResult) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo40(l, v)
+}
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo41(in *jlexer.Lexer, out *ExperimentalFeaturesBase) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "logsRoute":
+			if in.IsNull() {
+				in.Skip()
+				out.LogsRoute = nil
+			} else {
+				if out.LogsRoute == nil {
+					out.LogsRoute = new(bool)
+				}
+				*out.LogsRoute = bool(in.Bool())
+			}
+		case "metrics":
+			if in.IsNull() {
+				in.Skip()
+				out.Metrics = nil
+			} else {
+				if out.Metrics == nil {
+					out.Metrics = new(bool)
+				}
+				*out.Metrics = bool(in.Bool())
+			}
+		case "editDocumentsByFunction":
+			if in.IsNull() {
+				in.Skip()
+				out.EditDocumentsByFunction = nil
+			} else {
+				if out.EditDocumentsByFunction == nil {
+					out.EditDocumentsByFunction = new(bool)
+				}
+				*out.EditDocumentsByFunction = bool(in.Bool())
+			}
+		case "containsFilter":
+			if in.IsNull() {
+				in.Skip()
+				out.ContainsFilter = nil
+			} else {
+				if out.ContainsFilter == nil {
+					out.ContainsFilter = new(bool)
+				}
+				*out.ContainsFilter = bool(in.Bool())
+			}
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo41(out *jwriter.Writer, in ExperimentalFeaturesBase) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	if in.LogsRoute != nil {
+		const prefix string = ",\"logsRoute\":"
+		first = false
+		out.RawString(prefix[1:])
+		out.Bool(bool(*in.LogsRoute))
+	}
+	if in.Metrics != nil {
+		const prefix string = ",\"metrics\":"
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
+		out.Bool(bool(*in.Metrics))
+	}
+	if in.EditDocumentsByFunction != nil {
+		const prefix string = ",\"editDocumentsByFunction\":"
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
+		out.Bool(bool(*in.EditDocumentsByFunction))
+	}
+	if in.ContainsFilter != nil {
+		const prefix string = ",\"containsFilter\":"
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
+		out.Bool(bool(*in.ContainsFilter))
+	}
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v ExperimentalFeaturesBase) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo41(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v ExperimentalFeaturesBase) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo41(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *ExperimentalFeaturesBase) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo41(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *ExperimentalFeaturesBase) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo41(l, v)
+}
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo42(in *jlexer.Lexer, out *Embedder) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -5109,14 +6283,100 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo35(in *jlexer.Lexer,
 		switch key {
 		case "source":
 			out.Source = string(in.String())
-		case "apiKey":
-			out.ApiKey = string(in.String())
 		case "model":
 			out.Model = string(in.String())
-		case "dimensions":
-			out.Dimensions = int(in.Int())
+		case "apiKey":
+			out.APIKey = string(in.String())
 		case "documentTemplate":
 			out.DocumentTemplate = string(in.String())
+		case "dimensions":
+			out.Dimensions = int(in.Int())
+		case "distribution":
+			if in.IsNull() {
+				in.Skip()
+				out.Distribution = nil
+			} else {
+				if out.Distribution == nil {
+					out.Distribution = new(Distribution)
+				}
+				(*out.Distribution).UnmarshalEasyJSON(in)
+			}
+		case "url":
+			out.URL = string(in.String())
+		case "revision":
+			out.Revision = string(in.String())
+		case "request":
+			if in.IsNull() {
+				in.Skip()
+			} else {
+				in.Delim('{')
+				if !in.IsDelim('}') {
+					out.Request = make(map[string]interface{})
+				} else {
+					out.Request = nil
+				}
+				for !in.IsDelim('}') {
+					key := string(in.String())
+					in.WantColon()
+					var v145 interface{}
+					if m, ok := v145.(easyjson.Unmarshaler); ok {
+						m.UnmarshalEasyJSON(in)
+					} else if m, ok := v145.(json.Unmarshaler); ok {
+						_ = m.UnmarshalJSON(in.Raw())
+					} else {
+						v145 = in.Interface()
+					}
+					(out.Request)[key] = v145
+					in.WantComma()
+				}
+				in.Delim('}')
+			}
+		case "response":
+			if in.IsNull() {
+				in.Skip()
+			} else {
+				in.Delim('{')
+				if !in.IsDelim('}') {
+					out.Response = make(map[string]interface{})
+				} else {
+					out.Response = nil
+				}
+				for !in.IsDelim('}') {
+					key := string(in.String())
+					in.WantColon()
+					var v146 interface{}
+					if m, ok := v146.(easyjson.Unmarshaler); ok {
+						m.UnmarshalEasyJSON(in)
+					} else if m, ok := v146.(json.Unmarshaler); ok {
+						_ = m.UnmarshalJSON(in.Raw())
+					} else {
+						v146 = in.Interface()
+					}
+					(out.Response)[key] = v146
+					in.WantComma()
+				}
+				in.Delim('}')
+			}
+		case "headers":
+			if in.IsNull() {
+				in.Skip()
+			} else {
+				in.Delim('{')
+				if !in.IsDelim('}') {
+					out.Headers = make(map[string]string)
+				} else {
+					out.Headers = nil
+				}
+				for !in.IsDelim('}') {
+					key := string(in.String())
+					in.WantColon()
+					var v147 string
+					v147 = string(in.String())
+					(out.Headers)[key] = v147
+					in.WantComma()
+				}
+				in.Delim('}')
+			}
 		default:
 			in.SkipRecursive()
 		}
@@ -5127,7 +6387,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo35(in *jlexer.Lexer,
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo35(out *jwriter.Writer, in Embedder) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo42(out *jwriter.Writer, in Embedder) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -5136,25 +6396,109 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo35(out *jwriter.Writ
 		out.RawString(prefix[1:])
 		out.String(string(in.Source))
 	}
-	if in.ApiKey != "" {
-		const prefix string = ",\"apiKey\":"
-		out.RawString(prefix)
-		out.String(string(in.ApiKey))
-	}
 	if in.Model != "" {
 		const prefix string = ",\"model\":"
 		out.RawString(prefix)
 		out.String(string(in.Model))
+	}
+	if in.APIKey != "" {
+		const prefix string = ",\"apiKey\":"
+		out.RawString(prefix)
+		out.String(string(in.APIKey))
+	}
+	if in.DocumentTemplate != "" {
+		const prefix string = ",\"documentTemplate\":"
+		out.RawString(prefix)
+		out.String(string(in.DocumentTemplate))
 	}
 	if in.Dimensions != 0 {
 		const prefix string = ",\"dimensions\":"
 		out.RawString(prefix)
 		out.Int(int(in.Dimensions))
 	}
-	if in.DocumentTemplate != "" {
-		const prefix string = ",\"documentTemplate\":"
+	if in.Distribution != nil {
+		const prefix string = ",\"distribution\":"
 		out.RawString(prefix)
-		out.String(string(in.DocumentTemplate))
+		(*in.Distribution).MarshalEasyJSON(out)
+	}
+	if in.URL != "" {
+		const prefix string = ",\"url\":"
+		out.RawString(prefix)
+		out.String(string(in.URL))
+	}
+	if in.Revision != "" {
+		const prefix string = ",\"revision\":"
+		out.RawString(prefix)
+		out.String(string(in.Revision))
+	}
+	if len(in.Request) != 0 {
+		const prefix string = ",\"request\":"
+		out.RawString(prefix)
+		{
+			out.RawByte('{')
+			v148First := true
+			for v148Name, v148Value := range in.Request {
+				if v148First {
+					v148First = false
+				} else {
+					out.RawByte(',')
+				}
+				out.String(string(v148Name))
+				out.RawByte(':')
+				if m, ok := v148Value.(easyjson.Marshaler); ok {
+					m.MarshalEasyJSON(out)
+				} else if m, ok := v148Value.(json.Marshaler); ok {
+					out.Raw(m.MarshalJSON())
+				} else {
+					out.Raw(json.Marshal(v148Value))
+				}
+			}
+			out.RawByte('}')
+		}
+	}
+	if len(in.Response) != 0 {
+		const prefix string = ",\"response\":"
+		out.RawString(prefix)
+		{
+			out.RawByte('{')
+			v149First := true
+			for v149Name, v149Value := range in.Response {
+				if v149First {
+					v149First = false
+				} else {
+					out.RawByte(',')
+				}
+				out.String(string(v149Name))
+				out.RawByte(':')
+				if m, ok := v149Value.(easyjson.Marshaler); ok {
+					m.MarshalEasyJSON(out)
+				} else if m, ok := v149Value.(json.Marshaler); ok {
+					out.Raw(m.MarshalJSON())
+				} else {
+					out.Raw(json.Marshal(v149Value))
+				}
+			}
+			out.RawByte('}')
+		}
+	}
+	if len(in.Headers) != 0 {
+		const prefix string = ",\"headers\":"
+		out.RawString(prefix)
+		{
+			out.RawByte('{')
+			v150First := true
+			for v150Name, v150Value := range in.Headers {
+				if v150First {
+					v150First = false
+				} else {
+					out.RawByte(',')
+				}
+				out.String(string(v150Name))
+				out.RawByte(':')
+				out.String(string(v150Value))
+			}
+			out.RawByte('}')
+		}
 	}
 	out.RawByte('}')
 }
@@ -5162,27 +6506,27 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo35(out *jwriter.Writ
 // MarshalJSON supports json.Marshaler interface
 func (v Embedder) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo35(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo42(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v Embedder) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo35(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo42(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *Embedder) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo35(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo42(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *Embedder) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo35(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo42(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo36(in *jlexer.Lexer, out *DocumentsResult) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo43(in *jlexer.Lexer, out *DocumentsResult) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -5217,29 +6561,29 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo36(in *jlexer.Lexer,
 					out.Results = (out.Results)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v117 map[string]interface{}
+					var v151 map[string]interface{}
 					if in.IsNull() {
 						in.Skip()
 					} else {
 						in.Delim('{')
-						v117 = make(map[string]interface{})
+						v151 = make(map[string]interface{})
 						for !in.IsDelim('}') {
 							key := string(in.String())
 							in.WantColon()
-							var v118 interface{}
-							if m, ok := v118.(easyjson.Unmarshaler); ok {
+							var v152 interface{}
+							if m, ok := v152.(easyjson.Unmarshaler); ok {
 								m.UnmarshalEasyJSON(in)
-							} else if m, ok := v118.(json.Unmarshaler); ok {
+							} else if m, ok := v152.(json.Unmarshaler); ok {
 								_ = m.UnmarshalJSON(in.Raw())
 							} else {
-								v118 = in.Interface()
+								v152 = in.Interface()
 							}
-							(v117)[key] = v118
+							(v151)[key] = v152
 							in.WantComma()
 						}
 						in.Delim('}')
 					}
-					out.Results = append(out.Results, v117)
+					out.Results = append(out.Results, v151)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -5260,7 +6604,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo36(in *jlexer.Lexer,
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo36(out *jwriter.Writer, in DocumentsResult) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo43(out *jwriter.Writer, in DocumentsResult) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -5271,29 +6615,29 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo36(out *jwriter.Writ
 			out.RawString("null")
 		} else {
 			out.RawByte('[')
-			for v119, v120 := range in.Results {
-				if v119 > 0 {
+			for v153, v154 := range in.Results {
+				if v153 > 0 {
 					out.RawByte(',')
 				}
-				if v120 == nil && (out.Flags&jwriter.NilMapAsEmpty) == 0 {
+				if v154 == nil && (out.Flags&jwriter.NilMapAsEmpty) == 0 {
 					out.RawString(`null`)
 				} else {
 					out.RawByte('{')
-					v121First := true
-					for v121Name, v121Value := range v120 {
-						if v121First {
-							v121First = false
+					v155First := true
+					for v155Name, v155Value := range v154 {
+						if v155First {
+							v155First = false
 						} else {
 							out.RawByte(',')
 						}
-						out.String(string(v121Name))
+						out.String(string(v155Name))
 						out.RawByte(':')
-						if m, ok := v121Value.(easyjson.Marshaler); ok {
+						if m, ok := v155Value.(easyjson.Marshaler); ok {
 							m.MarshalEasyJSON(out)
-						} else if m, ok := v121Value.(json.Marshaler); ok {
+						} else if m, ok := v155Value.(json.Marshaler); ok {
 							out.Raw(m.MarshalJSON())
 						} else {
-							out.Raw(json.Marshal(v121Value))
+							out.Raw(json.Marshal(v155Value))
 						}
 					}
 					out.RawByte('}')
@@ -5323,27 +6667,27 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo36(out *jwriter.Writ
 // MarshalJSON supports json.Marshaler interface
 func (v DocumentsResult) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo36(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo43(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v DocumentsResult) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo36(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo43(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *DocumentsResult) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo36(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo43(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *DocumentsResult) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo36(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo43(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo37(in *jlexer.Lexer, out *DocumentsQuery) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo44(in *jlexer.Lexer, out *DocumentsQuery) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -5382,9 +6726,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo37(in *jlexer.Lexer,
 					out.Fields = (out.Fields)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v122 string
-					v122 = string(in.String())
-					out.Fields = append(out.Fields, v122)
+					var v156 string
+					v156 = string(in.String())
+					out.Fields = append(out.Fields, v156)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -5407,7 +6751,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo37(in *jlexer.Lexer,
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo37(out *jwriter.Writer, in DocumentsQuery) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo44(out *jwriter.Writer, in DocumentsQuery) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -5437,11 +6781,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo37(out *jwriter.Writ
 		}
 		{
 			out.RawByte('[')
-			for v123, v124 := range in.Fields {
-				if v123 > 0 {
+			for v157, v158 := range in.Fields {
+				if v157 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v124))
+				out.String(string(v158))
 			}
 			out.RawByte(']')
 		}
@@ -5468,27 +6812,27 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo37(out *jwriter.Writ
 // MarshalJSON supports json.Marshaler interface
 func (v DocumentsQuery) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo37(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo44(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v DocumentsQuery) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo37(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo44(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *DocumentsQuery) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo37(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo44(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *DocumentsQuery) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo37(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo44(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo38(in *jlexer.Lexer, out *DocumentQuery) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo45(in *jlexer.Lexer, out *DocumentQuery) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -5523,9 +6867,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo38(in *jlexer.Lexer,
 					out.Fields = (out.Fields)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v125 string
-					v125 = string(in.String())
-					out.Fields = append(out.Fields, v125)
+					var v159 string
+					v159 = string(in.String())
+					out.Fields = append(out.Fields, v159)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -5540,7 +6884,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo38(in *jlexer.Lexer,
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo38(out *jwriter.Writer, in DocumentQuery) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo45(out *jwriter.Writer, in DocumentQuery) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -5550,11 +6894,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo38(out *jwriter.Writ
 		out.RawString(prefix[1:])
 		{
 			out.RawByte('[')
-			for v126, v127 := range in.Fields {
-				if v126 > 0 {
+			for v160, v161 := range in.Fields {
+				if v160 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v127))
+				out.String(string(v161))
 			}
 			out.RawByte(']')
 		}
@@ -5565,27 +6909,100 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo38(out *jwriter.Writ
 // MarshalJSON supports json.Marshaler interface
 func (v DocumentQuery) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo38(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo45(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v DocumentQuery) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo38(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo45(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *DocumentQuery) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo38(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo45(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *DocumentQuery) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo38(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo45(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo39(in *jlexer.Lexer, out *Details) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo46(in *jlexer.Lexer, out *Distribution) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "mean":
+			out.Mean = float64(in.Float64())
+		case "sigma":
+			out.Sigma = float64(in.Float64())
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo46(out *jwriter.Writer, in Distribution) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	{
+		const prefix string = ",\"mean\":"
+		out.RawString(prefix[1:])
+		out.Float64(float64(in.Mean))
+	}
+	{
+		const prefix string = ",\"sigma\":"
+		out.RawString(prefix)
+		out.Float64(float64(in.Sigma))
+	}
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v Distribution) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo46(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v Distribution) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo46(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *Distribution) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo46(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *Distribution) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo46(l, v)
+}
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo47(in *jlexer.Lexer, out *Details) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -5630,9 +7047,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo39(in *jlexer.Lexer,
 					out.RankingRules = (out.RankingRules)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v128 string
-					v128 = string(in.String())
-					out.RankingRules = append(out.RankingRules, v128)
+					var v162 string
+					v162 = string(in.String())
+					out.RankingRules = append(out.RankingRules, v162)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -5663,9 +7080,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo39(in *jlexer.Lexer,
 					out.SearchableAttributes = (out.SearchableAttributes)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v129 string
-					v129 = string(in.String())
-					out.SearchableAttributes = append(out.SearchableAttributes, v129)
+					var v163 string
+					v163 = string(in.String())
+					out.SearchableAttributes = append(out.SearchableAttributes, v163)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -5686,9 +7103,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo39(in *jlexer.Lexer,
 					out.DisplayedAttributes = (out.DisplayedAttributes)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v130 string
-					v130 = string(in.String())
-					out.DisplayedAttributes = append(out.DisplayedAttributes, v130)
+					var v164 string
+					v164 = string(in.String())
+					out.DisplayedAttributes = append(out.DisplayedAttributes, v164)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -5709,9 +7126,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo39(in *jlexer.Lexer,
 					out.StopWords = (out.StopWords)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v131 string
-					v131 = string(in.String())
-					out.StopWords = append(out.StopWords, v131)
+					var v165 string
+					v165 = string(in.String())
+					out.StopWords = append(out.StopWords, v165)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -5729,30 +7146,30 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo39(in *jlexer.Lexer,
 				for !in.IsDelim('}') {
 					key := string(in.String())
 					in.WantColon()
-					var v132 []string
+					var v166 []string
 					if in.IsNull() {
 						in.Skip()
-						v132 = nil
+						v166 = nil
 					} else {
 						in.Delim('[')
-						if v132 == nil {
+						if v166 == nil {
 							if !in.IsDelim(']') {
-								v132 = make([]string, 0, 4)
+								v166 = make([]string, 0, 4)
 							} else {
-								v132 = []string{}
+								v166 = []string{}
 							}
 						} else {
-							v132 = (v132)[:0]
+							v166 = (v166)[:0]
 						}
 						for !in.IsDelim(']') {
-							var v133 string
-							v133 = string(in.String())
-							v132 = append(v132, v133)
+							var v167 string
+							v167 = string(in.String())
+							v166 = append(v166, v167)
 							in.WantComma()
 						}
 						in.Delim(']')
 					}
-					(out.Synonyms)[key] = v132
+					(out.Synonyms)[key] = v166
 					in.WantComma()
 				}
 				in.Delim('}')
@@ -5773,9 +7190,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo39(in *jlexer.Lexer,
 					out.FilterableAttributes = (out.FilterableAttributes)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v134 string
-					v134 = string(in.String())
-					out.FilterableAttributes = append(out.FilterableAttributes, v134)
+					var v168 string
+					v168 = string(in.String())
+					out.FilterableAttributes = append(out.FilterableAttributes, v168)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -5796,9 +7213,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo39(in *jlexer.Lexer,
 					out.SortableAttributes = (out.SortableAttributes)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v135 string
-					v135 = string(in.String())
-					out.SortableAttributes = append(out.SortableAttributes, v135)
+					var v169 string
+					v169 = string(in.String())
+					out.SortableAttributes = append(out.SortableAttributes, v169)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -5857,9 +7274,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo39(in *jlexer.Lexer,
 					out.Swaps = (out.Swaps)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v136 SwapIndexesParams
-					(v136).UnmarshalEasyJSON(in)
-					out.Swaps = append(out.Swaps, v136)
+					var v170 SwapIndexesParams
+					(v170).UnmarshalEasyJSON(in)
+					out.Swaps = append(out.Swaps, v170)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -5876,7 +7293,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo39(in *jlexer.Lexer,
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo39(out *jwriter.Writer, in Details) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo47(out *jwriter.Writer, in Details) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -5936,11 +7353,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo39(out *jwriter.Writ
 		}
 		{
 			out.RawByte('[')
-			for v137, v138 := range in.RankingRules {
-				if v137 > 0 {
+			for v171, v172 := range in.RankingRules {
+				if v171 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v138))
+				out.String(string(v172))
 			}
 			out.RawByte(']')
 		}
@@ -5965,11 +7382,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo39(out *jwriter.Writ
 		}
 		{
 			out.RawByte('[')
-			for v139, v140 := range in.SearchableAttributes {
-				if v139 > 0 {
+			for v173, v174 := range in.SearchableAttributes {
+				if v173 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v140))
+				out.String(string(v174))
 			}
 			out.RawByte(']')
 		}
@@ -5984,11 +7401,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo39(out *jwriter.Writ
 		}
 		{
 			out.RawByte('[')
-			for v141, v142 := range in.DisplayedAttributes {
-				if v141 > 0 {
+			for v175, v176 := range in.DisplayedAttributes {
+				if v175 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v142))
+				out.String(string(v176))
 			}
 			out.RawByte(']')
 		}
@@ -6003,11 +7420,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo39(out *jwriter.Writ
 		}
 		{
 			out.RawByte('[')
-			for v143, v144 := range in.StopWords {
-				if v143 > 0 {
+			for v177, v178 := range in.StopWords {
+				if v177 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v144))
+				out.String(string(v178))
 			}
 			out.RawByte(']')
 		}
@@ -6022,24 +7439,24 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo39(out *jwriter.Writ
 		}
 		{
 			out.RawByte('{')
-			v145First := true
-			for v145Name, v145Value := range in.Synonyms {
-				if v145First {
-					v145First = false
+			v179First := true
+			for v179Name, v179Value := range in.Synonyms {
+				if v179First {
+					v179First = false
 				} else {
 					out.RawByte(',')
 				}
-				out.String(string(v145Name))
+				out.String(string(v179Name))
 				out.RawByte(':')
-				if v145Value == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
+				if v179Value == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
 					out.RawString("null")
 				} else {
 					out.RawByte('[')
-					for v146, v147 := range v145Value {
-						if v146 > 0 {
+					for v180, v181 := range v179Value {
+						if v180 > 0 {
 							out.RawByte(',')
 						}
-						out.String(string(v147))
+						out.String(string(v181))
 					}
 					out.RawByte(']')
 				}
@@ -6057,11 +7474,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo39(out *jwriter.Writ
 		}
 		{
 			out.RawByte('[')
-			for v148, v149 := range in.FilterableAttributes {
-				if v148 > 0 {
+			for v182, v183 := range in.FilterableAttributes {
+				if v182 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v149))
+				out.String(string(v183))
 			}
 			out.RawByte(']')
 		}
@@ -6076,11 +7493,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo39(out *jwriter.Writ
 		}
 		{
 			out.RawByte('[')
-			for v150, v151 := range in.SortableAttributes {
-				if v150 > 0 {
+			for v184, v185 := range in.SortableAttributes {
+				if v184 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v151))
+				out.String(string(v185))
 			}
 			out.RawByte(']')
 		}
@@ -6165,11 +7582,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo39(out *jwriter.Writ
 		}
 		{
 			out.RawByte('[')
-			for v152, v153 := range in.Swaps {
-				if v152 > 0 {
+			for v186, v187 := range in.Swaps {
+				if v186 > 0 {
 					out.RawByte(',')
 				}
-				(v153).MarshalEasyJSON(out)
+				(v187).MarshalEasyJSON(out)
 			}
 			out.RawByte(']')
 		}
@@ -6190,27 +7607,27 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo39(out *jwriter.Writ
 // MarshalJSON supports json.Marshaler interface
 func (v Details) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo39(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo47(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v Details) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo39(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo47(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *Details) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo39(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo47(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *Details) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo39(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo47(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo40(in *jlexer.Lexer, out *DeleteTasksQuery) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo48(in *jlexer.Lexer, out *DeleteTasksQuery) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -6245,9 +7662,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo40(in *jlexer.Lexer,
 					out.UIDS = (out.UIDS)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v154 int64
-					v154 = int64(in.Int64())
-					out.UIDS = append(out.UIDS, v154)
+					var v188 int64
+					v188 = int64(in.Int64())
+					out.UIDS = append(out.UIDS, v188)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -6268,9 +7685,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo40(in *jlexer.Lexer,
 					out.IndexUIDS = (out.IndexUIDS)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v155 string
-					v155 = string(in.String())
-					out.IndexUIDS = append(out.IndexUIDS, v155)
+					var v189 string
+					v189 = string(in.String())
+					out.IndexUIDS = append(out.IndexUIDS, v189)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -6291,9 +7708,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo40(in *jlexer.Lexer,
 					out.Statuses = (out.Statuses)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v156 TaskStatus
-					v156 = TaskStatus(in.String())
-					out.Statuses = append(out.Statuses, v156)
+					var v190 TaskStatus
+					v190 = TaskStatus(in.String())
+					out.Statuses = append(out.Statuses, v190)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -6314,9 +7731,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo40(in *jlexer.Lexer,
 					out.Types = (out.Types)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v157 TaskType
-					v157 = TaskType(in.String())
-					out.Types = append(out.Types, v157)
+					var v191 TaskType
+					v191 = TaskType(in.String())
+					out.Types = append(out.Types, v191)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -6337,9 +7754,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo40(in *jlexer.Lexer,
 					out.CanceledBy = (out.CanceledBy)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v158 int64
-					v158 = int64(in.Int64())
-					out.CanceledBy = append(out.CanceledBy, v158)
+					var v192 int64
+					v192 = int64(in.Int64())
+					out.CanceledBy = append(out.CanceledBy, v192)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -6378,7 +7795,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo40(in *jlexer.Lexer,
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo40(out *jwriter.Writer, in DeleteTasksQuery) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo48(out *jwriter.Writer, in DeleteTasksQuery) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -6389,11 +7806,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo40(out *jwriter.Writ
 			out.RawString("null")
 		} else {
 			out.RawByte('[')
-			for v159, v160 := range in.UIDS {
-				if v159 > 0 {
+			for v193, v194 := range in.UIDS {
+				if v193 > 0 {
 					out.RawByte(',')
 				}
-				out.Int64(int64(v160))
+				out.Int64(int64(v194))
 			}
 			out.RawByte(']')
 		}
@@ -6405,11 +7822,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo40(out *jwriter.Writ
 			out.RawString("null")
 		} else {
 			out.RawByte('[')
-			for v161, v162 := range in.IndexUIDS {
-				if v161 > 0 {
+			for v195, v196 := range in.IndexUIDS {
+				if v195 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v162))
+				out.String(string(v196))
 			}
 			out.RawByte(']')
 		}
@@ -6421,11 +7838,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo40(out *jwriter.Writ
 			out.RawString("null")
 		} else {
 			out.RawByte('[')
-			for v163, v164 := range in.Statuses {
-				if v163 > 0 {
+			for v197, v198 := range in.Statuses {
+				if v197 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v164))
+				out.String(string(v198))
 			}
 			out.RawByte(']')
 		}
@@ -6437,11 +7854,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo40(out *jwriter.Writ
 			out.RawString("null")
 		} else {
 			out.RawByte('[')
-			for v165, v166 := range in.Types {
-				if v165 > 0 {
+			for v199, v200 := range in.Types {
+				if v199 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v166))
+				out.String(string(v200))
 			}
 			out.RawByte(']')
 		}
@@ -6453,11 +7870,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo40(out *jwriter.Writ
 			out.RawString("null")
 		} else {
 			out.RawByte('[')
-			for v167, v168 := range in.CanceledBy {
-				if v167 > 0 {
+			for v201, v202 := range in.CanceledBy {
+				if v201 > 0 {
 					out.RawByte(',')
 				}
-				out.Int64(int64(v168))
+				out.Int64(int64(v202))
 			}
 			out.RawByte(']')
 		}
@@ -6498,27 +7915,27 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo40(out *jwriter.Writ
 // MarshalJSON supports json.Marshaler interface
 func (v DeleteTasksQuery) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo40(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo48(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v DeleteTasksQuery) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo40(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo48(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *DeleteTasksQuery) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo40(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo48(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *DeleteTasksQuery) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo40(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo48(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo41(in *jlexer.Lexer, out *CsvDocumentsQuery) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo49(in *jlexer.Lexer, out *CsvDocumentsQuery) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -6551,7 +7968,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo41(in *jlexer.Lexer,
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo41(out *jwriter.Writer, in CsvDocumentsQuery) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo49(out *jwriter.Writer, in CsvDocumentsQuery) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -6577,27 +7994,27 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo41(out *jwriter.Writ
 // MarshalJSON supports json.Marshaler interface
 func (v CsvDocumentsQuery) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo41(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo49(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v CsvDocumentsQuery) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo41(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo49(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *CsvDocumentsQuery) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo41(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo49(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *CsvDocumentsQuery) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo41(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo49(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo42(in *jlexer.Lexer, out *CreateIndexRequest) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo50(in *jlexer.Lexer, out *CreateIndexRequest) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -6630,7 +8047,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo42(in *jlexer.Lexer,
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo42(out *jwriter.Writer, in CreateIndexRequest) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo50(out *jwriter.Writer, in CreateIndexRequest) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -6656,86 +8073,27 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo42(out *jwriter.Writ
 // MarshalJSON supports json.Marshaler interface
 func (v CreateIndexRequest) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo42(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo50(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v CreateIndexRequest) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo42(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo50(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *CreateIndexRequest) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo42(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo50(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *CreateIndexRequest) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo42(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo50(l, v)
 }
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo43(in *jlexer.Lexer, out *Client) {
-	isTopLevel := in.IsStart()
-	if in.IsNull() {
-		if isTopLevel {
-			in.Consumed()
-		}
-		in.Skip()
-		return
-	}
-	in.Delim('{')
-	for !in.IsDelim('}') {
-		key := in.UnsafeFieldName(false)
-		in.WantColon()
-		if in.IsNull() {
-			in.Skip()
-			in.WantComma()
-			continue
-		}
-		switch key {
-		default:
-			in.SkipRecursive()
-		}
-		in.WantComma()
-	}
-	in.Delim('}')
-	if isTopLevel {
-		in.Consumed()
-	}
-}
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo43(out *jwriter.Writer, in Client) {
-	out.RawByte('{')
-	first := true
-	_ = first
-	out.RawByte('}')
-}
-
-// MarshalJSON supports json.Marshaler interface
-func (v Client) MarshalJSON() ([]byte, error) {
-	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo43(&w, v)
-	return w.Buffer.BuildBytes(), w.Error
-}
-
-// MarshalEasyJSON supports easyjson.Marshaler interface
-func (v Client) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo43(w, v)
-}
-
-// UnmarshalJSON supports json.Unmarshaler interface
-func (v *Client) UnmarshalJSON(data []byte) error {
-	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo43(&r, v)
-	return r.Error()
-}
-
-// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
-func (v *Client) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo43(l, v)
-}
-func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo44(in *jlexer.Lexer, out *CancelTasksQuery) {
+func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo51(in *jlexer.Lexer, out *CancelTasksQuery) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -6770,9 +8128,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo44(in *jlexer.Lexer,
 					out.UIDS = (out.UIDS)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v169 int64
-					v169 = int64(in.Int64())
-					out.UIDS = append(out.UIDS, v169)
+					var v203 int64
+					v203 = int64(in.Int64())
+					out.UIDS = append(out.UIDS, v203)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -6793,9 +8151,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo44(in *jlexer.Lexer,
 					out.IndexUIDS = (out.IndexUIDS)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v170 string
-					v170 = string(in.String())
-					out.IndexUIDS = append(out.IndexUIDS, v170)
+					var v204 string
+					v204 = string(in.String())
+					out.IndexUIDS = append(out.IndexUIDS, v204)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -6816,9 +8174,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo44(in *jlexer.Lexer,
 					out.Statuses = (out.Statuses)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v171 TaskStatus
-					v171 = TaskStatus(in.String())
-					out.Statuses = append(out.Statuses, v171)
+					var v205 TaskStatus
+					v205 = TaskStatus(in.String())
+					out.Statuses = append(out.Statuses, v205)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -6839,9 +8197,9 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo44(in *jlexer.Lexer,
 					out.Types = (out.Types)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v172 TaskType
-					v172 = TaskType(in.String())
-					out.Types = append(out.Types, v172)
+					var v206 TaskType
+					v206 = TaskType(in.String())
+					out.Types = append(out.Types, v206)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -6872,7 +8230,7 @@ func easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo44(in *jlexer.Lexer,
 		in.Consumed()
 	}
 }
-func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo44(out *jwriter.Writer, in CancelTasksQuery) {
+func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo51(out *jwriter.Writer, in CancelTasksQuery) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -6883,11 +8241,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo44(out *jwriter.Writ
 			out.RawString("null")
 		} else {
 			out.RawByte('[')
-			for v173, v174 := range in.UIDS {
-				if v173 > 0 {
+			for v207, v208 := range in.UIDS {
+				if v207 > 0 {
 					out.RawByte(',')
 				}
-				out.Int64(int64(v174))
+				out.Int64(int64(v208))
 			}
 			out.RawByte(']')
 		}
@@ -6899,11 +8257,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo44(out *jwriter.Writ
 			out.RawString("null")
 		} else {
 			out.RawByte('[')
-			for v175, v176 := range in.IndexUIDS {
-				if v175 > 0 {
+			for v209, v210 := range in.IndexUIDS {
+				if v209 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v176))
+				out.String(string(v210))
 			}
 			out.RawByte(']')
 		}
@@ -6915,11 +8273,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo44(out *jwriter.Writ
 			out.RawString("null")
 		} else {
 			out.RawByte('[')
-			for v177, v178 := range in.Statuses {
-				if v177 > 0 {
+			for v211, v212 := range in.Statuses {
+				if v211 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v178))
+				out.String(string(v212))
 			}
 			out.RawByte(']')
 		}
@@ -6931,11 +8289,11 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo44(out *jwriter.Writ
 			out.RawString("null")
 		} else {
 			out.RawByte('[')
-			for v179, v180 := range in.Types {
-				if v179 > 0 {
+			for v213, v214 := range in.Types {
+				if v213 > 0 {
 					out.RawByte(',')
 				}
-				out.String(string(v180))
+				out.String(string(v214))
 			}
 			out.RawByte(']')
 		}
@@ -6966,23 +8324,23 @@ func easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo44(out *jwriter.Writ
 // MarshalJSON supports json.Marshaler interface
 func (v CancelTasksQuery) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo44(&w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo51(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v CancelTasksQuery) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo44(w, v)
+	easyjson6601e8cdEncodeGithubComMeilisearchMeilisearchGo51(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *CancelTasksQuery) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo44(&r, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo51(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *CancelTasksQuery) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo44(l, v)
+	easyjson6601e8cdDecodeGithubComMeilisearchMeilisearchGo51(l, v)
 }

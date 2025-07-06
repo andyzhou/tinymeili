@@ -2,6 +2,7 @@ package meilisearch
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"strings"
 )
@@ -16,14 +17,16 @@ const (
 	ErrCodeMarshalRequest ErrCode = iota + 1
 	// ErrCodeResponseUnmarshalBody impossible deserialize the response body
 	ErrCodeResponseUnmarshalBody
-	// MeilisearchApiError send by the Meilisearch api
+	// MeilisearchApiError send by the meilisearch api
 	MeilisearchApiError
-	// MeilisearchApiError send by the Meilisearch api
+	// MeilisearchApiErrorWithoutMessage MeilisearchApiError send by the meilisearch api
 	MeilisearchApiErrorWithoutMessage
 	// MeilisearchTimeoutError
 	MeilisearchTimeoutError
 	// MeilisearchCommunicationError impossible execute a request
 	MeilisearchCommunicationError
+	// MeilisearchMaxRetriesExceeded used max retries and exceeded
+	MeilisearchMaxRetriesExceeded
 )
 
 const (
@@ -34,6 +37,7 @@ const (
 	rawStringMeilisearchApiErrorWithoutMessage = `unaccepted status code found: ${statusCode} expected: ${statusCodeExpected}, MeilisearchApiError Message: ${message}`
 	rawStringMeilisearchTimeoutError           = `MeilisearchTimeoutError`
 	rawStringMeilisearchCommunicationError     = `MeilisearchCommunicationError unable to execute request`
+	rawStringMeilisearchMaxRetriesExceeded     = "failed to request and max retries exceeded"
 )
 
 func (e ErrCode) rawMessage() string {
@@ -50,6 +54,8 @@ func (e ErrCode) rawMessage() string {
 		return rawStringMeilisearchTimeoutError + " " + rawStringCtx
 	case MeilisearchCommunicationError:
 		return rawStringMeilisearchCommunicationError + " " + rawStringCtx
+	case MeilisearchMaxRetriesExceeded:
+		return rawStringMeilisearchMaxRetriesExceeded + " " + rawStringCtx
 	default:
 		return rawStringCtx
 	}
@@ -80,8 +86,8 @@ type Error struct {
 	// RequestToString is the raw request into string ('empty response' if not present)
 	ResponseToString string
 
-	// Error info from Meilisearch api
-	// Message is the raw request into string ('empty Meilisearch message' if not present)
+	// Error info from meilisearch api
+	// Message is the raw request into string ('empty meilisearch message' if not present)
 	MeilisearchApiError meilisearchApiError
 
 	// StatusCode of the request
@@ -98,10 +104,12 @@ type Error struct {
 	// ErrCode is the internal error code that represent the different step when executing a request that can produce
 	// an error.
 	ErrCode ErrCode
+
+	encoder
 }
 
 // Error return a well human formatted message.
-func (e Error) Error() string {
+func (e *Error) Error() string {
 	message := namedSprintf(e.rawMessage, map[string]interface{}{
 		"endpoint":           e.Endpoint,
 		"method":             e.Method,
@@ -135,8 +143,20 @@ func (e *Error) WithErrCode(err ErrCode, errs ...error) *Error {
 
 // ErrorBody add a body to an error
 func (e *Error) ErrorBody(body []byte) {
-	e.ResponseToString = string(body)
 	msg := meilisearchApiError{}
+
+	if e.encoder != nil {
+		err := e.encoder.Decode(body, &msg)
+		if err == nil {
+			e.MeilisearchApiError.Message = msg.Message
+			e.MeilisearchApiError.Code = msg.Code
+			e.MeilisearchApiError.Type = msg.Type
+			e.MeilisearchApiError.Link = msg.Link
+		}
+		return
+	}
+
+	e.ResponseToString = string(body)
 	err := json.Unmarshal(body, &msg)
 	if err == nil {
 		e.MeilisearchApiError.Message = msg.Message
@@ -146,9 +166,10 @@ func (e *Error) ErrorBody(body []byte) {
 	}
 }
 
-// Added a hint to the error message if it may come from a version incompatibility with Meilisearch
+// VersionErrorHintMessage a hint to the error message if it may come from a version incompatibility with meilisearch
 func VersionErrorHintMessage(err error, req *internalRequest) error {
-	return fmt.Errorf("%w. Hint: It might not be working because you're not up to date with the Meilisearch version that %s call requires.", err, req.functionName)
+	return fmt.Errorf("%w. Hint: It might not be working because you're not up to date with the "+
+		"Meilisearch version that %s call requires", err, req.functionName)
 }
 
 func namedSprintf(format string, params map[string]interface{}) string {
@@ -157,3 +178,12 @@ func namedSprintf(format string, params map[string]interface{}) string {
 	}
 	return format
 }
+
+// General errors
+var (
+	ErrInvalidRequestMethod          = errors.New("request body is not expected for GET and HEAD requests")
+	ErrRequestBodyWithoutContentType = errors.New("request body without Content-Type is not allowed")
+	ErrNoSearchRequest               = errors.New("no search request provided")
+	ErrNoFacetSearchRequest          = errors.New("no search facet request provided")
+	ErrConnectingFailed              = errors.New("meilisearch is not connected")
+)
