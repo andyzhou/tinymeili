@@ -58,9 +58,9 @@ func (f *Client) GetIndex(indexName string) (*Index, error) {
 	if indexName == "" {
 		return nil, errors.New("invalid parameter")
 	}
-	//get with locker
-	f.Lock()
-	defer f.Unlock()
+	//get with read locker
+	f.RLock()
+	defer f.RUnlock()
 	v, ok := f.indexMap[indexName]
 	if ok && v != nil {
 		return v, nil

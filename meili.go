@@ -15,7 +15,7 @@ import (
 
 //global variable
 var (
-	_meiLi *MeiLi
+	_meiLi     *MeiLi
 	_meiLiOnce sync.Once
 )
 

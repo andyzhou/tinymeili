@@ -227,8 +227,10 @@ func (f *Worker) GetWorker(
 	if workerId <= 0 {
 		return nil, errors.New("invalid parameter")
 	}
-	f.Lock()
-	defer f.Unlock()
+
+	//get worker with read lock
+	f.RLock()
+	defer f.RUnlock()
 	v, ok := f.workerMap[workerId]
 	if ok && v != nil {
 		return v, nil
