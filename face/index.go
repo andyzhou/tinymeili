@@ -194,35 +194,41 @@ func (f *Index) interInit(onlyReturns ...bool) error {
 
 	//create or init index
 	if f.indexConf.CreateIndex {
-		//create index
-		task, subErr := f.client.CreateIndex(indexCfg)
-		if subErr != nil {
-			if onlyReturn {
-				return subErr
-			}else{
-				panic(any(subErr))
+		//check index
+		existIndex, _ := f.client.GetIndex(f.indexConf.IndexName)
+		if existIndex != nil {
+			//index had exists
+			index = existIndex
+		}else{
+			//create index
+			task, subErr := f.client.CreateIndex(indexCfg)
+			if subErr != nil {
+				if onlyReturn {
+					return subErr
+				}else{
+					panic(any(subErr))
+				}
 			}
-		}
-
-		//wait for task
-		finalTask, subErrTwo := f.client.WaitForTask(task.TaskUID, f.getTimeout())
-		if subErrTwo != nil {
-			if onlyReturn {
-				return subErrTwo
-			}else{
-				panic(any(subErrTwo))
+			//wait for task
+			finalTask, subErrTwo := f.client.WaitForTask(task.TaskUID, f.getTimeout())
+			if subErrTwo != nil {
+				if onlyReturn {
+					return subErrTwo
+				}else{
+					panic(any(subErrTwo))
+				}
 			}
-		}
-		if finalTask.Status != "succeeded" && finalTask.Error.Code != "index_already_exists" {
-			err = fmt.Errorf("create index failed, err:%v", finalTask.Status)
-			log.Printf("init index %v failed, err:%v\n", f.indexConf.IndexName, err.Error())
-			if onlyReturn {
-				return err
-			}else{
-				panic(any(err))
+			if finalTask.Status != "succeeded" && finalTask.Error.Code != "index_already_exists" {
+				err = fmt.Errorf("create index failed, err:%v", finalTask.Status)
+				log.Printf("init index %v failed, err:%v\n", f.indexConf.IndexName, err.Error())
+				if onlyReturn {
+					return err
+				}else{
+					panic(any(err))
+				}
 			}
+			index, _ = f.client.GetIndex(f.indexConf.IndexName)
 		}
-		index, _ = f.client.GetIndex(f.indexConf.IndexName)
 	}else{
 		//init index
 		index = f.client.Index(f.indexConf.IndexName)
